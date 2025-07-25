@@ -1,0 +1,125 @@
+/* Container principal do card de login */
+.loginContainer {
+  display: flex;
+  width: 800px; /* Largura total do card */
+  min-height: 500px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Garante que os filhos respeitem o border-radius */
+}
+
+/* --- Coluna da Esquerda (Imagem) --- */
+.imageSection {
+  flex: 1;
+  position: relative;
+}
+
+.beachImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Faz a imagem cobrir todo o espaço sem distorcer */
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(81, 81, 81, 0.326);
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.overlayLogo {
+  width: 24px;
+}
+
+/* --- Coluna da Direita (Formulário) --- */
+.formSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+}
+
+.mainLogo {
+  width: 150px;
+  margin-bottom: 30px;
+  align-self: flex-start; /* Alinha o logo à esquerda */
+}
+
+.inputGroup {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Esconde o label, mas mantém acessível para leitores de tela */
+.inputGroup label {
+  position: absolute;
+  left: -9999px;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 15px;
+  background-color: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  color: #8c52ff;
+  font-size: 1rem;
+  box-sizing: border-box; /* Garante que padding não afete a largura final */
+}
+
+.inputGroup input::placeholder {
+  color: #aaa;
+}
+
+.forgotPassword {
+  align-self: flex-end;
+  margin-bottom: 25px;
+  color: #8c52ff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.loginButton {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #8c52ff, #c665ff);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.loginButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.loginButton:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+.signupLink {
+  margin-top: 20px;
+  color: #8c52ff;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+}
+
+.errorText {
+  color: #ff3b3b;
+  text-align: center;
+  margin-top: 15px;
+}

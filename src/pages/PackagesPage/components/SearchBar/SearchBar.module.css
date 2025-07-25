@@ -1,0 +1,73 @@
+.searchBarContainer {
+  background-color: #ff9900; /* Laranja do contêiner */
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.searchBar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.inputWrapper {
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #c57d00; /* Borda roxa sutil */
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  flex: 1;
+}
+
+.inputField, .selectField {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 12px 5px;
+  font-size: 1rem;
+  background-color: transparent;
+}
+
+.selectField {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+}
+
+.dateWrapper {
+  padding-left: 15px;
+}
+
+.icon {
+  color: #888;
+  margin-right: 8px;
+}
+
+.datePicker {
+  width: 100%;
+  border: none !important;
+  outline: none !important;
+  padding: 12px 5px !important;
+  font-size: 1rem !important;
+  background-color: transparent !important;
+}
+
+.searchButton {
+  background-color: #8c52ff; /* Roxo do botão */
+  border: 1px solid #c57d00;
+  color: white;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
