@@ -35,7 +35,7 @@ export function SearchBar({ onSearch }) {
             startDate={startDate}
             endDate={endDate}
             onChange={(update) => setDateRange(update)}
-            placeholderText="09/08 - 09/09"
+            placeholderText="Data da viagem"
             dateFormat="dd/MM"
             className={styles.datePicker}
             minDate={new Date()}
