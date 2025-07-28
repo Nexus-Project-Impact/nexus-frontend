@@ -1,0 +1,114 @@
+.reviewContainer {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  padding: 2rem 2.5rem;
+  max-width: 480px;
+  margin: 2rem auto;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #a020f0;
+  cursor: pointer;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #000;
+}
+
+.infoSection {
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.infoSection strong {
+  color: #6c1eb1;
+  font-size: 1.1rem;
+}
+
+.infoSection span {
+  color: #a47c1b;
+  font-size: 1rem;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.ratingLabel {
+  color: #6c1eb1;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.ratingGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ratingItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.ratingItem input[type="radio"] {
+  accent-color: #6c1eb1;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.commentLabel {
+  color: #6c1eb1;
+  font-weight: 500;
+}
+
+.commentBox {
+  min-height: 80px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  padding: 0.8rem;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.submitButton {
+  background: #ffa500;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+
+.submitButton:disabled {
+  background: #ffd580;
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #d32f2f;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
