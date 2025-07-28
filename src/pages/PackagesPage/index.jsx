@@ -47,10 +47,10 @@ const handleSearch = (filters) => {
     <div>
       <div className={styles.heroSection}>
         <h1 className={styles.heroTitle}>Nexus</h1>
-        {/* 3. Adicione a SearchBar aqui e passe a função de busca */}
-        <div className={styles.searchBarWrapper}>
+        {<div className={styles.searchBarWrapper}>
           <SearchBar onSearch={handleSearch} />
-        </div>
+        </div>}
+        
       </div>
 
       <div className={styles.contentSection}>
@@ -67,7 +67,9 @@ const handleSearch = (filters) => {
           <p>Nenhum pacote encontrado com os critérios de busca.</p>
         )}
 
-        {/* ... botão de mostrar mais ... */}
+        <div className={styles.showMoreContainer}>
+          <button className={styles.showMoreButton}>Mostrar mais</button>
+        </div>
       </div>
     </div>
   );
