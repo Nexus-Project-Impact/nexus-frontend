@@ -1,13 +1,128 @@
-// DENTRO DE: src/services/packageService.js
-
 // Mock (dados de mentira) para nossos pacotes
 const mockPackages = [
-  { id: 1, name: 'Fernando de Noronha', image: 'https://images.unsplash.com/photo-1572494883907-273315a67451?q=80&w=1974&auto=format&fit=crop', details: 'Voo + Hospedagem', dates: '11 ago. 2025 - 16 ago. 2025' },
-  { id: 2, name: 'Jericoacoara', image: 'https://images.unsplash.com/photo-1589923143484-754636952752?q=80&w=2070&auto=format&fit=crop', details: 'Voo + Hospedagem', dates: '09 ago. 2025 - 16 ago. 2025' },
-  { id: 3, name: 'Porto de Galinhas', image: 'https://images.unsplash.com/photo-1616768399434-3c531191ad97?q=80&w=1974&auto=format&fit=crop', details: 'Voo + Hospedagem', dates: '11 ago. 2025 - 16 ago. 2025' },
-  { id: 4, name: 'Cancún', image: 'https://images.unsplash.com/photo-1590523743825-0504d165c419?q=80&w=2070&auto=format&fit=crop', details: 'Voo + Hospedagem', dates: '11 ago. 2025 - 16 ago. 2025' },
-  { id: 5, name: 'Punta Cana', image: 'https://images.unsplash.com/photo-1588992639209-4458543a6288?q=80&w=2070&auto=format&fit=crop', details: 'Voo + Hospedagem', dates: '09 ago. 2025 - 16 ago. 2025' },
-  { id: 6, name: 'Orlando', image: 'https://images.unsplash.com/photo-1597466599227-9444239e7b23?q=80&w=2070&auto=format&fit=crop', details: 'Voo + Hospedagem', dates: '11 ago. 2025 - 16 ago. 2025' },
+  { id: 1, 
+    name: 'Fernando de Noronha',
+    titlePackage: 'Mergulhe nas Águas Turquesa de Fernando de Noronha', 
+    image: 'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg', 
+    galleryPackage: [
+      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
+      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
+      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
+      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
+      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
+    ],
+    detailsPackage: {
+    flight: { from: 'Aeroporto de Congonhas', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
+    hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
+  },
+    dates: '11 ago. 2025 à 16 ago. 2025',
+    pricePackage: 4686 },
+  { 
+    id: 2, 
+    name: 'Jericoacoara', 
+    titlePackage: 'Descubra as Maravilhas de Jericoacoara',
+    image: 'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
+    galleryPackage: [
+      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
+      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
+    ], 
+    detailsPackage: {
+      flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Jericoacoara', company: 'Gol', departureTime: '08:00', returnTime: '18:30' },
+      hotel: { name: 'Pousada do Norte', address: 'Rua Principal, 456 - CEP: 11111-111' }
+    },
+    dates: '09 ago. 2025 à 16 ago. 2025', 
+    pricePackage: 3648 
+  },
+  { id: 3, 
+    name: 'Porto de Galinhas', 
+    titlePackage: 'Explore as Belezas de Porto de Galinhas',
+    image: 'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg', 
+    galleryPackage: [
+      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
+      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
+      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
+      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
+      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
+    ], 
+    detailsPackage: {
+    flight: { from: 'Aeroporto de Congonhas', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
+    hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
+  },
+    dates: '11 ago. 2025 à 16 ago. 2025', 
+    pricePackage: 5186 },
+  { id: 4, 
+    name: 'Cancún', 
+    titlePackage: 'Descubra as Maravilhas de Cancún',
+    image: 'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg', 
+    galleryPackage: [
+      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
+      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
+      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
+      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
+      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
+    ],
+    detailsPackage: {
+    flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
+    hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
+  },
+    dates: '11 ago. 2025 à 16 ago. 2025',
+    pricePackage: 4686 },
+  { id: 5, 
+    name: 'Punta Cana', 
+    titlePackage: 'Descubra as Maravilhas de Punta Cana',
+    image: 'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg', 
+    galleryPackage: [
+      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
+      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
+      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
+      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
+      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
+    ],
+    detailsPackage: {
+      flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
+      hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
+    },
+    dates: '09 ago. 2025 à 16 ago. 2025',
+    pricePackage: 3648 },
+  { id: 6, 
+    name: 'Orlando',
+    titlePackage: 'Descubra as Maravilhas de Orlando',
+    image: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
+    galleryPackage: [
+      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
+      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
+      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
+      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
+      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
+    ],
+    detailsPackage: {
+      flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
+      hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
+    },
+    dates: '11 ago. 2025 à 16 ago. 2025',
+    pricePackage: 4686 },
+  {
+    id: 7, 
+    name: 'Sorocaba',
+    titlePackage: 'A oitava maravilha do mundo',
+    image: 'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
+    galleryPackage: [
+      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
+      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
+      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
+      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
+      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
+    ],
+    detailsPackage: {
+      flight: { from: 'Aeroporto de Viracopos', to: 'Aeroporto de Sorocaba', company: 'Voepass', departureTime: '10:00', returnTime: '11:00' },
+      hotel: { name: 'Hotel Ipanema', address: 'Av. Ipanema, 123 - CEP: 22222-222' }
+    },
+    dates: '11 ago. 2025 à 16 ago. 2025',
+    pricePackage: 4686
+  },
 ];
 
 // Função que simula a busca dos pacotes
@@ -38,19 +153,10 @@ export const getPackageById = (id) => {
         // Adicionando mais detalhes para a página de detalhes
         resolve({
           ...pkg,
-          title: `Mergulhe nas Águas Turquesa de ${pkg.name}`,
-          gallery: [
-            pkg.image, // Imagem principal
-            'https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=2000',
-            'https://images.unsplash.com/photo-1516733978950-9c1691238446?q=80&w=2000',
-            'https://images.unsplash.com/photo-1582719478212-c857e57693a2?q=80&w=2000',
-            'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=2000',
-          ],
-          description: {
-            flight: { from: 'Aeroporto de Congonhas', to: `Aeroporto de ${pkg.name}`, company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
-            hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
-          },
-          price: { original: 5186, current: 4686, installments: 12 }
+          title: pkg.titlePackage,
+          gallery: pkg.galleryPackage,
+          description: pkg.detailsPackage,
+          price: { original: 5186, current: pkg.pricePackage, installments: 12 }
         });
       } else {
         reject(new Error('Pacote não encontrado.'));

@@ -9,6 +9,8 @@ import { PackageDetailPage } from './pages/PackageDetailPage';
 // (Opcional) Crie um componente para a página inicial para ter uma rota de exemplo.
 function HomePage() { return <h1>Página Inicial</h1>; }
 function PacotesPage() { return <h1>Página de Pacotes</h1>; }
+function ReservasPage() { return <h1>Minhas Reservas</h1>; }
+function PerfilPage() { return <h1>Meu Perfil</h1>; }
 
 function App() {
   return (
@@ -17,9 +19,11 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<PackagesPage />} />
           <Route path="pacotes" element={<PackagesPage />} />
-          {/* 2. Adicione a rota dinâmica aqui */}
           <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
           <Route path="login" element={<LoginPage />} />
+          {/* ✅ NOVAS ROTAS */}
+          <Route path="reservas" element={<ReservasPage />} />
+          <Route path="perfil" element={<PerfilPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

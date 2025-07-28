@@ -81,3 +81,17 @@
 .registerButton:hover {
   background-color: #7142d4;
 }
+
+.profileMenu {
+  display: flex;
+  align-items: center;
+}
+
+.profileLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}

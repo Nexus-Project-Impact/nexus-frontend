@@ -1,21 +1,19 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../store/authSlice'; // Precisamos criar essa ação no slice
+import { logout } from '../../store/authSlice'; // Importe a ação de logout
+import { FaUserCircle } from 'react-icons/fa'; // Ícone de perfil
 import styles from './Header.module.css';
-import nexusLogo from '../../assets/nexus-logo.png'; // Usando o logo que já temos
+import nexusLogo from '../../assets/nexus-logo.png';
 
 export function Header({ onRegisterClick }) {
-  // Acessa o estado de autenticação do Redux
   const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Despacha a ação de logout (que vamos criar)
-    dispatch(logout());
-    // Redireciona para a página de login
-    navigate('/login');
+    dispatch(logout()); // Despacha a ação para limpar o estado
+    navigate('/login'); // Redireciona para a página de login
   };
 
   return (
@@ -34,11 +32,24 @@ export function Header({ onRegisterClick }) {
                 Pacotes
               </NavLink>
             </li>
+
+            {/* AQUI ESTÁ A LÓGICA CONDICIONAL */}
             {token ? (
-              // Links para quando o usuário ESTÁ logado
+              // Se EXISTE token, mostra a visão de "usuário logado"
               <>
                 <li>
-                  <span className={styles.welcome}>Olá, {user?.name}!</span>
+                  <NavLink
+                    to="/reservas"
+                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                  >
+                    Minhas Reservas
+                  </NavLink>
+                </li>
+                <li className={styles.profileMenu}>
+                  <NavLink to="/perfil" className={styles.profileLink}>
+                    <FaUserCircle size={24} />
+                    <span>{user?.name || 'Perfil'}</span>
+                  </NavLink>
                 </li>
                 <li>
                   <button onClick={handleLogout} className={styles.logoutButton}>
@@ -47,7 +58,7 @@ export function Header({ onRegisterClick }) {
                 </li>
               </>
             ) : (
-              // Links para quando o usuário NÃO ESTÁ logado
+              // Se NÃO EXISTE token, mostra a visão de "visitante"
               <>
                 <li>
                   <NavLink

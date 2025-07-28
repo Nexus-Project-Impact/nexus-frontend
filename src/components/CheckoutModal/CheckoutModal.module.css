@@ -1,0 +1,108 @@
+.modalOverlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; align-items: center; z-index: 3000;
+}
+
+.modalContent {
+  background: white; padding: 30px 40px; border-radius: 20px;
+  width: 90%; max-width: 800px; position: relative;
+  /* ✅ CSS PARA BARRA DE ROLAGEM */
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+}
+
+.closeButton {
+  position: absolute; top: 15px; right: 20px; background: none; border: none;
+  font-size: 2.5rem; color: #8c52ff; cursor: pointer;
+}
+
+.modalContent h2 {
+  text-align: left; margin-top: 0; margin-bottom: 20px; color: #333;
+}
+
+/* ✅ DIV DE CONTEÚDO ROLÁVEL */
+.scrollableContent {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 15px;
+  margin-right: -15px;
+}
+
+/* ✅ ESTILOS PARA OPÇÕES DE PAGAMENTO */
+.paymentOptions {
+  display: flex;
+  gap: 15px;
+  color: #888;
+  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.radioLabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.radioLabel input {
+  margin-right: 10px;
+}
+
+/* ... resto dos estilos ... */
+.formGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+  align-items: center;
+}
+
+.fullWidth { grid-column: 1 / -1; }
+
+.formGrid input, .formGrid select {
+  padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem;
+}
+
+/* ✅ ESTILOS PARA O RESUMO DO PACOTE */
+.summary {
+  grid-column: 2;
+  grid-row: 4 / span 2;
+  text-align: right;
+  padding: 15px;
+  border-left: 1px solid #eee;
+  margin-left: 15px;
+}
+
+.summary h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.summary p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.totalPrice {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px !important;
+}
+
+.buyButton {
+  grid-column: 2;
+  background-color: #ff9900; color: white; border: none; padding: 15px;
+  border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer;
+}
+
+.placeholder {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+}
