@@ -18,7 +18,7 @@ import { PackageDetailPage } from './pages/PackageDetailPage';
 function HomePage() { return <h1>Página Inicial</h1>; }
 function PacotesPage() { return <h1>Página de Pacotes</h1>; }
 function ReservasPage() { return <h1>Minhas Reservas</h1>; }
-function PerfilPage() { return <h1>Meu Perfil</h1>; }
+import PerfilPage from './pages/PerfilPage';
 
 function App() {
   return (
