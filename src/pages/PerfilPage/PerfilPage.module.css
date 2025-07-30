@@ -1,0 +1,48 @@
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #ff9900;
+}
+
+.infoBox {
+  font-size: 1.1rem;
+  line-height: 2;
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+strong {
+  color: #333;
+}
+
+.menuBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.menuButton {
+  padding: 14px 0;
+  background: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.menuButton:hover {
+  background: #e68a00;
+}

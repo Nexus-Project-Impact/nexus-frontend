@@ -35,26 +35,13 @@ export function Header({ onRegisterClick }) {
 
             {/* AQUI ESTÁ A LÓGICA CONDICIONAL */}
             {token ? (
-              // Se EXISTE token, mostra a visão de "usuário logado"
+              // Se EXISTE token, mostra só o link de perfil
               <>
-                <li>
-                  <NavLink
-                    to="/reservas"
-                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
-                  >
-                    Minhas Reservas
-                  </NavLink>
-                </li>
                 <li className={styles.profileMenu}>
                   <NavLink to="/perfil" className={styles.profileLink}>
                     <FaUserCircle size={24} />
                     <span>{user?.name || 'Perfil'}</span>
                   </NavLink>
-                </li>
-                <li>
-                  <button onClick={handleLogout} className={styles.logoutButton}>
-                    Sair
-                  </button>
                 </li>
               </>
             ) : (

@@ -3,8 +3,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/authService';
 import { saveToken } from '../utils/jwt'; // Função para salvar o token
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/authSlice';
 
 export function useLogin() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +22,8 @@ export function useLogin() {
       const data = await login(email, password);
       if (data.token) {
         saveToken(data.token); // Salva o token JWT
-        navigate('/'); // Redireciona para a página inicial
+        dispatch(setCredentials({ user: {}, token: data.token })); // user vazio por enquanto
+        navigate('/pacotes'); // Redireciona para a página de pacotes
       } else {
         setError('Usuário ou senha inválidos');
       }
