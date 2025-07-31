@@ -25,7 +25,6 @@ export default function PerfilPage() {
       <h2 className={styles.userName}>{user.name || 'Nome de Usuário'}</h2>
       <div className={styles.buttonGroup}>
         <button className={styles.menuButton} onClick={() => navigate('/reservas')}>Minhas Reservas</button>
-        <button className={styles.menuButton} onClick={() => navigate('/avaliacoes')}>Minhas Avaliações</button>
         <button className={styles.menuButton} onClick={handleLogout}>Sair</button>
       </div>
     </div>

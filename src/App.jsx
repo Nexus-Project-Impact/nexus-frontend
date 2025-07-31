@@ -17,8 +17,9 @@ import { PackageDetailPage } from './pages/PackageDetailPage';
 // (Opcional) Crie um componente para a página inicial para ter uma rota de exemplo.
 function HomePage() { return <h1>Página Inicial</h1>; }
 function PacotesPage() { return <h1>Página de Pacotes</h1>; }
-function ReservasPage() { return <h1>Minhas Reservas</h1>; }
 import PerfilPage from './pages/PerfilPage';
+import { MinhasReservas } from './pages/MinhasReservas';
+import { AddReviewPage } from './pages/AddReview';
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
           <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
           <Route path="login" element={<LoginPage />} />
           {/* ✅ NOVAS ROTAS */}
-          <Route path="reservas" element={<ReservasPage />} />
+          <Route path="reservas" element={<MinhasReservas />} />
+          <Route path="avaliar/:packageId" element={<AddReviewPage />} />
           <Route path="perfil" element={<PerfilPage />} />
         </Route>
       </Routes>
