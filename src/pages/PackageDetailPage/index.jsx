@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import packageService from '../../services/packageService';
 import { ReservationModal } from '../../components/ReservationModal';
 import { CheckoutModal } from '../../components/CheckoutModal';
+import { Reviews } from '../../components/Reviews';
 import styles from './PackageDetailPage.module.css';
 import { ptBR } from 'date-fns/locale';
 import { format } from 'date-fns';
@@ -141,6 +142,9 @@ export function PackageDetailPage() {
           </div>
         </div>
       </div>
+      
+      {/* Seção de Reviews - Logo após o grid principal */}
+      <Reviews packageId={packageId} />
     </div>
     
    <ReservationModal
