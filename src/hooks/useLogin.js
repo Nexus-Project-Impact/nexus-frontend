@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'; 
 import { setCredentials } from '../store/authSlice'; 
+import api from '../services/api'; // Ajuste o caminho conforme necessário
 
 export function useLogin() {
   const navigate = useNavigate();

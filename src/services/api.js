@@ -1,8 +1,26 @@
-// DENTRO DE: src/services/api.js
-
 import axios from 'axios';
 
-// Use "export const" para criar uma exportação nomeada chamada "api"
-export const api = axios.create({
-  baseURL: 'http://localhost:3333', // Coloque aqui a porta do seu backend
+
+const api = axios.create({
+    baseURL: 'https://localhost:7164/', 
+    headers: {
+        'Content-Type' : 'application/json'
+    }   
 });
+
+ 
+    api.interceptors.request.use(
+       
+        (config) => {
+            const token = localStorage.getItem('token');
+            if(token){
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+
+        (error) => Promise.reject(error)
+    );
+
+//  exportar o recurso
+export default api;
