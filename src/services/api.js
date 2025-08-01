@@ -1,5 +1,3 @@
-// DENTRO DE: src/services/api.js
-
 import axios from 'axios';
 
 // 1º passo: definir a URL/ENDPOIN base para integração com o backend

@@ -28,15 +28,31 @@
 
 .cardTitle {
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   font-size: 1.25rem;
   color: #333;
 }
 
-.cardInfo {
+.cardDates {
+   margin-top: 9px;
+  margin-bottom: 9px;
+}
+
+/* .cardDepartureDate {
   margin: 2px 0;
   font-size: 0.9rem;
   color: #666;
+}
+
+.cardReturnDate {
+  margin: 2px 0;
+  font-size: 0.9rem;
+  color: #666;
+} */
+
+.cardInfo {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .cardButton {

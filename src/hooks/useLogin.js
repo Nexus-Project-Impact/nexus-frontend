@@ -5,6 +5,7 @@ import { login } from '../services/authService';
 import { saveToken } from '../utils/jwt'; // Função para salvar o token
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice';
+import api from '../services/api'; // Ajuste o caminho conforme necessário
 
 export function useLogin() {
   const dispatch = useDispatch();
