@@ -32,6 +32,7 @@ export function useLogin() {
         dispatch(setCredentials({ user: fakeUser, token: fakeToken }));
         
         // Redireciona para a página de pacotes
+        //navigate('/pacotes');
         navigate('/pacotes');
 
       } else {

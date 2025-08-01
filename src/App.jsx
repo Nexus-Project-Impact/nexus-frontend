@@ -1,29 +1,53 @@
 // src/App.jsx
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// Layouts e Componentes de Rota
 import { Layout } from './components/Layout';
-import LoginPage from './pages/login';
+import { AdminLayout } from './components/AdminLayout';
+import { PrivateRoute } from './components/PrivateRoute';
+
+// Páginas
 import { PackagesPage } from './pages/PackagesPage';
 import { PackageDetailPage } from './pages/PackageDetailPage'; 
-
-// (Opcional) Crie um componente para a página inicial para ter uma rota de exemplo.
-function HomePage() { return <h1>Página Inicial</h1>; }
-function PacotesPage() { return <h1>Página de Pacotes</h1>; }
-function ReservasPage() { return <h1>Minhas Reservas</h1>; }
-function PerfilPage() { return <h1>Meu Perfil</h1>; }
+import LoginPage from './pages/login';
+import AdminLoginPage from './pages/AdminLoginPage';
+import { ProfilePage } from './pages/ProfilePage';
+import ReservasPage from './pages/ReservasPage';
+//import { AdminPackage } from './pages/AdminPackage';
+import { AdminPackage } from './pages/AdminPackage'
+import AdminPackageList from './pages/AdminPackageList';
+//function AdminPackageList() { return <h1>Lista de Pacotes (a ser construída)</h1> }
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rota pública standalone (sem layout principal) */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+
+        {/* Rotas que usam o Layout principal do cliente */}
         <Route path="/" element={<Layout />}>
+          {/* Rotas Públicas do Cliente */}
           <Route index element={<PackagesPage />} />
           <Route path="pacotes" element={<PackagesPage />} />
           <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
           <Route path="login" element={<LoginPage />} />
-          {/* ✅ NOVAS ROTAS */}
-          <Route path="reservas" element={<ReservasPage />} />
-          <Route path="perfil" element={<PerfilPage />} />
+
+          {/* Rotas Protegidas do Cliente */}
+          <Route element={<PrivateRoute />}>
+            <Route path="perfil" element={<ProfilePage />} />
+            <Route path="reservas" element={<ReservasPage />} />
+          </Route>
+        </Route>
+        
+        {/* Rotas Protegidas do Admin (usando o AdminLayout) */}
+        {/*<Route element={<PrivateRoute />}>*/}
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/pacotes" element={<AdminPackageList />} />
+            <Route path="/admin/pacotes/add" element={<AdminPackage />} />
+            {/* Outras rotas de admin viriam aqui */}
+         {/* </Route>*/}
         </Route>
       </Routes>
     </BrowserRouter>

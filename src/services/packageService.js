@@ -164,3 +164,13 @@ export const getPackageById = (id) => {
     }, 500);
   });
 };
+
+export const deletePackageById = (id) => {
+  return new Promise((resolve) => {
+    // Filtra o array, mantendo todos os pacotes EXCETO o que tem o ID correspondente
+    mockPackages = mockPackages.filter(p => p.id != id);
+    setTimeout(() => {
+      resolve({ success: true });
+    }, 300);
+  });
+};

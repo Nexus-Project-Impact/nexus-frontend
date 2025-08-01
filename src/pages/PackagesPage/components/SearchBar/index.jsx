@@ -55,7 +55,7 @@ export function SearchBar({ onSearch }) {
           </select>
         </div>
         <button type="submit" className={styles.searchButton}>
-          <FaSearch />
+          <FaSearch className="SvgSearch"/>
         </button>
       </form>
     </div>

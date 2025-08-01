@@ -6,6 +6,7 @@ export function useCheckout(packageData, travelers) {
   const [cardDetails, setCardDetails] = useState({ number: '', validity: '', name: '', cpf: '', cvv: '' });
   const [installments, setInstallments] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [boletoData, setBoletoData] = useState(null); 
 
   // useMemo otimiza os cálculos, evitando que sejam refeitos a cada renderização
   const totalPrice = useMemo(() => {
@@ -26,41 +27,39 @@ export function useCheckout(packageData, travelers) {
   }, [totalPrice]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCardDetails(prev => ({ ...prev, [name]: value }));
-  };
+  setCardDetails(prev => ({ ...prev, [e.target.name]: e.target.value }));
+};
 
+  
   const handleFinalizePurchase = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log('Finalizando compra com os seguintes dados:', {
-      packageId: packageData.id,
-      travelers,
-      payment: {
-        method: paymentMethod,
-        details: cardDetails,
-        installments,
-        total: totalPrice,
-      }
-    });
-    // Simula chamada de API de pagamento
-    setTimeout(() => {
-      alert('Compra finalizada com sucesso! (Simulação)');
-      setIsLoading(false);
-      window.location.href = '/'; // Redireciona para a home após sucesso
-    }, 1500);
+
+    // Lógica para Cartão de Crédito e Débito (simulação simples)
+    if (paymentMethod === 'credit' || paymentMethod === 'debit') {
+      console.log('Finalizando compra com cartão...');
+      setTimeout(() => {
+        alert('Compra finalizada com sucesso! (Simulação)');
+        setIsLoading(false);
+        window.location.href = '/';
+      }, 1500);
+    }
+
+    // Lógica para Boleto
+    if (paymentMethod === 'boleto') {
+      console.log('Gerando boleto...');
+      setTimeout(() => {
+        // Gera um código de barras falso
+        const fakeBarcode = '12345 67890 12345 67890 12345 67890 1 12345678901234';
+        setBoletoData({ barcode: fakeBarcode, dueDate: 'Vencimento em 3 dias úteis' });
+        setIsLoading(false);
+      }, 1500);
+    }
   };
 
   return {
-    totalPrice,
-    installmentOptions,
-    paymentMethod,
-    setPaymentMethod,
-    cardDetails,
-    handleInputChange,
-    installments,
-    setInstallments,
-    isLoading,
-    handleFinalizePurchase,
+    totalPrice, installmentOptions, paymentMethod, setPaymentMethod,
+    cardDetails, handleInputChange, installments, setInstallments,
+    isLoading, handleFinalizePurchase, boletoData 
   };
 }

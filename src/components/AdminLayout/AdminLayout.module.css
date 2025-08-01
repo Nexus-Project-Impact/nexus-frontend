@@ -1,0 +1,42 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  background-color: #6a0dad;
+  color: white;
+}
+
+.logo {
+  height: 30px;
+}
+
+.logoutButton {
+  background-color: white;
+  color: #6a0dad;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 30px;
+}
+
+.footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  color: #888;
+}

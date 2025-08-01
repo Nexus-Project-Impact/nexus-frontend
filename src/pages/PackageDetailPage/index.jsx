@@ -19,8 +19,9 @@ export function PackageDetailPage() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [reservationData, setReservationData] = useState(null);
 
-   const handleProceedToCheckout = (travelers) => {
-    setReservationData(travelers); // 3. Guarda os dados
+  const handleProceedToCheckout = (travelers) => {
+    console.log('Travelers:', travelers); // Log para depuração
+    setReservationData(travelers); // Guarda os dados
     setIsReservationModalOpen(false); // Fecha o modal de reserva
     setIsCheckoutOpen(true); // Abre o modal de checkout
   };

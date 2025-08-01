@@ -24,6 +24,11 @@
 .logo {
   height: 24px;
   opacity: 0.7;
+
+}
+
+img {
+  margin-left: 15px;
 }
 
 .links {
@@ -43,4 +48,9 @@
 
 .copyright {
   font-size: 0.9rem;
+
+}
+
+span {
+  margin-right: 15px;
 }
