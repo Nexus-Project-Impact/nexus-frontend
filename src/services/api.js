@@ -1,5 +1,4 @@
-// DENTRO DE: src/services/api.js
-
+// Axios é usada para fazer requisições HTTP (get, post, ect)
 import axios from 'axios';
 
 // 1º passo: definir a URL/ENDPOIN base para integração com o backend

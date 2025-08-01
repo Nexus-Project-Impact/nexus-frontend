@@ -1,6 +1,8 @@
 // src/App.jsx
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Layout } from './components/Layout';
 import LoginPage from './pages/LoginUser';
 import { PackagesPage } from './pages/PackagesPage';
@@ -14,7 +16,6 @@ import { PackageDetailPage } from './pages/PackageDetailPage';
 //import {LoginCollaborator} from './pages/LoginCollaborator';
 //import {RecoverPassword} from './pages/RecoverPassword';
 
-// (Opcional) Crie um componente para a página inicial para ter uma rota de exemplo.
 function HomePage() { return <h1>Página Inicial</h1>; }
 function PacotesPage() { return <h1>Página de Pacotes</h1>; }
 import PerfilPage from './pages/PerfilPage';
@@ -36,6 +37,20 @@ function App() {
           <Route path="perfil" element={<PerfilPage />} />
         </Route>
       </Routes>
+      
+      {/* Container para as notificações */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </BrowserRouter>
   );
 }

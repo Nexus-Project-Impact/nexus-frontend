@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getPackageById } from '../../services/packageService';
+import { useReview } from '../../hooks/useReview';
 import { ReviewForm } from './components/ReviewForm';
 
 export function AddReviewPage() {
   const { packageId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   
   const [packageData, setPackageData] = useState(null);
   const [rating, setRating] = useState(null);
@@ -16,6 +17,9 @@ export function AddReviewPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPackage, setIsLoadingPackage] = useState(true);
   const [error, setError] = useState('');
+
+  // Hook para gerenciar reviews
+  const { addReview, canReview } = useReview(packageId);
 
   // Dados vindos da página de reservas
   const reservationData = location.state;
@@ -43,6 +47,14 @@ export function AddReviewPage() {
     loadPackageData();
   }, [packageId, token, navigate]);
 
+  // Verificar se usuário pode avaliar (pode adicionar uma verificação adicional)
+  useEffect(() => {
+    if (!canReview && packageData && !isLoadingPackage) {
+      // Opcional: mostrar aviso se usuário não pode avaliar
+      console.log('Usuário já avaliou este pacote ou não tem permissão');
+    }
+  }, [canReview, packageData, isLoadingPackage]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -55,28 +67,28 @@ export function AddReviewPage() {
     setIsLoading(true);
     
     try {
-      // Simular envio da avaliação
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Aqui você faria a chamada real para a API
-      console.log('Avaliação enviada:', {
-        packageId,
-        reservationId: reservationData?.reservationId,
-        rating,
-        comment,
-        userName: 'Usuário Logado' // Aqui viria do Redux
+      // Usar o hook para adicionar a review
+      const result = await addReview({
+        rating: rating,
+        comment: comment,
+        reservationId: reservationData?.reservationId // Se vier de uma reserva
       });
 
-      alert('Avaliação enviada com sucesso!');
-      
-      // Voltar para as reservas ou pacotes
-      if (reservationData?.fromReservations) {
-        navigate('/reservas');
+      if (result.success) {
+        alert('Avaliação enviada com sucesso!');
+        
+        // Voltar para as reservas ou pacotes
+        if (reservationData?.fromReservations) {
+          navigate('/reservas');
+        } else {
+          navigate(`/pacotes/${packageId}`);
+        }
       } else {
-        navigate(`/pacotes/${packageId}`);
+        setError(result.error || 'Erro ao enviar avaliação. Tente novamente.');
       }
     } catch (err) {
       setError('Erro ao enviar avaliação. Tente novamente.');
+      console.error('Erro ao enviar review:', err);
     } finally {
       setIsLoading(false);
     }

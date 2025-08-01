@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { notificationService } from '../../../services/notificationService';
 
 // O hook recebe os dados como argumentos
 export function useCheckout(packageData, travelers) {
@@ -45,7 +46,7 @@ export function useCheckout(packageData, travelers) {
     });
     // Simula chamada de API de pagamento
     setTimeout(() => {
-      alert('Compra finalizada com sucesso! (Simulação)');
+      notificationService.booking.purchaseSuccess();
       setIsLoading(false);
       window.location.href = '/'; // Redireciona para a home após sucesso
     }, 1500);
