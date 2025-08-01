@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getPackageById } from '../../services/packageService';
+import packageService from '../../services/packageService';
 import { ReviewForm } from './components/ReviewForm';
+import { useErrorHandler } from '../../hooks/useErrorHandler';
 
 export function AddReviewPage() {
   const { packageId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { token } = useSelector((state) => state.auth);
+  const { handleAsync, error: hookError } = useErrorHandler();
   
   const [packageData, setPackageData] = useState(null);
   const [rating, setRating] = useState(null);
@@ -31,10 +33,10 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        const data = await getPackageById(packageId);
+        const data = await handleAsync(() => packageService.getPackageById(packageId));
         setPackageData(data);
       } catch (err) {
-        setError('Erro ao carregar dados do pacote');
+        setError(hookError || 'Erro ao carregar dados do pacote');
       } finally {
         setIsLoadingPackage(false);
       }
