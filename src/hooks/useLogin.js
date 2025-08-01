@@ -9,6 +9,7 @@ import { saveToken } from '../utils/jwt'; // função para salvar o token
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice'; // guarda os dados do usuário e o token no Redux
 import { notificationService } from '../services/notificationService';
+import api from '../services/api'; // Ajuste o caminho conforme necessário
 
 // estados das consts
 export function useLogin() {
