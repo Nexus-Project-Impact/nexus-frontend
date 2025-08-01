@@ -24,5 +24,29 @@ api.interceptors.request.use(
         (error) => Promise.reject(error)
 );
 
+// Interceptor para responses - captura erros globalmente
+api.interceptors.response.use(
+  (response) => {
+    // Log de sucesso para debug (remova em produção)
+    console.log('API Response:', response);
+    return response;
+  },
+  (error) => {
+    console.error('API Error intercepted:', error);
+    
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+      
+      // Se há erros de validação, log detalhado
+      if (error.response.data?.errors) {
+        console.error('Validation errors:', error.response.data.errors);
+      }
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 // 3° passo
 export default api;
