@@ -28,6 +28,18 @@
   cursor: pointer;
 }
 
+.logoutButton::after {
+  height: 2px;
+  background-color: #FF9900;
+  transition: width 0.3s ease;
+}
+
+.logoutButton:hover {
+  transform: translateY();
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background-color: #ead3f9;
+}
+
 .mainContent {
   flex-grow: 1;
   padding: 30px;
@@ -39,4 +51,47 @@
   background-color: #fff;
   border-top: 1px solid #ddd;
   color: #888;
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #e8c8ff;
+  font-weight: 500;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #fbfaf8;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #FF9900;
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after,
+.activeLink::after {
+  width: 100%;
+  color: #fac77b;
+}
+
+.activeLink {
+  color: #ffbc58;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice';
 import styles from './AdminLayout.module.css';
@@ -11,7 +11,7 @@ export function AdminLayout() {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/colaborador/login');
+    navigate('/admin/login');
   };
 
   return (
@@ -20,6 +20,43 @@ export function AdminLayout() {
         <Link to="/admin/pacotes">
           <img src={nexusLogo} alt="Nexus Logo" className={styles.logo} />
         </Link>
+          <nav>
+            <ul className={styles.navList}>
+              <li>
+                <NavLink 
+                  to="/admin/pacotes"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                >
+                  Pacotes
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/admin/reservas"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                >
+                  Reservas
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/admin/metricas"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                >
+                  Metricas
+                </NavLink>
+                </li>
+                <li>
+                <NavLink 
+                  to="/admin/comentarios"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                >
+                  Comentários
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+
         <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
       </header>
       <main className={styles.mainContent}>

@@ -18,16 +18,20 @@ export function AdminPackage() {
           <input id="image" name="image" type="url" value={packageData.image} onChange={handleChange} required />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="dates">Datas (ex: 10 out. 2025 à 15 out. 2025)</label>
-          <input id="dates" name="dates" type="text" value={packageData.dates} onChange={handleChange} required />
+          <label htmlFor="dates">Datas</label>
+          <input placeholder="ex: 10 out. 2025 à 15 out. 2025" id="dates" name="dates" type="text" value={packageData.dates} onChange={handleChange} required />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="price">Preço (somente números)</label>
-          <input id="price" name="price" type="number" value={packageData.price} onChange={handleChange} required />
+          <label htmlFor="price">Preço</label>
+          <input placeholder="ex: 4379.00"id="price" name="price" type="number" value={packageData.price} onChange={handleChange} required />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="details">Detalhes (Voo + Hotel)</label>
-          <textarea id="details" name="details" value={packageData.details} onChange={handleChange} rows="4" required></textarea>
+          <label htmlFor="flight">Voo</label>
+          <input placeholder="ex: Azul - Ida: 07:35 | Volta: 07:35" id="flight" name="flight" type="text" value={packageData.flight} onChange={handleChange} required />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="hotel">Hotel</label>
+          <input id="hotel" name="hotel" type="text" value={packageData.hotel} onChange={handleChange} required />
         </div>
 
         <button type="submit" className={styles.submitButton} disabled={isLoading}>

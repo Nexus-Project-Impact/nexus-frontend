@@ -53,7 +53,7 @@ export default function AdminPackageListPage() {
       )}
 
       <div className={styles.addButtonContainer}>
-        <Link to="/admin/pacotes/novo" className={styles.addButton}>
+        <Link to="/admin/pacotes/add" className={styles.addButton}>
           Adicionar pacote
         </Link>
       </div>

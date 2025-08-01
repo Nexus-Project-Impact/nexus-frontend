@@ -17,7 +17,12 @@ import ReservasPage from './pages/ReservasPage';
 //import { AdminPackage } from './pages/AdminPackage';
 import { AdminPackage } from './pages/AdminPackage'
 import AdminPackageList from './pages/AdminPackageList';
-//function AdminPackageList() { return <h1>Lista de Pacotes (a ser construída)</h1> }
+import {AdminEditPackage} from './pages/AdminEditPackage';
+
+//function AdminEditPackage() { return <h1>Edit Pacote (a ser construída)</h1>; }
+function AdminReservation() { return <h1>Reservas (a ser construída)</h1>; }
+function AdminMetrics() { return <h1>Métricas (a ser construída)</h1>; }
+function AdminComents() { return <h1>Comentários (a ser construída)</h1>; }
 
 function App() {
   return (
@@ -46,6 +51,10 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route path="/admin/pacotes" element={<AdminPackageList />} />
             <Route path="/admin/pacotes/add" element={<AdminPackage />} />
+            <Route path="/admin/pacotes/editar/:id" element={<AdminEditPackage />} />
+            <Route path="/admin/reservas" element={<AdminReservation/>} />
+            <Route path="/admin/metricas" element={<AdminMetrics/>} />
+            <Route path="/admin/comentarios" element={<AdminComents />} />
             {/* Outras rotas de admin viriam aqui */}
          {/* </Route>*/}
         </Route>

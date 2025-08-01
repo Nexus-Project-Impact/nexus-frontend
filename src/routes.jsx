@@ -28,8 +28,8 @@ export default function AppRoutes(){
                                   {/*rotas protegidas*/}
             <PrivateRoute>
                 <Route path="/admin/pacotes" element={<AdminPackageListPage />} />
-                    <Route path="/admin/pacotes/novo" element={<AdminAddPackagePage />} />
-                <Route path="/colaborador/login" element={<AdminLoginPage />} />
+                    <Route path="/admin/pacotes/add" element={<AdminAddPackagePage />} />
+                <Route path="/admin/login" element={<AdminLoginPage />} />
             </PrivateRoute>
         </Route>
     </Routes>
