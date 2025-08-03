@@ -5,12 +5,15 @@ import packageService from '../../services/packageService';
 import { useReview } from '../../hooks/useReview';
 import { notificationService } from '../../services/notificationService';
 import { ReviewForm } from './components';
+import { useErrorHandler } from '../../hooks/useErrorHandler';
 
 export function AddReviewPage() {
   const { packageId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { token, user } = useSelector((state) => state.auth);
+
+  const { token } = useSelector((state) => state.auth);
+  const { handleAsync, error: hookError } = useErrorHandler();
   
   const [packageData, setPackageData] = useState(null);
   const [rating, setRating] = useState(null);
@@ -36,10 +39,10 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        const data = await packageService.getPackageById(packageId);
+        const data = await handleAsync(() => packageService.getPackageById(packageId));
         setPackageData(data);
       } catch (err) {
-        setError('Erro ao carregar dados do pacote');
+        setError(hookError || 'Erro ao carregar dados do pacote');
       } finally {
         setIsLoadingPackage(false);
       }

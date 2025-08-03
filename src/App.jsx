@@ -3,18 +3,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorFallback } from './components/ErrorFallback';
 import { Layout } from './components/Layout';
 import LoginPage from './pages/LoginUser';
 import { PackagesPage } from './pages/PackagesPage';
 import { PackageDetailPage } from './pages/PackageDetailPage'; 
-//import {AddPackages} from './pages/AddPackages';
-//import { AddReviewPage } from './pages/AddReview';
-//import {CollaboratorMetrics} from './pages/CollaboratorPackages';
-//import {CollaboratorRevervations} from './pages/CollaboratorRevervations';
-//import {CollaboratorRevervationsView} from './pages/CollaboratorRevervationsViews';
-//import {EditPackage} from './pages/EditPackage';
-//import {LoginCollaborator} from './pages/LoginCollaborator';
-//import {RecoverPassword} from './pages/RecoverPassword';
+
 
 function HomePage() { return <h1>Página Inicial</h1>; }
 function PacotesPage() { return <h1>Página de Pacotes</h1>; }
@@ -24,21 +20,30 @@ import { AddReviewPage } from './pages/AddReview';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<PackagesPage />} />
-          <Route path="pacotes" element={<PackagesPage />} />
-          <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
-          <Route path="login" element={<LoginPage />} />
-          {/* ✅ NOVAS ROTAS */}
-          <Route path="reservas" element={<MinhasReservas />} />
-          <Route path="avaliar/:packageId" element={<AddReviewPage />} />
-          <Route path="perfil" element={<PerfilPage />} />
-        </Route>
-      </Routes>
-      
-      {/* Container para as notificações */}
+
+    <ErrorBoundary 
+      FallbackComponent={ErrorFallback}
+      onError={(error, errorInfo) => {
+        console.error('Error caught by boundary:', error, errorInfo);
+        // Aqui você pode enviar o erro para um serviço de monitoramento
+        // como Sentry, LogRocket, etc.
+      }}
+    >
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<PackagesPage />} />
+            <Route path="pacotes" element={<PackagesPage />} />
+            <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
+            <Route path="login" element={<LoginPage />} />
+            {/* ✅ NOVAS ROTAS */}
+            <Route path="reservas" element={<MinhasReservas />} />
+            <Route path="avaliar/:packageId" element={<AddReviewPage />} />
+            <Route path="perfil" element={<PerfilPage />} />
+          </Route>
+        </Routes>
+                     
+         {/* Container para as notificações */}
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -51,7 +56,9 @@ function App() {
         pauseOnHover
         theme="light"
       />
-    </BrowserRouter>
+                     
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 

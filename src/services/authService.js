@@ -25,9 +25,28 @@ export function logout() {
   localStorage.removeItem('token');
 }
 
-// função para cadastrar novo usuário, ela envia do dados para a API
-// e espera uma resposta
+
 export async function register(name, email, password, phone, cpf) {
-  const response = await api.post('/Auth/register', { name, email, password, phone, cpf });
-  return response.data;
+  try {
+    const response = await api.post('/Auth/register', { name, email, password, phone, cpf });
+    console.log('Sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro no registro:', error);
+    
+    // Log detalhado do erro
+    if (error.response) {
+      console.log(error.response.data);
+      console.error('Status:', error.response.status);
+      console.error('Data:', error.response.data);
+      console.error('Headers:', error.response.headers);
+      
+      // Se o backend retorna lista de erros
+      if (error.response.data && error.response.data.errors) {
+        console.error('Lista de erros:', error.response.data.errors);
+      }
+    }
+    
+    throw error; // Re-throw para que o componente possa tratar
+  }
 }

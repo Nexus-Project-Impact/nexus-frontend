@@ -25,26 +25,28 @@ api.interceptors.request.use(
         (error) => Promise.reject(error)
 );
 
-// Interceptor de resposta para capturar erros
+// Interceptor para responses - captura erros globalmente
 api.interceptors.response.use(
-    (response) => {
-        console.log('✅ Resposta da API:', response.config.url, response.status);
-        return response;
-    },
-    (error) => {
-        console.error('❌ Erro na resposta da API:', error.config?.url, error.response?.status);
-        console.error('Detalhes do erro:', error.response?.data);
-        
-        // Se erro 401, token pode ter expirado
-        if (error.response?.status === 401) {
-            console.warn('🔐 Token possivelmente expirado - erro 401');
-            // Opcional: remover token inválido
-            // localStorage.removeItem('token');
-            // localStorage.removeItem('user');
-        }
-        
-        return Promise.reject(error);
+  (response) => {
+    // Log de sucesso para debug (remova em produção)
+    console.log('API Response:', response);
+    return response;
+  },
+  (error) => {
+    console.error('API Error intercepted:', error);
+    
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+      
+      // Se há erros de validação, log detalhado
+      if (error.response.data?.errors) {
+        console.error('Validation errors:', error.response.data.errors);
+      }
     }
+    
+    return Promise.reject(error);
+  }
 );
 
 // 3° passo
