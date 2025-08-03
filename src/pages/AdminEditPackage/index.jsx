@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { usePackageEdit } from './hooks/usePackageEdit.js';
+import { usePackageEdit } from '../../hooks/usePackageEdit';
 import styles from './AdminEditPackage.module.css';
+import { Link } from 'react-router-dom';
 
 export function AdminEditPackage() {
   const { id } = useParams();
@@ -25,6 +26,7 @@ export function AdminEditPackage() {
   };
 
   return (
+  <div className={styles.detailsContainer}>
     <div className={styles.pageContainer}>
       
       <h2>Editar Pacote</h2>
@@ -104,6 +106,12 @@ export function AdminEditPackage() {
           {isLoading ? 'Salvando...' : 'Salvar Pacote'}
         </button>
       </form>
+    </div>
+          <div className={styles.buttonContainer}>
+        <Link to="/admin/pacotes" className={styles.actionLink}>
+          Voltar para Pacotes
+        </Link>
+      </div>
     </div>
   );
 }

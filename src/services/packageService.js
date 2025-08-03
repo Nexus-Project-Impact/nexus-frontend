@@ -1,5 +1,5 @@
 // Mock (dados de mentira) para nossos pacotes
-const mockPackages = [
+let mockPackages = [
   { id: 1, 
     name: 'Fernando de Noronha',
     titlePackage: 'Mergulhe nas Águas Turquesa de Fernando de Noronha', 

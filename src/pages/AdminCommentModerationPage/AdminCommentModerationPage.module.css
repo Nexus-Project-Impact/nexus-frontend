@@ -1,0 +1,9 @@
+.container {
+  width: 100%;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  color: #FF9900;
+}

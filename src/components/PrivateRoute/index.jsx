@@ -8,5 +8,5 @@ export function PrivateRoute() {
 
   // Se o token existe, renderiza o componente filho (a página protegida)
   // Se não, redireciona para a página de login
-  return token ? <Outlet /> : <Navigate to="/login" />;
+  return token ? <Outlet /> : <Navigate to="/reservas" />;
 }

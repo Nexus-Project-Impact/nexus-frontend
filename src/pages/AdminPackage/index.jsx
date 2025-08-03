@@ -1,11 +1,13 @@
 import React from 'react';
-import { usePackage } from './hooks/usePackage.js';
+import { usePackage } from '../../hooks/usePackage';
 import styles from './AdminPackage.module.css';
+import { Link } from 'react-router-dom';
 
 export function AdminPackage() {
   const { packageData, isLoading, handleChange, handleSubmit } = usePackage();
 
   return (
+  <div className={styles.detailsContainer}>
     <div className={styles.pageContainer}>
       <h2>Adicionar Novo Pacote</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -39,5 +41,11 @@ export function AdminPackage() {
         </button>
       </form>
     </div>
+    <div className={styles.buttonContainer}>
+      <Link to="/admin/pacotes" className={styles.actionLink}>
+        Voltar para Pacotes
+      </Link>
+    </div>
+  </div>
   );
 }

@@ -34,6 +34,10 @@
   border-radius: 8px;
   font-size: 1.5rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
   
 }
 
@@ -43,11 +47,17 @@
 }
 
 .addButton {
-  background-color: #8c52ff;
-  color: white;
+  background-color: none;
+  color: #8c52ff;
+  border: #8c52ff solid 1px;
   padding: 15px 40px;
   border-radius: 10px;
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: bold;
+}
+
+.addButton:hover {
+  background-color: #8c52ff;
+  color:#fff;
 }

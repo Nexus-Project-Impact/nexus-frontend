@@ -1,36 +1,61 @@
 import { Routes, Route } from 'react-router-dom';
-// recursos de componente
-import Layout from './components/Layout';
-import PrivateRoute from './components/PrivateRoute';
-// recursos de páginas de cliente
-import Home from './pages/Home';
+
+// Layouts e Componentes de Rota
+import { Layout } from './components/Layout';
+import { AdminLayout } from './components/AdminLayout';
+import { PrivateRoute } from './components/PrivateRoute/index.jsx';
+
+// Páginas
+import { PackagesPage } from './pages/PackagesPage';
+import { PackageDetailPage } from './pages/PackageDetailPage'; 
 import LoginPage from './pages/login';
-import PackagePage from './pages/PackagePage';
-import PackageDetailPage from './pages/PackageDetailPage';
-import ProfilePage from './pages/ProfilePage';
-import ReservasPage from './pages/ReservasPage';
-// recursos páginas de admin
 import AdminLoginPage from './pages/AdminLoginPage';
-import AdminPackage from './pages/AdminPackage';
+import { ProfilePage } from './pages/ProfilePage';
+import ReservasPage from './pages/ReservasPage';
+import { AdminPackage } from './pages/AdminPackage'
+import AdminPackageList from './pages/AdminPackageList';
+import {AdminEditPackage} from './pages/AdminEditPackage';
+import { AdminReservation } from './pages/AdminReservation';
+import { AdminReservationDetails } from './pages/AdminReservationDetails';
+import AdminCommentModerationPage from './pages/AdminCommentModerationPage';
+import AdminMetricsPage from './pages/AdminMetricsPage';
+
+// Componentes temporários para páginas não implementadas
+//function AdminMetrics() { return <h1>Métricas (a ser construída)</h1>; }
 
 export default function AppRoutes(){
     return(
     <Routes>    
+        {/* Rota pública standalone (sem layout principal) */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+
+        {/* Rotas que usam o Layout principal do cliente */}
         <Route path='/' element={<Layout/>}>
-
+            {/* Rotas Públicas do Cliente */}
             <Route index element={<PackagesPage/>}/>
-                <Route path="pacotes" element={<PackagesPage />} />
-                    <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
-                        <Route path="login" element={<LoginPage />} />
-                        <Route path="reservas" element={<ReservasPage />} />
-                            <Route path="perfil" element={<PerfilPage />} />
+            <Route path="pacotes" element={<PackagesPage />} />
+            <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
+            <Route path="login" element={<LoginPage />} />
 
-                                  {/*rotas protegidas*/}
-            <PrivateRoute>
-                <Route path="/admin/pacotes" element={<AdminPackageListPage />} />
-                    <Route path="/admin/pacotes/add" element={<AdminAddPackagePage />} />
-                <Route path="/admin/login" element={<AdminLoginPage />} />
-            </PrivateRoute>
+            {/* Rotas Protegidas do Cliente */}
+            <Route element={<PrivateRoute />}>
+                <Route path="perfil" element={<ProfilePage />} />
+                <Route path="reservas" element={<ReservasPage />} />
+            </Route>
+        </Route>
+
+        {/* Rotas Protegidas do Admin (usando o AdminLayout) */}
+        {/*<Route element={<PrivateRoute />}>*/}
+        <Route element={<AdminLayout />}>
+            <Route path="/admin/pacotes" element={<AdminPackageList />} />
+            <Route path="/admin/pacotes/add" element={<AdminPackage />} />
+            <Route path="/admin/pacotes/editar/:id" element={<AdminEditPackage />} />
+            <Route path="/admin/reservas" element={<AdminReservation/>} />
+            <Route path="/admin/reservas/visualizar/:id" element={<AdminReservationDetails/>} />
+            <Route path="/admin/comentarios" element={<AdminCommentModerationPage />} />
+            <Route path="/admin/metricas" element={<AdminMetricsPage />} />
+            {/* Outras rotas de admin viriam aqui */}
+        {/* </Route>*/}
         </Route>
     </Routes>
     );

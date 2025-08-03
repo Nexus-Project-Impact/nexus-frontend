@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useForgotPassword } from './hooks/useForgotPassword';
+import { useForgotPassword } from '../../hooks/useForgotPassword';
 import styles from './ForgotPasswordModal.module.css';
-import nexusLogo from '../../assets/nexus-logo.png'; // Reutilizando o logo
+import nexusLogo from '../../assets/nexus-logo-white.png'; // Reutilizando o logo
 
 export function ForgotPasswordModal({ isOpen, onClose }) {
   const { 

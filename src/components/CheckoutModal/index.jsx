@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCheckout } from './hooks/useCheckout';
+import { useCheckout } from '../../hooks/useCheckout';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import styles from './CheckoutModal.module.css';
@@ -10,7 +10,7 @@ export function CheckoutModal({ isOpen, onClose, packageData, travelers }) {
   const {
     totalPrice, installmentOptions, paymentMethod, setPaymentMethod,
     cardDetails, handleInputChange, installments, setInstallments,
-    isLoading, handleFinalizePurchase, boletoData
+    isLoading, handleFinalizePurchase, boletoData, pixData
   } = useCheckout(packageData, travelers);
 
 const [copyText, setCopyText] = useState('Copiar código');
@@ -18,8 +18,15 @@ const [copyText, setCopyText] = useState('Copiar código');
   if (!isOpen || !packageData || !travelers) return null;
 
   const handleCopy = () => {
+    let textToCopy = '';
     if (boletoData?.barcode) {
-      navigator.clipboard.writeText(boletoData.barcode);
+      textToCopy = boletoData.barcode;
+    } else if (pixData?.qrCode) {
+      textToCopy = pixData.qrCode;
+    }
+    
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy);
       setCopyText('Copiado!');
       setTimeout(() => setCopyText('Copiar código'), 2000);
     }
@@ -46,9 +53,11 @@ const [copyText, setCopyText] = useState('Copiar código');
               <input type="radio" name="paymentMethod" value="boleto" checked={paymentMethod === 'boleto'} onChange={(e) => setPaymentMethod(e.target.value)} />
               <span>Boleto</span>
             </label>
+            <label className={styles.radioLabel}>
+              <input type="radio" name="paymentMethod" value="pix" checked={paymentMethod === 'pix'} onChange={(e) => setPaymentMethod(e.target.value)} />
+              <span>Pix</span>
+            </label>
           </div>
-
-          {/* --- Renderização Condicional do Conteúdo --- */}
 
           {paymentMethod === 'credit' && (
             <form className={styles.formGrid} onSubmit={handleFinalizePurchase}>
@@ -76,7 +85,6 @@ const [copyText, setCopyText] = useState('Copiar código');
             </form>
           )}
 
-          {/* ✅ NOVA SEÇÃO PARA CARTÃO DE DÉBITO */}
           {paymentMethod === 'debit' && (
             <form className={styles.formGrid} onSubmit={handleFinalizePurchase}>
               <input name="number" placeholder="Número do cartão de débito" onChange={handleInputChange} className={styles.fullWidth} required />
@@ -125,6 +133,40 @@ const [copyText, setCopyText] = useState('Copiar código');
                   </button>
                 </div>
                 <p className={styles.dueDate}>{boletoData.dueDate}</p>
+                <button onClick={onClose} className={styles.buyButton}>
+                  Concluir
+                </button>
+              </div>
+            )
+          )}
+          {paymentMethod === 'pix' && (
+            // Se o PIX AINDA NÃO foi gerado, mostra a tela de confirmação
+            !pixData ? (
+              <form className={styles.pixConfirmation} onSubmit={handleFinalizePurchase}>
+                <h3>Pagamento com Pix</h3>
+                <div className={styles.summary}>
+                  <h4>{packageData.name}</h4>
+                  <p>{travelers.length} viajante(s)</p>
+                  <p className={styles.totalPrice}>R$ {totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                </div>
+                <button type="submit" className={styles.buyButton} disabled={isLoading}>
+                  {isLoading ? 'Gerando...' : 'Gerar Pix'}
+                </button>
+              </form>
+            ) : (
+              // Se o PIX JÁ FOI gerado, mostra os dados dele
+              <div className={styles.pixGenerated}>
+                <h3>Pix Gerado com Sucesso!</h3>
+                <p>Use o código PIX abaixo para pagar no seu app do banco ou PIX.</p>
+                <div className={styles.barcodeWrapper}>
+                  <input type="text" readOnly value={pixData.qrCode} className={styles.barcodeInput} />
+                  <button type="button" onClick={handleCopy} className={styles.copyButton}>
+                    {copyText}
+                  </button>
+                </div>
+                <p className={styles.dueDate}>
+                  {pixData.dueDate} (expira às {pixData.expiryTime})
+                </p>
                 <button onClick={onClose} className={styles.buyButton}>
                   Concluir
                 </button>

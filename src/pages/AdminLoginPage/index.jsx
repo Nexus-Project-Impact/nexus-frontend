@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAdminLogin } from './hooks/useAdminLogin';
+import { useAdminLogin } from '../../hooks/useAdminLogin';
 import styles from './AdminLoginPage.module.css';
 import adminLogo from '../../assets/nexus-logo.png'; // Crie ou use um logo
 import nexusIcon from '../../assets/logo-pequeno.png'; // Ícone do footer
@@ -37,7 +37,7 @@ export default function AdminLoginPage() {
         </form>
       </div>
       <footer className={styles.footer}>
-        <img src={nexusIcon} alt="Nexus" />
+        <img src={nexusIcon} alt="Nexus" style={{ marginLeft: '15px' }} />
         <div className={styles.footerLinks}>
           <a href="#">Privacidade</a>
           <a href="#">Termos e Condições</a>

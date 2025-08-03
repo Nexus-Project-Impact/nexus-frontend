@@ -3,7 +3,7 @@ import { NavLink, Outlet, Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice';
 import styles from './AdminLayout.module.css';
-import nexusLogo from '../../assets/logo-white.png'; // Reutilizando o logo pequeno
+import nexusLogo from '../../assets/nexus-logo-white.png'; // Reutilizando o logo pequeno
 
 export function AdminLayout() {
   const dispatch = useDispatch();
@@ -38,14 +38,6 @@ export function AdminLayout() {
                   Reservas
                 </NavLink>
               </li>
-              <li>
-                <NavLink 
-                  to="/admin/metricas"
-                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
-                >
-                  Metricas
-                </NavLink>
-                </li>
                 <li>
                 <NavLink 
                   to="/admin/comentarios"
@@ -54,6 +46,14 @@ export function AdminLayout() {
                   Comentários
                 </NavLink>
               </li>
+              <li>
+                <NavLink 
+                  to="/admin/metricas"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                >
+                  Metricas
+                </NavLink>
+                </li>
             </ul>
           </nav>
 
