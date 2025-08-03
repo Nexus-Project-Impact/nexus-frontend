@@ -27,10 +27,24 @@ export function useLogin() {
     try {
       // chamada à API
       const data = await login(email, password);
+      console.log('Dados recebidos no login:', data); // Debug
+      
       if (data.token) {
         saveToken(data.token); // Salva o token JWT
-        dispatch(setCredentials({ user: {}, token: data.token })); // user vazio por enquanto
-        notificationService.auth.loginSuccess(email.split('@')[0]); // Pega parte antes do @ como nome
+        
+        // Criar objeto do usuário com os dados disponíveis
+        // Tenta diferentes estruturas de resposta do backend
+        const user = {
+          id: data.user?.id || data.userId || data.id || null,
+          name: data.user?.name || data.userName || data.name || data.user?.userName || email.split('@')[0],
+          email: data.user?.email || data.userEmail || data.email || email,
+          role: data.user?.role || data.userRole || data.role || 'user'
+        };
+        
+        console.log('Objeto usuário criado:', user); // Debug
+        
+        dispatch(setCredentials({ user, token: data.token })); // envia dados completos do usuário
+        notificationService.auth.loginSuccess(user.name); // usa o nome real do usuário
         navigate('/pacotes'); // Redireciona para a página de pacotes
       } else {
         setError('Usuário ou senha inválidos');

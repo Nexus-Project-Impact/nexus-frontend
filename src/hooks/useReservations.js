@@ -20,9 +20,7 @@ export const useUserReservations = () => {
       setIsLoading(true);
       setError(null);
       
-      console.log('Tentando carregar reservas do usuário:', user.id);
       const data = await reservationService.getUserReservations();
-      console.log('Reservas carregadas do backend:', data);
       
       // Processar os dados para garantir que tenham a estrutura esperada
       const processedReservations = data.map(reservation => ({

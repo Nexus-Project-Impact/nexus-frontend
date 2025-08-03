@@ -7,6 +7,8 @@ export async function login(email, password) {
   try {
     // aqui estamos chamando o método post Auth/login, da nossa api que contem a logica para logar
     const response = await api.post('/Auth/login', { email, password });
+    console.log('Resposta completa do login:', response.data); // Debug para ver a estrutura da resposta
+    
     const { token } = response.data; // armazenamos essa response no token
     if (token) { // se o login foi bem-sucedido ele guarda esse token no localStorage
       localStorage.setItem('token', token);

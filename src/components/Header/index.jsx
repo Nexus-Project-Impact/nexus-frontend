@@ -44,7 +44,7 @@ export function Header({ onRegisterClick }) {
                 <li className={styles.profileMenu}>
                   <NavLink to="/perfil" className={styles.profileLink}>
                     <FaUserCircle size={24} />
-                    <span>{user?.name || 'Perfil'}</span>
+                    <span>Perfil</span>
                   </NavLink>
                 </li>
               </>
