@@ -107,20 +107,8 @@ export function useRegister() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault(); // impedir da página recarregar
+    e.preventDefault();
     setIsLoading(true);
-
-    setError(''); // limpa os erros
-    setSuccess(false); 
-    try {
-      const data = await register(name, email, password, phone, cpf);
-      setSuccess(true); // Cadastro realizado com sucesso
-      notificationService.auth.registerSuccess();
-      // Você pode redirecionar ou fechar o modal aqui
-    } catch (err) {
-      setError('Erro ao cadastrar usuário');
-      notificationService.auth.registerError();
-
     setError('');
     setSuccess(false);
     
@@ -145,6 +133,7 @@ export function useRegister() {
       
       const data = await register(name, email, password, cleanPhone, cleanCpf);
       setSuccess(true);
+      notificationService.auth.registerSuccess();
       
       // Limpar formulário após sucesso
       setName('');
@@ -192,6 +181,7 @@ export function useRegister() {
       }
       
       setError(errorMessage);
+      notificationService.auth.registerError();
     } finally {
       setIsLoading(false);
     }
