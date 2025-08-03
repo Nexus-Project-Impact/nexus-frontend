@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { register } from '../services/authService';
+import { notificationService } from '../services/notificationService';
 import { validateCpf as isValidCpf, validateEmail as isValidEmail, validatePhone as isValidPhone } from '../utils/formatters';
 
 export function useRegister() {
@@ -106,8 +107,20 @@ export function useRegister() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // impedir da página recarregar
     setIsLoading(true);
+
+    setError(''); // limpa os erros
+    setSuccess(false); 
+    try {
+      const data = await register(name, email, password, phone, cpf);
+      setSuccess(true); // Cadastro realizado com sucesso
+      notificationService.auth.registerSuccess();
+      // Você pode redirecionar ou fechar o modal aqui
+    } catch (err) {
+      setError('Erro ao cadastrar usuário');
+      notificationService.auth.registerError();
+
     setError('');
     setSuccess(false);
     

@@ -5,6 +5,7 @@ import packageService from '../../services/packageService';
 import { ReservationModal } from '../../components/ReservationModal';
 import { CheckoutModal } from '../../components/CheckoutModal';
 import { Reviews } from '../../components/Reviews';
+import { notificationService } from '../../services/notificationService';
 import styles from './PackageDetailPage.module.css';
 import { ptBR } from 'date-fns/locale';
 import { format } from 'date-fns';
@@ -53,8 +54,12 @@ export function PackageDetailPage() {
 
   const handleBuyClick = () => {
     if (!token) {
-      // Se não estiver logado, redireciona para o login
-      navigate('/login');
+      // Mostra notificação antes de redirecionar para o login
+      notificationService.booking.purchaseLoginRequired();
+      // Aguarda um pouco para a notificação aparecer antes do redirecionamento
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
     } else {
       // Se estiver logado, abre o modal
       setIsReservationModalOpen(true);

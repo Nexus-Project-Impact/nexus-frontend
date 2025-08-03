@@ -1,8 +1,9 @@
+// Axios é usada para fazer requisições HTTP (get, post, ect)
 import axios from 'axios';
 
 // 1º passo: definir a URL/ENDPOIN base para integração com o backend
 export const api = axios.create({
-  baseURL: 'http://localhost:5235', // Coloque aqui a porta do seu backend
+  baseURL: 'https://localhost:7164', // Coloque aqui a porta do seu backend
 
   headers: {
         'Content-Type' : 'application/json'
@@ -16,7 +17,7 @@ api.interceptors.request.use(
         (config) => {
             const token = localStorage.getItem('token');
             if(token){
-                config.headers.Authorization = ` Bearer ${token}`;
+                config.headers.Authorization = `Bearer ${token}`;
             }
             return config;
         },

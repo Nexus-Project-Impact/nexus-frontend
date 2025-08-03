@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice'; // Importe a ação de logout
 import { FaUserCircle } from 'react-icons/fa'; // Ícone de perfil
+import { notificationService } from '../../services/notificationService';
 import styles from './Header.module.css';
 import nexusLogo from '../../assets/nexus-logo.png';
 
@@ -12,8 +13,11 @@ export function Header({ onRegisterClick }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    notificationService.auth.logoutSuccess();
     dispatch(logout()); // Despacha a ação para limpar o estado
-    navigate('/login'); // Redireciona para a página de login
+    setTimeout(() => {
+      navigate('/login'); // Redireciona para a página de login
+    }, 1000);
   };
 
   return (
@@ -40,7 +44,7 @@ export function Header({ onRegisterClick }) {
                 <li className={styles.profileMenu}>
                   <NavLink to="/perfil" className={styles.profileLink}>
                     <FaUserCircle size={24} />
-                    <span>{user?.name || 'Perfil'}</span>
+                    <span>Perfil</span>
                   </NavLink>
                 </li>
               </>
