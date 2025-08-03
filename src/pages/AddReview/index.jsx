@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getPackageById } from '../../services/packageService';
+import packageService from '../../services/packageService';
 import { useReview } from '../../hooks/useReview';
-import { ReviewForm } from './components/ReviewForm';
+import { notificationService } from '../../services/notificationService';
+import { ReviewForm } from './components';
 
 export function AddReviewPage() {
   const { packageId } = useParams();
@@ -35,7 +36,7 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        const data = await getPackageById(packageId);
+        const data = await packageService.getPackageById(packageId);
         setPackageData(data);
       } catch (err) {
         setError('Erro ao carregar dados do pacote');
@@ -75,7 +76,14 @@ export function AddReviewPage() {
       });
 
       if (result.success) {
-        alert('Avaliação enviada com sucesso!');
+        // Notificar sucesso
+        notificationService.review.createSuccess();
+        
+        // Se veio de reservas, atualizar o estado da reserva
+        if (reservationData?.fromReservations && reservationData?.reservationId) {
+          // Aqui poderia chamar uma função para atualizar o estado da reserva
+          // markAsReviewed(reservationData.reservationId);
+        }
         
         // Voltar para as reservas ou pacotes
         if (reservationData?.fromReservations) {

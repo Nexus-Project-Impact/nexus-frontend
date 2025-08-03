@@ -20,6 +20,32 @@
   color: #666;
 }
 
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  color: #dc3545;
+}
+
+.error p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.retryButton {
+  padding: 12px 25px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.retryButton:hover {
+  background: #0056b3;
+}
+
 .emptyState {
   text-align: center;
   padding: 80px 20px;
@@ -150,6 +176,36 @@
   font-weight: 600;
   font-size: 0.9rem;
   border: 1px solid #c3e6cb;
+}
+
+.statusBadge {
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 140px;
+  text-align: center;
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.statusBadge.confirmed {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border-color: #c8e6c9;
+}
+
+.statusBadge.finished {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border-color: #e1bee7;
+}
+
+.statusBadge.cancelled {
+  background: #ffebee;
+  color: #c62828;
+  border-color: #ffcdd2;
 }
 
 /* Responsividade */

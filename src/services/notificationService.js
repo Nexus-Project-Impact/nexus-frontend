@@ -151,8 +151,8 @@ export const notificationService = {
       });
     },
     
-    createError: () => {
-      toast.error("Erro ao enviar avaliação. Tente novamente.", {
+    createError: (message) => {
+      toast.error(message || "Erro ao enviar avaliação. Tente novamente.", {
         position: "top-right",
         autoClose: 4000,
       });
