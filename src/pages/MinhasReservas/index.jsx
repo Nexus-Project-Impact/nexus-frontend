@@ -13,16 +13,28 @@ export function MinhasReservas() {
     isLoading, 
     error, 
     markAsReviewed, 
-    canReviewReservation 
+    canReviewReservation,
+    loadReservations // Adicionando loadReservations para poder forçar reload
   } = useUserReservations();
 
   useEffect(() => {
+    console.log('🏠 MinhasReservas montado');
+    console.log('Token presente:', !!token);
+    console.log('User:', user);
+    
     // Verificar se está logado
     if (!token) {
+      console.log('❌ Token ausente, redirecionando para login');
       navigate('/login');
       return;
     }
-  }, [token, navigate]);
+    
+    // Forçar carregamento das reservas se não há reservas e não está carregando
+    if (!isLoading && reservations.length === 0 && !error) {
+      console.log('🔄 Forçando reload das reservas');
+      loadReservations?.();
+    }
+  }, [token, navigate, isLoading, reservations.length, error, loadReservations]);
 
   const handleReviewClick = async (reservationId, packageId) => {
     try {
@@ -91,6 +103,7 @@ export function MinhasReservas() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Minhas Reservas</h1>
+      
 
       {reservations.length === 0 ? (
         <div className={styles.emptyState}>
@@ -116,25 +129,18 @@ export function MinhasReservas() {
                     <p className={styles.packageDates}>{reservation.dates}</p>
                   </div>
                   <div className={styles.cardActions}>
-                    {reservation.status === 'finalizada' && !reservation.hasReview ? (
+                    {/* Prioriza mostrar opção de avaliação se não foi avaliado ainda */}
+                    {!reservation.hasReview ? (
                       <button 
                         className={styles.reviewButton}
                         onClick={() => handleReviewClick(reservation.id, reservation.packageId)}
                       >
-                        Avaliar Viagem
+                        Avaliar Pacote
                       </button>
-                    ) : reservation.hasReview ? (
+                    ) : (
                       <button className={styles.reviewedButton}>
                         ✓ Avaliado
                       </button>
-                    ) : reservation.status === 'confirmada' ? (
-                      <span className={styles.statusBadge}>
-                        Viagem Confirmada
-                      </span>
-                    ) : (
-                      <span className={`${styles.statusBadge} ${styles[getStatusDisplay(reservation.status).class]}`}>
-                        {getStatusDisplay(reservation.status).text}
-                      </span>
                     )}
                   </div>
                 </div>
