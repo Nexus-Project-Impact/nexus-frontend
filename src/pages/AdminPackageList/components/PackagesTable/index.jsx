@@ -20,12 +20,16 @@ export function PackagesTable({ packages, onDelete }) {
       <tbody>
         {packages.map((pkg) => (
           <tr key={pkg.id}>
-            <td>{pkg.id}</td>
-            <td>{pkg.name}</td>
-            <td>{pkg.dates}</td>
-            <td>{pkg.detailsPackage.flight.company} - Ida: {pkg.detailsPackage.flight.departureTime} | Volta: {pkg.detailsPackage.flight.returnTime}</td>
-            <td>{pkg.detailsPackage.hotel.name}</td>
-            <td>R$ {pkg.pricePackage.toLocaleString('pt-BR')}</td>
+            <td>{pkg.id || 'N/A'}</td>
+            <td>{pkg.name || 'N/A'}</td>
+            <td>{pkg.dates || 'N/A'}</td>
+            <td>
+              {pkg.detailsPackage?.flight?.company || 'N/A'} - 
+              Ida: {pkg.detailsPackage?.flight?.departureTime || 'N/A'} | 
+              Volta: {pkg.detailsPackage?.flight?.returnTime || 'N/A'}
+            </td>
+            <td>{pkg.detailsPackage?.hotel?.name || 'N/A'}</td>
+            <td>R$ {pkg.pricePackage ? pkg.pricePackage.toLocaleString('pt-BR') : '0'}</td>
             <td className={styles.actions}>
               <Link to={`/admin/pacotes/editar/${pkg.id}`} className={styles.actionLink}>Editar</Link>
               <button onClick={() => onDelete(pkg.id)} className={`${styles.actionLink} ${styles.deleteButton}`}>Excluir</button>
