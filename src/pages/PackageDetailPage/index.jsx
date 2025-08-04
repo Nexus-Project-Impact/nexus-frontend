@@ -5,7 +5,7 @@ import packageService from '../../services/packageService';
 import { ReservationModal } from '../../components/ReservationModal';
 import { CheckoutModal } from '../../components/CheckoutModal';
 import { Reviews } from '../../components/Reviews';
-import { notificationService } from '../../services/notificationService';
+import notificationService from '../../services/notificationService';
 import { useReview } from '../../hooks/useReview';
 import styles from './PackageDetailPage.module.css';
 import { ptBR } from 'date-fns/locale';

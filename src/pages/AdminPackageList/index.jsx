@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getPackages, deletePackageById } from '../../services/packageService';
+import packageService from '../../services/packageService';
 import { PackagesTable } from './components/PackagesTable';
 import styles from './AdminPackageList.module.css';
 
@@ -10,7 +10,7 @@ export default function AdminPackageListPage() {
 
   const fetchPackages = async () => {
     setIsLoading(true);
-    const data = await getPackages();
+    const data = await packageService.getPackages();
     setPackages(data);
     setIsLoading(false);
   };
@@ -22,7 +22,7 @@ export default function AdminPackageListPage() {
   const handleDelete = async (id) => {
     // Pede confirmação antes de excluir
     if (window.confirm('Tem certeza que deseja excluir este pacote?')) {
-      await deletePackageById(id);
+      await packageService.deletePackage(id);
       // Atualiza a lista de pacotes após a exclusão
       fetchPackages();
     }

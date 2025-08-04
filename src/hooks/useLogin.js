@@ -4,11 +4,11 @@
 // imports e dependencias 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/authService';
+import { login, logout, register } from '../services/authService';
 import { saveToken } from '../utils/jwt'; // função para salvar o token
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice'; // guarda os dados do usuário e o token no Redux
-import { notificationService } from '../services/notificationService';
+import notificationService from '../services/notificationService';
 import api from '../services/api'; // Ajuste o caminho conforme necessário
 
 // estados das consts
@@ -26,7 +26,7 @@ export function useLogin() {
     setError(''); // limpa os erros anteriores
     try {
       // chamada à API
-      const data = await login(email, password);
+      const data = await authService.login(email, password);
       console.log('Dados recebidos no login:', data); // Debug
       
       if (data.token) {

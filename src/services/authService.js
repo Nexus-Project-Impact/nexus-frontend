@@ -50,3 +50,4 @@ export async function register(name, email, password, phone, cpf) {
     throw error; // Re-throw para que o componente possa tratar
   }
 }
+

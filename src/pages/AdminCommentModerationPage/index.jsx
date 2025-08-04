@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getComments, deleteCommentById } from '../../services/commentService';
+import {getComments, deleteCommentById} from '../../services/commentService';
 import { CommentsTable } from './components/CommentsTable';
 import styles from './AdminCommentModerationPage.module.css';
 
@@ -9,7 +9,7 @@ export default function AdminCommentModerationPage() {
 
   const fetchComments = async () => {
     setIsLoading(true);
-    const data = await getComments();
+    const data = await commentService.getComments();
     setComments(data);
     setIsLoading(false);
   };
@@ -20,7 +20,7 @@ export default function AdminCommentModerationPage() {
 
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este comentário? A ação não pode ser desfeita.')) {
-      await deleteCommentById(id);
+      await commentService.deleteCommentById(id);
       // Atualiza a lista após a exclusão
       fetchComments();
     }

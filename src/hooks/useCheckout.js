@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { notificationService } from '../services/notificationService';
+import notificationService from '../services/notificationService';
 
 export function useCheckout(packageData, travelers) {
   const [paymentMethod, setPaymentMethod] = useState('credit');

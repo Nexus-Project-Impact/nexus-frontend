@@ -1,14 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
-
+ 
 // Layouts e Componentes de Rota
 import { Layout } from './components/Layout';
 import { AdminLayout } from './components/AdminLayout';
 import { PrivateRoute } from './components/PrivateRoute/index.jsx';
-
+ 
 // Páginas
 import { PackagesPage } from './pages/PackagesPage';
-import { PackageDetailPage } from './pages/PackageDetailPage'; 
-import LoginPage from './pages/login';
+import { PackageDetailPage } from './pages/PackageDetailPage';
+import LoginPage from './pages/LoginUser';
 import AdminLoginPage from './pages/AdminLoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import ReservasPage from './pages/ReservasPage';
@@ -19,16 +19,17 @@ import { AdminReservation } from './pages/AdminReservation';
 import { AdminReservationDetails } from './pages/AdminReservationDetails';
 import AdminCommentModerationPage from './pages/AdminCommentModerationPage';
 import AdminMetricsPage from './pages/AdminMetricsPage';
-
+import { AddReviewPage } from './pages/AddReview';
+ 
 // Componentes temporários para páginas não implementadas
 //function AdminMetrics() { return <h1>Métricas (a ser construída)</h1>; }
-
+ 
 export default function AppRoutes(){
     return(
     <Routes>    
         {/* Rota pública standalone (sem layout principal) */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
-
+ 
         {/* Rotas que usam o Layout principal do cliente */}
         <Route path='/' element={<Layout/>}>
             {/* Rotas Públicas do Cliente */}
@@ -36,14 +37,15 @@ export default function AppRoutes(){
             <Route path="pacotes" element={<PackagesPage />} />
             <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
             <Route path="login" element={<LoginPage />} />
-
+ 
             {/* Rotas Protegidas do Cliente */}
             <Route element={<PrivateRoute />}>
                 <Route path="perfil" element={<ProfilePage />} />
                 <Route path="reservas" element={<ReservasPage />} />
+                <Route path="avaliar/:packageId" element={<AddReviewPage />} />
             </Route>
         </Route>
-
+ 
         {/* Rotas Protegidas do Admin (usando o AdminLayout) */}
         {/*<Route element={<PrivateRoute />}>*/}
         <Route element={<AdminLayout />}>

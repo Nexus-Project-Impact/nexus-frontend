@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import reviewService from '../services/reviewService';
 import reservationService from '../services/reservationService';
-import { notificationService } from '../services/notificationService';
+import notificationService from '../services/notificationService';
 
 // Hook para gerenciar avaliações
 export const useReview = (packageId) => {

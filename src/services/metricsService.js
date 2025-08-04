@@ -31,3 +31,4 @@ export const getMetricsData = () => {
     }, 500); // Simula delay da rede
   });
 };
+

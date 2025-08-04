@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllReservations } from '../services/reservationService';
+import reservationService from '../services/reservationService';
 
 export function useAdminReservations() {
   const navigate = useNavigate();

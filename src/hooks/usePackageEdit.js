@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getPackageById } from '../services/packageService';
+import packageService from '../services/packageService';
 
 export function usePackageEdit(packageId) {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export function usePackageEdit(packageId) {
         setIsFetching(true);
         try {
           console.log('Buscando dados do pacote com ID:', packageId);
-          const data = await getPackageById(packageId);
+          const data = await packageService.getPackageById(packageId);
           console.log('Dados recebidos da API:', data);
           setPackageData(data);
         } catch (error) {
@@ -61,3 +61,6 @@ export function usePackageEdit(packageId) {
 
   return { packageData, isLoading, isFetching, handleChange, handleSubmit, setPackageData };
 }
+
+export default usePackageEdit;
+

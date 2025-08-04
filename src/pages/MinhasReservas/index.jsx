@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useUserReservations } from '../../hooks/useReservations';
-import { notificationService } from '../../services/notificationService';
+import notificationService from '../../services/notificationService';
+import { ImageWithFallback } from '../../components/ImageWithFallback';
 import styles from './MinhasReservas.module.css';
 
 export function MinhasReservas() {
@@ -120,7 +121,7 @@ export function MinhasReservas() {
             return (
               <div key={reservation.id} className={styles.reservationCard}>
                 <div className={styles.cardHeader}>
-                  <img 
+                  <ImageWithFallback
                     src={reservation.packageImage} 
                     alt={reservation.packageName}
                     className={styles.packageImage}

@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice'; // Importe a ação de logout
 import { FaUserCircle } from 'react-icons/fa'; // Ícone de perfil
-import { notificationService } from '../../services/notificationService';
+import notificationService from '../../services/notificationService';
 import styles from './Header.module.css';
 import nexusLogo from '../../assets/nexus-logo.png';
 

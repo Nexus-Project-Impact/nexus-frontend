@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import packageService from '../../services/packageService';
 import { useReview } from '../../hooks/useReview';
 import { useUserReservations } from '../../hooks/useReservations';
-import { notificationService } from '../../services/notificationService';
+import notificationService from '../../services/notificationService';
 import { ReviewForm } from './components';
 import { useErrorHandler } from '../../hooks/useErrorHandler';
 

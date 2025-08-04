@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getMetricsData } from '../../services/metricsService';
+import {getMetricsData} from '../../services/metricsService';
 import { StatCard } from './components/StatCard';
 import { SalesPieChart } from './components/SalesPieChart';
 import { RevenueBarChart } from './components/RevenueBarChart';
@@ -10,7 +10,7 @@ export default function AdminMetricsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getMetricsData().then(data => {
+    metricsService.getMetricsData().then(data => {
       setMetrics(data);
       setIsLoading(false);
     });

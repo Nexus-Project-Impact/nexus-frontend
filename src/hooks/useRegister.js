@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { register } from '../services/authService';
-import { notificationService } from '../services/notificationService';
+import { login, logout, register } from '../services/authService';
+import notificationService from '../services/notificationService';
 import { validateCpf as isValidCpf, validateEmail as isValidEmail, validatePhone as isValidPhone } from '../utils/formatters';
 
 export function useRegister() {
@@ -131,7 +131,7 @@ export function useRegister() {
       const cleanPhone = phone.replace(/\D/g, '');
       const cleanCpf = cpf.replace(/\D/g, '');
       
-      const data = await register(name, email, password, cleanPhone, cleanCpf);
+      const data = await authService.register(name, email, password, cleanPhone, cleanCpf);
       setSuccess(true);
       notificationService.auth.registerSuccess();
       
