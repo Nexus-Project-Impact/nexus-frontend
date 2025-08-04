@@ -28,7 +28,6 @@ api.interceptors.request.use(
 // Interceptor para responses - captura erros globalmente
 api.interceptors.response.use(
   (response) => {
-    // Log de sucesso para debug (remova em produção)
     return response;
   },
   (error) => {

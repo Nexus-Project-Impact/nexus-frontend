@@ -110,15 +110,7 @@ export const useReview = (packageId) => {
     try {
       setError(null);
       
-      // Debug: verificação mais detalhada do packageId
-      console.log('=== DEBUG addReview - Verificação do packageId ===');
-      console.log('packageId original:', packageId);
-      console.log('typeof packageId:', typeof packageId);
-      console.log('packageId é undefined?', packageId === undefined);
-      console.log('packageId é null?', packageId === null);
-      console.log('packageId é string vazia?', packageId === '');
-      console.log('packageId convertido com parseInt:', parseInt(packageId));
-      console.log('parseInt(packageId) é NaN?', isNaN(parseInt(packageId)));
+      
       
       // Tentar obter packageId de múltiplas fontes
       let finalPackageId = packageId;
@@ -151,7 +143,6 @@ export const useReview = (packageId) => {
         throw new Error(`packageId inválido: ${finalPackageId}`);
       }
       
-      console.log('packageId final validado:', packageIdNumber);
       
       // Preparar dados da avaliação
       const reviewPayload = {
@@ -165,10 +156,7 @@ export const useReview = (packageId) => {
         ...reviewData
       };
 
-      // Debug: verificar o payload antes de enviar
-      console.log('DEBUG addReview - packageId original:', packageId);
-      console.log('DEBUG addReview - packageId convertido:', packageIdNumber);
-      console.log('DEBUG addReview - payload completo:', reviewPayload);
+      
 
       
       const newReview = await reviewService.create(reviewPayload);
