@@ -31,6 +31,8 @@ function App() {
     >
       <BrowserRouter>
         <Routes>
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+
           <Route path="/" element={<Layout />}>
             <Route index element={<PackagesPage />} />
             <Route path="pacotes" element={<PackagesPage />} />
@@ -42,6 +44,21 @@ function App() {
             <Route path="perfil" element={<PerfilPage />} />
           </Route>
         </Routes>
+
+        {/* Rotas Protegidas do Admin (usando o AdminLayout) */}
+        {/*<Route element={<PrivateRoute />}>*/}
+        <Route element={<AdminLayout />}>
+            <Route path="/admin/pacotes" element={<AdminPackageList />} />
+            <Route path="/admin/pacotes/add" element={<AdminPackage />} />
+            <Route path="/admin/pacotes/editar/:id" element={<AdminEditPackage />} />
+            <Route path="/admin/reservas" element={<AdminReservation/>} />
+            <Route path="/admin/reservas/visualizar/:id" element={<AdminReservationDetails/>} />
+            <Route path="/admin/comentarios" element={<AdminCommentModerationPage />} />
+            <Route path="/admin/metricas" element={<AdminMetricsPage />} />
+            {/* Outras rotas de admin viriam aqui */}
+        {/* </Route>*/}
+        </Route>
+
                      
          {/* Container para as notificações */}
       <ToastContainer
