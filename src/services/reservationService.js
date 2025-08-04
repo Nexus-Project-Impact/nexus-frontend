@@ -28,6 +28,33 @@ const reservationService = {
     }
   },
 
+  // Buscar todas as reservas (admin)
+  getAll: async () => {
+    try {
+      const response = await api.get('/Reservation/GetAll');
+      
+      // Se não há dados ou é null, retorna array vazio
+      if (!response.data) {
+        return [];
+      }
+      
+      return response.data;
+      
+    } catch (error) {
+      console.error('Erro ao buscar todas as reservas:', error);
+      console.error('Status:', error.response?.status);
+      console.error('Data:', error.response?.data);
+      
+      // Se o erro for 404 (nenhuma reserva encontrada), retorna array vazio
+      if (error.response?.status === 404) {
+        return [];
+      }
+      
+      // Para outros erros, relança a exceção
+      throw error;
+    }
+  },
+
   // Buscar reserva por ID
   getById: async (reservationId) => {
     try {
