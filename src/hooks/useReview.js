@@ -26,11 +26,16 @@ export const useReview = (packageId) => {
 
   // Carregar avaliações do pacote
   const loadReviews = async () => {
-    if (!packageId) return;
+    if (!packageId || packageId === '0' || isNaN(parseInt(packageId))) {
+      console.warn('useReview.loadReviews: packageId inválido:', packageId);
+      return;
+    }
 
     try {
       setIsLoading(true);
       setError(null);
+
+      console.log(`useReview.loadReviews: Carregando reviews para packageId ${packageId}`);
 
       // Buscar avaliações e estatísticas em paralelo
       const [reviewsData, statsData] = await Promise.all([
@@ -38,18 +43,28 @@ export const useReview = (packageId) => {
         reviewService.getPackageStats(packageId)
       ]);
 
-      setReviews(reviewsData || []);
+      console.log(`useReview.loadReviews: Reviews carregadas para packageId ${packageId}:`, reviewsData);
+      console.log(`useReview.loadReviews: Stats carregadas para packageId ${packageId}:`, statsData);
+
+      // Garantir que reviewsData seja um array
+      const processedReviews = Array.isArray(reviewsData) ? reviewsData : [];
+      
+      setReviews(processedReviews);
       setStats(statsData || {
         averageRating: 0,
-        totalReviews: 0,
+        totalReviews: processedReviews.length,
         ratingDistribution: {}
       });
+
+      console.log(`useReview.loadReviews: Estado final - reviews:`, processedReviews);
+      console.log(`useReview.loadReviews: Estado final - stats:`, statsData);
 
     } catch (err) {
       console.error('Erro ao carregar reviews:', err);
       
       // Se é 404, não é um erro real - só não há reviews ainda
       if (err.response?.status === 404) {
+        console.log('404 recebido, configurando estado vazio para reviews');
         setReviews([]);
         setStats({
           averageRating: 0,
