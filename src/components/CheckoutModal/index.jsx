@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCheckout } from './hooks/useCheckout';
+import { useCheckout } from '../../hooks/useCheckout';
 import { StripeEmbeddedForm } from './components/StripeEmbeddedForm';
 import styles from './CheckoutModal.module.css';
 
