@@ -1,45 +1,187 @@
-// DENTRO DE: src/components/CheckoutModal/StripeEmbeddedForm.jsx
-
 import React, { useCallback, useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 
-// Coloque sua chave publicável do Stripe aqui (começa com pk_test_...)
-const stripePromise = loadStripe('sk_test_51RopuqEA6mLoMq50zWUzXMeEspWEKtb1F3cdvWPDBzNvCUs4RCVApx5j61kyJcHLiXDEyWagmrjTwhaE9KLMxb5o00dFTySE4R');
+// Lembre-se de colocar sua chave PUBLICÁVEL do Stripe aqui
+const stripePromise = loadStripe('pk_test_51RqLiJFhACc0u91J9PBXQvVhzGPoFsTbUNCxogRhFokBt3qUDUUr6XfP6kXQ0xAU0BM7AIzDL1WhVkJZm6eLYzrU00FoiFPL3G');
 
 export function StripeEmbeddedForm({ totalPrice }) {
-  const [clientSecret, setClientSecret] = useState('');
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Esta função busca o clientSecret do seu backend
-  const fetchClientSecret = useCallback(() => {
-    // A URL deve apontar para o seu backend que está rodando
-    return fetch("http://localhost:4242/create-payment-intent", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      // Envia o valor total para o backend
-      body: JSON.stringify({ amount: totalPrice }) 
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-        return data.clientSecret; // Retorna o clientSecret para o Stripe
-      })
-      .catch(err => console.error("Erro ao buscar client secret:", err));
+  // Usando async/await para uma lógica mais clara
+  const fetchClientSecret = useCallback(async () => {
+    console.log('fetchClientSecret - Iniciando com totalPrice:', totalPrice);
+    setIsLoading(true);
+    setError(null);
+    
+    if (!totalPrice || totalPrice <= 0) {
+      console.warn('fetchClientSecret - totalPrice inválido:', totalPrice);
+      const errorMsg = 'Valor total inválido para pagamento';
+      setIsLoading(false);
+      setError(errorMsg);
+      throw new Error(errorMsg); // Throw instead of return null
+    }
+    
+    try {
+      console.log('fetchClientSecret - Fazendo requisição para o backend...');
+      
+      // Primeiro, vamos tentar o endpoint de checkout session
+      let response = await fetch("http://localhost:5235/api/payments/create-checkout-session", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: totalPrice })
+      });
+
+      console.log('fetchClientSecret - Status da resposta:', response.status);
+      console.log('fetchClientSecret - Response OK?', response.ok);
+
+      // Se o endpoint não existir (404), tentamos o endpoint antigo como fallback
+      if (response.status === 404) {
+        console.log('fetchClientSecret - Endpoint checkout-session não encontrado, tentando create-payment-intent...');
+        response = await fetch("http://localhost:5235/api/payments/create-payment-intent", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: totalPrice })
+        });
+        
+        console.log('fetchClientSecret - Status do fallback:', response.status);
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('fetchClientSecret - Erro HTTP:', response.status, errorText);
+        
+        if (response.status === 404) {
+          throw new Error('Endpoint de pagamento não encontrado. Verifique se o backend está configurado corretamente.');
+        }
+        
+        throw new Error(`Erro na API: ${response.status} - ${errorText || 'Erro desconhecido'}`);
+      }
+
+      const data = await response.json();
+      console.log("fetchClientSecret - Resposta completa do backend:", data);
+      console.log("fetchClientSecret - Tipo da resposta:", typeof data);
+
+      // Verifica se a propriedade existe (com 'c' minúsculo ou 'C' maiúsculo)
+      const secret = data.clientSecret || data.ClientSecret;
+      console.log("fetchClientSecret - Client secret encontrado:", secret);
+      console.log("fetchClientSecret - Tipo do client secret:", typeof secret);
+
+      if (!secret) {
+        console.error("fetchClientSecret - Client secret não encontrado na resposta");
+        throw new Error("A resposta do backend não continha o clientSecret.");
+      }
+
+      // Identifica o tipo de client secret
+      if (secret.startsWith('pi_')) {
+        console.warn("fetchClientSecret - Recebido Payment Intent, mas Embedded Checkout precisa de Checkout Session");
+        throw new Error("⚠️ Backend configurado incorretamente!\n\nEmbedded Checkout requer Checkout Session (cs_), mas recebeu Payment Intent (pi_).\n\nSolução: Configure o backend para criar Checkout Sessions usando SessionService.Create() com UiMode = 'embedded'.");
+      } else if (secret.startsWith('cs_')) {
+        console.log("fetchClientSecret - Client secret correto para Embedded Checkout");
+      } else {
+        console.error("fetchClientSecret - Formato de client secret desconhecido:", secret);
+        throw new Error(`Formato de client secret inválido: ${secret.substring(0, 10)}...\nDeve começar com 'cs_' para Embedded Checkout.`);
+      }
+
+      console.log("fetchClientSecret - Retornando client secret válido:", secret);
+      setIsLoading(false);
+      return secret;
+
+    } catch (error) {
+      console.error("fetchClientSecret - Falha crítica:", error);
+      console.error("fetchClientSecret - Stack trace:", error.stack);
+      setIsLoading(false);
+      setError(error.message || 'Erro desconhecido no pagamento');
+      throw error; // Re-throw the error instead of returning null
+    }
   }, [totalPrice]);
 
   const options = { fetchClientSecret };
 
+  // Exibe erro se houver problema
+  if (error) {
+    return (
+      <div style={{ 
+        padding: '20px', 
+        border: '1px solid #ff6b6b', 
+        borderRadius: '8px', 
+        backgroundColor: '#ffe0e0',
+        color: '#d63447'
+      }}>
+        <h3>🚫 Erro no Pagamento</h3>
+        <div style={{ 
+          backgroundColor: 'white', 
+          padding: '12px', 
+          borderRadius: '4px', 
+          marginBottom: '15px',
+          whiteSpace: 'pre-line',
+          fontFamily: 'monospace',
+          fontSize: '13px',
+          border: '1px solid #ffcccb'
+        }}>
+          {error}
+        </div>
+        
+        {error.includes('Backend configurado incorretamente') && (
+          <div style={{ 
+            backgroundColor: '#e8f5e8', 
+            color: '#2d5a2d', 
+            padding: '10px', 
+            borderRadius: '4px',
+            marginBottom: '15px',
+            fontSize: '12px'
+          }}>
+            <strong>💡 Para desenvolvedores:</strong><br/>
+            O backend precisa ser modificado para criar Checkout Sessions instead of Payment Intents.<br/>
+            Consulte a documentação do Stripe para Embedded Checkout.
+          </div>
+        )}
+        
+        <button 
+          onClick={() => setError(null)}
+          style={{ 
+            padding: '8px 16px', 
+            backgroundColor: '#d63447', 
+            color: 'white', 
+            border: 'none', 
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          Tentar Novamente
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div id="checkout">
-      {/* O Provider do Stripe precisa do clientSecret para funcionar */}
+      {isLoading && (
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <p>Carregando formulário de pagamento...</p>
+        </div>
+      )}
+      
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
         options={options}
+        onError={(error) => {
+          console.error('Erro do EmbeddedCheckoutProvider:', error);
+          setError(`Erro no checkout: ${error.message}`);
+        }}
       >
-        {/* Este componente renderiza o formulário completo do Stripe */}
-        <EmbeddedCheckout />
+        <EmbeddedCheckout 
+          onLoad={() => {
+            console.log('EmbeddedCheckout carregado com sucesso');
+            setIsLoading(false);
+          }}
+          onError={(error) => {
+            console.error('Erro do EmbeddedCheckout:', error);
+            setError(`Erro no formulário: ${error.message}`);
+            setIsLoading(false);
+          }}
+        />
       </EmbeddedCheckoutProvider>
     </div>
   );
