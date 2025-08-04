@@ -8,9 +8,9 @@ import { PrivateRoute } from './components/PrivateRoute/index.jsx';
 // Páginas
 import { PackagesPage } from './pages/PackagesPage';
 import { PackageDetailPage } from './pages/PackageDetailPage'; 
-import LoginPage from './pages/login';
+import LoginPage from './pages/LoginUser';
 import AdminLoginPage from './pages/AdminLoginPage';
-import { ProfilePage } from './pages/ProfilePage';
+import  ProfilePage  from './pages/ProfilePage';
 import ReservasPage from './pages/ReservasPage';
 import { AdminPackage } from './pages/AdminPackage'
 import AdminPackageList from './pages/AdminPackageList';
@@ -39,8 +39,9 @@ export default function AppRoutes(){
 
             {/* Rotas Protegidas do Cliente */}
             <Route element={<PrivateRoute />}>
-                <Route path="perfil" element={<ProfilePage />} />
-                <Route path="reservas" element={<ReservasPage />} />
+                <Route path="reservas" element={<MinhasReservas />} />
+                <Route path="avaliar/:packageId" element={<AddReviewPage />} />
+                <Route path="perfil" element={<PerfilPage />} />
             </Route>
         </Route>
 
@@ -60,3 +61,4 @@ export default function AppRoutes(){
     </Routes>
     );
 }
+
