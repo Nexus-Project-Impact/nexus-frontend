@@ -40,7 +40,23 @@ export function PackageDetailPage() {
       return;
     }
     
-    navigate(`/avaliar/${packageId}`);
+    if (!pkg) {
+      notificationService.review.createError('Dados do pacote não carregados.');
+      return;
+    }
+    
+    // Passar dados do pacote para a página de avaliação
+    navigate(`/avaliar/${packageId}`, {
+      state: {
+        packageId,
+        packageName: pkg.name || pkg.title || 'Pacote',
+        destination: pkg.destination || pkg.name || 'Destino',
+        departureDate: pkg.departureDate,
+        returnDate: pkg.returnDate,
+        packageImage: pkg.imageUrl || pkg.image || pkg.imagePackage,
+        fromReservations: false
+      }
+    });
   };
 
   const formatarData = (data) => {
@@ -66,12 +82,20 @@ export function PackageDetailPage() {
     loadPackageDetails();
   }, [packageId]); // Roda sempre que o ID na URL mudar
 
-  // Verificar se usuário pode avaliar quando estiver logado
+  // Verificar se usuário pode avaliar quando estiver logado e dados carregados
   useEffect(() => {
-    if (token && user && packageId) {
-      checkCanReview();
-    }
-  }, [token, user, packageId, checkCanReview]);
+    const checkReviewPermission = async () => {
+      if (token && user && packageId && pkg && !isLoading) {
+        try {
+          await checkCanReview();
+        } catch (error) {
+          console.error('Erro ao verificar permissão de avaliação:', error);
+        }
+      }
+    };
+    
+    checkReviewPermission();
+  }, [token, user?.id, packageId, pkg?.id, isLoading]); // Usando IDs específicos para evitar loops
 
   const handleBuyClick = () => {
     if (!token) {

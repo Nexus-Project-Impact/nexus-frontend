@@ -117,7 +117,6 @@ export const useReview = (packageId) => {
         ...reviewData
       };
 
-      console.log('📝 Enviando avaliação:', reviewPayload);
       
       const newReview = await reviewService.create(reviewPayload);
 
@@ -185,7 +184,7 @@ export const useReview = (packageId) => {
   useEffect(() => {
     if (packageId) {
       loadReviews();
-      checkCanReview();
+      // Não chamar checkCanReview aqui para evitar loops infinitos
     }
   }, [packageId]);
 

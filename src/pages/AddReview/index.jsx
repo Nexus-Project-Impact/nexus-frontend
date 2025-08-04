@@ -44,10 +44,11 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        const data = await handleAsync(() => packageService.getPackageById(packageId));
+        const data = await packageService.getPackageById(packageId);
         setPackageData(data);
       } catch (err) {
-        setError(hookError || 'Erro ao carregar dados do pacote');
+        setError('Erro ao carregar dados do pacote');
+        console.error('Erro ao carregar pacote:', err);
       } finally {
         setIsLoadingPackage(false);
       }
@@ -161,11 +162,53 @@ export function AddReviewPage() {
     );
   }
 
+  // Função para formatar as datas
+  const formatDateRange = (departureDate, returnDate) => {
+    if (!departureDate || !returnDate) return 'Datas não disponíveis';
+    
+    try {
+      const departure = new Date(departureDate).toLocaleDateString('pt-BR');
+      const returnD = new Date(returnDate).toLocaleDateString('pt-BR');
+      return `${departure} - ${returnD}`;
+    } catch (error) {
+      return 'Datas não disponíveis';
+    }
+  };
+
+  // Preparar dados para exibição - usar dados do state se disponíveis, senão usar dados da API
+  const getDisplayData = () => {
+    // Se veio das reservas ou página de detalhes com state
+    if (reservationData) {
+      return {
+        name: reservationData.packageName || packageData?.name || packageData?.title || 'Pacote',
+        destination: reservationData.destination || packageData?.destination || 'Destino não disponível',
+        dateRange: reservationData.departureDate && reservationData.returnDate 
+          ? formatDateRange(reservationData.departureDate, reservationData.returnDate)
+          : (packageData?.departureDate && packageData?.returnDate 
+            ? formatDateRange(packageData.departureDate, packageData.returnDate)
+            : 'Datas não disponíveis'),
+        image: reservationData.packageImage || packageData?.imageUrl || packageData?.image || packageData?.imagePackage
+      };
+    }
+    
+    // Se veio direto da página de detalhes sem state ou fallback para dados da API
+    return {
+      name: packageData?.name || packageData?.title || 'Pacote',
+      destination: packageData?.destination || 'Destino não disponível',
+      dateRange: packageData?.departureDate && packageData?.returnDate 
+        ? formatDateRange(packageData.departureDate, packageData.returnDate)
+        : 'Datas não disponíveis',
+      image: packageData?.imageUrl || packageData?.image || packageData?.imagePackage
+    };
+  };
+
+  const displayData = getDisplayData();
+
   return (
     <ReviewForm
-      destination={packageData.name}
-      dateRange={packageData.dates}
-      packageImage={packageData.image}
+      destination={displayData.name}
+      dateRange={displayData.dateRange}
+      packageImage={displayData.image}
       rating={rating}
       setRating={setRating}
       comment={comment}

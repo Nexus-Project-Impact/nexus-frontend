@@ -2,6 +2,7 @@ import api from './api';
 
 // Serviço para gerenciar avaliações
 export const reviewService = {
+
   // Buscar todas as avaliações (getAll)
   getAll: async () => {
     try {
@@ -9,40 +10,22 @@ export const reviewService = {
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar todas as avaliações:', error);
-      
-      // Se erro 404, retorna array vazio (não há reviews ainda)
-      if (error.response?.status === 404) {
-        return [];
-      }
       throw error;
     }
   },
 
-  // Buscar avaliações de um pacote específico
+  // Buscar avaliações de um pacote específico (filtra do getAll)
   getByPackageId: async (packageId) => {
     try {
-      // Primeiro tenta buscar diretamente por packageId se houver endpoint específico
-      try {
-        const response = await api.get(`/Review/GetById/${packageId}`);
-        return response.data;
-      } catch (directError) {
-        // Se não houver endpoint específico, usa getAll e filtra
-        const response = await api.get('/Review/GetAllReviews');
-        const allReviews = response.data || [];
-        const packageReviews = allReviews.filter(review => 
-          review.packageId === parseInt(packageId) || 
-          review.pacoteId === parseInt(packageId) ||
-          review.travelPackageId === parseInt(packageId)
-        );
-        return packageReviews;
-      }
+      const response = await api.get('/Review/GetAllReviews');
+      // Filtra as reviews do pacote específico no frontend
+      const allReviews = response.data;
+      const packageReviews = allReviews.filter(review => 
+        review.packageId === parseInt(packageId) || review.pacoteId === parseInt(packageId)
+      );
+      return packageReviews;
     } catch (error) {
       console.error('Erro ao buscar avaliações do pacote:', error);
-      
-      // Se erro 404, retorna array vazio
-      if (error.response?.status === 404) {
-        return [];
-      }
       throw error;
     }
   },
@@ -134,30 +117,7 @@ export const reviewService = {
     }
   },
 
-  // Verificar se usuário pode avaliar (verificação frontend)
-  canUserReview: async (packageId, userId) => {
-    try {
-      const packageReviews = await this.getByPackageId(packageId);
-      
-      // Converte para int para comparação segura
-      const userIdInt = parseInt(userId);
-      
-      // Verifica se o usuário já avaliou este pacote
-      const userHasReviewed = packageReviews.some(review => {
-        const reviewUserId = parseInt(review.userId) || parseInt(review.clientId);
-        return reviewUserId === userIdInt;
-      });
-
-      return {
-        canReview: !userHasReviewed,
-        reason: userHasReviewed ? 'Usuário já avaliou este pacote' : 'Pode avaliar'
-      };
-    } catch (error) {
-      console.error('Erro ao verificar permissão:', error);
-      // Em caso de erro, permite avaliar
-      return { canReview: true, reason: 'Verificação não disponível' };
-    }
-  }
+  
 };
 
 export default reviewService;
