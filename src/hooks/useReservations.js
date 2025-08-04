@@ -62,6 +62,10 @@ export const useUserReservations = () => {
       setError(`Erro ao carregar suas reservas: ${err.response?.data?.message || err.message}`);
       setReservations([]);
     } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Função auxiliar para formatar datas
   const formatDates = (departureDate, returnDate) => {
     try {
@@ -105,10 +109,6 @@ export const useUserReservations = () => {
       const departureStr = departure.toLocaleDateString('pt-BR', options);
       const returnStr = returnD.toLocaleDateString('pt-BR', options);
       return `${departureStr} à ${returnStr}`;
-    }
-  };  return departureStr;
-    } catch (error) {
-      return 'Datas não disponíveis';
     }
   };
 
