@@ -1,98 +1,86 @@
+import api from './api';
 
-const mockReservations = [
-  { 
-    id: 1, 
-    userId: 1, 
-    clientName: 'João Silva',
-    clientPhone: '11 99999-9999',
-    clientEmail: 'joao.silva@example.com',
-    packageName: 'Fernando de Noronha', 
-    travelDate: '11 de ago, 2025', 
-    reservationDate: '15 de jul, 2025',
-    paymentStatus: 'Pago', 
-    totalPrice: 4686,
-    image: 'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg' 
-  },
-  { 
-    id: 2, 
-    userId: 2,
-    clientName: 'Maria Santos', 
-    clientPhone: '11 98888-8888',
-    clientEmail: 'maria.santos@example.com',
-    packageName: 'Jericoacoara', 
-    travelDate: '20 de set, 2025', 
-    reservationDate: '10 de jul, 2025',
-    paymentStatus: 'Pendente', 
-    totalPrice: 3648,
-    image: 'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg'
-  },
-  { 
-    id: 3, 
-    userId: 3,
-    clientName: 'Pedro Oliveira', 
-    clientPhone: '11 97777-7777',
-    clientEmail: 'pedro.oliveira@example.com',
-    packageName: 'Porto de Galinhas', 
-    travelDate: '05 de out, 2025', 
-    reservationDate: '20 de jul, 2025',
-    paymentStatus: 'Pago', 
-    totalPrice: 5186,
-    image: 'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg'
-  },
-  { 
-    id: 4, 
-    userId: 4,
-    clientName: 'Ana Costa', 
-    clientPhone: '11 96666-6666',
-    clientEmail: 'ana.costa@example.com',
-    packageName: 'Cancún', 
-    travelDate: '15 de nov, 2025', 
-    reservationDate: '25 de jul, 2025',
-    paymentStatus: 'Cancelado', 
-    totalPrice: 4686,
-    image: 'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg'
-  },
-  { 
-    id: 5, 
-    userId: 5,
-    clientName: 'Carlos Ferreira', 
-    clientPhone: '11 95555-5555',
-    clientEmail: 'carlos.ferreira@example.com',
-    packageName: 'Punta Cana', 
-    travelDate: '12 de dez, 2025', 
-    reservationDate: '30 de jul, 2025',
-    paymentStatus: 'Pago', 
-    totalPrice: 3648,
-    image: 'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg'
-  }
-];
-
-export const getReservationsByUserId = (userId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const reservations = mockReservations.filter(r => r.userId === userId);
-      resolve(reservations);
-    }, 500);
-  });
-};
-
-export const getAllReservations = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockReservations);
-    }, 500);
-  });
-};
-
-export const getReservationById = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const reservation = mockReservations.find(r => r.id == id);
-      if (reservation) {
-        resolve(reservation);
-      } else {
-        reject(new Error('Reserva não encontrada.'));
+// Serviço para gerenciar reservas
+const reservationService = {
+  // Buscar todas as reservas do usuário logado
+  getUserReservations: async () => {
+    try {
+      const response = await api.get('/Reservation/MyReservations');
+      
+      // Se não há dados ou é null, retorna array vazio
+      if (!response.data) {
+        return [];
       }
-    }, 500);
-  });
+      
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao buscar reservas do usuário:', error);
+      console.error('Status:', error.response?.status);
+      console.error('Data:', error.response?.data);
+      
+      // Se o erro for 404 (usuário sem reservas), retorna array vazio
+      if (error.response?.status === 404) {
+        return [];
+      }
+      
+      // Para outros erros, relança a exceção
+      throw error;
+    }
+  },
+
+  // Buscar reserva por ID
+  getById: async (reservationId) => {
+    try {
+      const response = await api.get(`/Reservation/GetById/${reservationId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao buscar reserva:', error);
+      throw error;
+    }
+  },
+
+  // Criar nova reserva
+  create: async (reservationData) => {
+    try {
+      const response = await api.post('/Reservation/Create', reservationData);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao criar reserva:', error);
+      throw error;
+    }
+  },
+
+  // Excluir reserva (apenas admin)
+  delete: async (reservationId) => {
+    try {
+      const response = await api.delete(`/Reservation/Delete/${reservationId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao excluir reserva:', error);
+      throw error;
+    }
+  },
+
+  // Verificar se usuário pode avaliar uma reserva específica
+  canReviewReservation: async (reservationId) => {
+    try {
+      // Como não há endpoint específico para isso no backend, 
+      // vamos buscar a reserva e verificar se ela está finalizada
+      const reservation = await this.getById(reservationId);
+      
+      // Reserva pode ser avaliada se estiver finalizada
+      const canReview = reservation.status === 'finalizada' || reservation.status === 'Finalizada';
+      
+      return { 
+        canReview, 
+        reason: canReview ? 'Pode avaliar' : 'Reserva ainda não finalizada' 
+      };
+    } catch (error) {
+      console.error('Erro ao verificar se pode avaliar:', error);
+      // Em caso de erro, permite avaliar
+      return { canReview: true, reason: 'Verificação não disponível' };
+    }
+  }
 };
+
+export default reservationService;

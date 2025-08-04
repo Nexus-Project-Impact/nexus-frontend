@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PackageGrid } from './components/PackageGrid';
-import { getPackages } from '../../services/packageService';
+import packageService from '../../services/packageService'; // Supondo que você tenha um serviço para buscar pacotes
 import { SearchBar } from './components/SearchBar';
 import styles from './PackagesPage.module.css';
 
@@ -14,10 +14,19 @@ export function PackagesPage() {
     const loadPackages = async () => {
       try {
         setIsLoading(true);
-        const data = await getPackages();
-        setAllPackages(data);
-        setFilteredPackages(data);
+
+        const data = await packageService.getPackages();
+        const mappedPackages = data.map(pkg => ({
+          id: pkg.id,
+          title: pkg.title || pkg.name,
+          imageUrl: pkg.imageUrl || pkg.image,
+          departureDate: pkg.departureDate,
+          returnDate: pkg.returnDate
+        }));
+        setAllPackages(mappedPackages);
+        setFilteredPackages(mappedPackages);
       } catch (err) {
+        console.error('Erro ao carregar pacotes:', err);
         setError('Falha ao carregar os pacotes.');
       } finally {
         setIsLoading(false);

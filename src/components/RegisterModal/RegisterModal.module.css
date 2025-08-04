@@ -35,11 +35,33 @@ input {
 .modalContent input {
   width: 100%;
   padding: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   font-size: 1rem;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.modalContent input:focus {
+  outline: none;
+  border-color: #ff9900;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.inputError {
+  border-color: #ff3b3b !important;
+  background-color: #fff5f5 !important;
+}
+
+.fieldError {
+  color: #ff3b3b;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
 }
 
 .submitButton {
