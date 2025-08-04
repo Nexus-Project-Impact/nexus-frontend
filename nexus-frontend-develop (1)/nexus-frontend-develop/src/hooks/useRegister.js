@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { register } from '../services/authService';
+import { register, forgotPassword, isAuthenticated } from '../services/authService';
 import { notificationService } from '../services/notificationService';
-import { validateCpf as isValidCpf, validateEmail as isValidEmail, validatePhone as isValidPhone } from '../utils/formatters';
 
 export function useRegister() {
   const [name, setName] = useState('');
@@ -14,96 +13,18 @@ export function useRegister() {
   const [success, setSuccess] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
 
-  // Funções de validação
-  const validateName = (value) => {
-    if (!value.trim()) return 'Nome é obrigatório';
-    if (value.trim().length < 2) return 'Nome deve ter pelo menos 2 caracteres';
-    return '';
-  };
-
-  const validateEmailField = (value) => {
-    if (!value.trim()) return 'Email é obrigatório';
-    if (!isValidEmail(value)) return 'Email deve ter um formato válido';
-    return '';
-  };
-
-  const validatePassword = (value) => {
-    if (!value) return 'Senha é obrigatória';
-    if (value.length < 6) return 'Senha deve ter pelo menos 6 caracteres';
-    if (!/(?=.*[a-z])/.test(value)) return 'Senha deve conter pelo menos uma letra minúscula';
-    if (!/(?=.*[A-Z])/.test(value)) return 'Senha deve conter pelo menos uma letra maiúscula';
-    if (!/(?=.*\d)/.test(value)) return 'Senha deve conter pelo menos um número';
-    return '';
-  };
-
-  const validatePhoneField = (value) => {
-    if (!value.trim()) return 'Telefone é obrigatório';
-    if (!isValidPhone(value)) return 'Telefone deve ter formato válido (10 ou 11 dígitos)';
-    return '';
-  };
-
-  const validateCpfField = (value) => {
-    if (!value.trim()) return 'CPF é obrigatório';
-    if (!isValidCpf(value)) return 'CPF inválido';
-    return '';
-  };
-
-  // Função para validar um campo específico
-  const validateField = (fieldName, value) => {
-    let errorMessage = '';
+  // Validações básicas apenas para UX (campos obrigatórios)
+  const validateRequiredFields = () => {
+    const errors = {};
     
-    switch (fieldName) {
-      case 'name':
-        errorMessage = validateName(value);
-        break;
-      case 'email':
-        errorMessage = validateEmailField(value);
-        break;
-      case 'password':
-        errorMessage = validatePassword(value);
-        break;
-      case 'phone':
-        errorMessage = validatePhoneField(value);
-        break;
-      case 'cpf':
-        errorMessage = validateCpfField(value);
-        break;
-      default:
-        break;
-    }
-
-    setFieldErrors(prev => ({
-      ...prev,
-      [fieldName]: errorMessage
-    }));
-
-    return errorMessage === '';
-  };
-
-  // Setters com validação
-  const setNameWithValidation = (value) => {
-    setName(value);
-    validateField('name', value);
-  };
-
-  const setEmailWithValidation = (value) => {
-    setEmail(value);
-    validateField('email', value);
-  };
-
-  const setPasswordWithValidation = (value) => {
-    setPassword(value);
-    validateField('password', value);
-  };
-
-  const setPhoneWithValidation = (value) => {
-    setPhone(value);
-    validateField('phone', value);
-  };
-
-  const setCpfWithValidation = (value) => {
-    setCpf(value);
-    validateField('cpf', value);
+    if (!name.trim()) errors.name = 'Nome é obrigatório';
+    if (!email.trim()) errors.email = 'Email é obrigatório';
+    if (!password.trim()) errors.password = 'Senha é obrigatória';
+    if (!phone.trim()) errors.phone = 'Telefone é obrigatório';
+    if (!cpf.trim()) errors.cpf = 'CPF é obrigatório';
+    
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleRegister = async (e) => {
@@ -111,17 +32,11 @@ export function useRegister() {
     setIsLoading(true);
     setError('');
     setSuccess(false);
+    setFieldErrors({});
     
-    // Validar todos os campos antes de enviar
-    const nameValid = validateField('name', name);
-    const emailValid = validateField('email', email);
-    const passwordValid = validateField('password', password);
-    const phoneValid = validateField('phone', phone);
-    const cpfValid = validateField('cpf', cpf);
-    
-    // Se algum campo for inválido, não enviar
-    if (!nameValid || !emailValid || !passwordValid || !phoneValid || !cpfValid) {
-      setError('Por favor, corrija os erros nos campos antes de continuar');
+    // Validação básica apenas para campos obrigatórios
+    if (!validateRequiredFields()) {
+      setError('Por favor, preencha todos os campos obrigatórios');
       setIsLoading(false);
       return;
     }
@@ -131,7 +46,8 @@ export function useRegister() {
       const cleanPhone = phone.replace(/\D/g, '');
       const cleanCpf = cpf.replace(/\D/g, '');
       
-      const data = await register(name, email, password, cleanPhone, cleanCpf);
+      // 1. REGISTRAR USUÁRIO (validação real feita no backend)
+      const registerData = await register(name.trim(), email.trim(), password, cleanPhone, cleanCpf);
       setSuccess(true);
       notificationService.auth.registerSuccess();
       
@@ -144,35 +60,25 @@ export function useRegister() {
       setFieldErrors({});
       
     } catch (err) {
-      console.error('Erro capturado no hook:', err);
-      
+      // O authService já faz log detalhado dos erros
       let errorMessage = 'Erro ao cadastrar usuário';
       
       if (err.response?.data?.errors) {
         const backendErrors = err.response.data.errors;
-        console.log('Erros de validação:', backendErrors);
         
+        // Mapear erros do backend para os campos do formulário
         const mappedErrors = {};
         Object.keys(backendErrors).forEach(field => {
           const fieldName = field.toLowerCase();
           const errorMessages = backendErrors[field];
-          if (Array.isArray(errorMessages)) {
-            mappedErrors[fieldName] = errorMessages[0];
-          } else {
-            mappedErrors[fieldName] = errorMessages;
-          }
+          mappedErrors[fieldName] = Array.isArray(errorMessages) ? errorMessages[0] : errorMessages;
         });
         
-        setFieldErrors(prev => ({ ...prev, ...mappedErrors }));
+        setFieldErrors(mappedErrors); // Usar apenas erros do backend
         
-        const firstField = Object.keys(backendErrors)[0];
-        const firstError = backendErrors[firstField];
-        
-        if (Array.isArray(firstError)) {
-          errorMessage = firstError[0];
-        } else {
-          errorMessage = firstError;
-        }
+        // Usar o primeiro erro como mensagem principal
+        const firstError = Object.values(backendErrors)[0];
+        errorMessage = Array.isArray(firstError) ? firstError[0] : firstError;
         
       } else if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
@@ -187,16 +93,52 @@ export function useRegister() {
     }
   };
 
+  // FUNÇÃO PARA RECUPERAR SENHA (usando endpoint do authService)
+  const handleForgotPassword = async (emailForReset) => {
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      await forgotPassword(emailForReset);
+      notificationService.auth.forgotPasswordSuccess();
+      return true;
+    } catch (err) {
+      let errorMessage = 'Erro ao solicitar recuperação de senha';
+      
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
+      notificationService.auth.forgotPasswordError();
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // VERIFICAR SE JÁ ESTÁ LOGADO
+  const checkAuthStatus = () => {
+    return isAuthenticated();
+  };
+
   return {
-    name, setName: setNameWithValidation,
-    email, setEmail: setEmailWithValidation,
-    password, setPassword: setPasswordWithValidation,
-    phone, setPhone: setPhoneWithValidation,
-    cpf, setCpf: setCpfWithValidation,
+    // Estados
+    name, setName,
+    email, setEmail,
+    password, setPassword,
+    phone, setPhone,
+    cpf, setCpf,
     isLoading, setIsLoading,
     error, setError,
     success, setSuccess,
     fieldErrors,
-    handleRegister
+    
+    // Funções
+    handleRegister,
+    handleForgotPassword,
+    checkAuthStatus
   };
 }
