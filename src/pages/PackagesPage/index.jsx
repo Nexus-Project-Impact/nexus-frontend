@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PackageGrid } from './components/PackageGrid';
 import packageService from '../../services/packageService'; // Supondo que você tenha um serviço para buscar pacotes
 import { SearchBar } from './components/SearchBar';
+import { TestAPI } from '../../components/TestAPI';
 import styles from './PackagesPage.module.css';
 
 export function PackagesPage() {
@@ -63,6 +64,8 @@ const handleSearch = (filters) => {
       </div>
 
       <div className={styles.contentSection}>
+        <TestAPI />
+        
         <h2 className={styles.sectionTitle}>Seu novo destino está aqui!</h2>
         
         {isLoading && <p>Carregando...</p>}
