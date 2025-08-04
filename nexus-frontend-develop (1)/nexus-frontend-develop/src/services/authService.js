@@ -1,8 +1,7 @@
-// aqui estamos importando a API, para termos conexão com o back
 import { api } from './api';
 
 // ============================================================================
-// AUTENTICAÇÃO BÁSICA (ENDPOINTS EXISTENTES)
+// AUTENTICAÇÃO BÁSICA (ENDPOINTS EXISTENTES NO BACKEND)
 // ============================================================================
 
 // LOGIN: envia as credenciais e armazena o token no localStorage
@@ -75,40 +74,18 @@ export async function forgotPassword(email) {
   }
 }
 
-// RESETAR SENHA: define nova senha usando token do email (REQUER AUTORIZAÇÃO)
-export async function resetPassword(token, newPassword) {
+// LOGOUT: faz logout no servidor e limpa dados locais (REQUER AUTORIZAÇÃO)
+export async function logout() {
   try {
-    const response = await api.post('/Auth/reset-password', { token, newPassword });
-    console.log('Senha resetada com sucesso:', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao resetar senha:', error);
-    throw error;
-  }
-}
-
-// LOGOUT DO SERVIDOR: faz logout no servidor (REQUER AUTORIZAÇÃO)
-async function logoutServer() {
-  try {
+    // Faz logout no servidor
     const response = await api.post('/Auth/logout');
     console.log('Logout realizado no servidor:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Erro ao fazer logout no servidor:', error);
+    console.warn('Erro ao fazer logout no servidor:', error);
     throw error;
-  }
-}
-
-// LOGOUT: tenta logout no servidor, mas sempre limpa dados locais
-export async function logout() {
-  try {
-    // Tenta fazer logout no servidor primeiro
-    await logoutServer();
-    console.log('Logout realizado no servidor e localmente');
-  } catch (error) {
-    console.warn('Não foi possível fazer logout no servidor, fazendo logout apenas local:', error);
   } finally {
-    // SEMPRE limpa dados locais, independente do resultado do servidor
+    // SEMPRE limpa dados locais
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('userRole');
@@ -133,7 +110,6 @@ export function isAuthenticated() {
     
     return true;
   } catch (error) {
-    // Se não conseguir decodificar, assume que é válido
     return true;
   }
 }
@@ -158,78 +134,7 @@ export function getUserFromToken() {
   }
 }
 
-// VERIFICAR SE É ADMIN: verifica se usuário tem role de admin
-export function isAdmin() {
-  try {
-    const user = getUserFromToken();
-    if (!user) return false;
-    
-    if (Array.isArray(user.roles)) {
-      return user.roles.includes('Admin');
-    } else {
-      return user.roles === 'Admin';
-    }
-  } catch (error) {
-    console.error('Erro ao verificar se é admin:', error);
-    return false;
-  }
-}
-
-// VERIFICAR ROLE ESPECÍFICA: verifica se usuário tem role específica
-export function hasRole(roleName) {
-  try {
-    const user = getUserFromToken();
-    if (!user) return false;
-    
-    if (Array.isArray(user.roles)) {
-      return user.roles.includes(roleName);
-    } else {
-      return user.roles === roleName;
-    }
-  } catch (error) {
-    console.error('Erro ao verificar role:', error);
-    return false;
-  }
-}
-
-// VERIFICAR EXPIRAÇÃO DO TOKEN
-export function isTokenExpired() {
-  const user = getUserFromToken();
-  if (!user || !user.exp) return false;
-  
-  const currentTime = Date.now() / 1000;
-  return user.exp < currentTime;
-}
-
 // OBTER TOKEN: retorna o token atual
 export function getToken() {
   return localStorage.getItem('token');
-}
-
-// OBTER INFORMAÇÕES DO USUÁRIO LOGADO (DO TOKEN)
-export function getCurrentUserInfo() {
-  const user = getUserFromToken();
-  if (!user) {
-    throw new Error('Usuário não autenticado');
-  }
-  return user;
-}
-
-// AUTO-LOGIN: verifica se usuário pode fazer login automático
-export function autoLogin() {
-  try {
-    if (!isAuthenticated()) {
-      return false;
-    }
-    
-    if (isTokenExpired()) {
-      localStorage.removeItem('token');
-      return false;
-    }
-    
-    return true;
-  } catch (error) {
-    console.error('Auto-login falhou:', error);
-    return false;
-  }
 }
