@@ -61,32 +61,45 @@ export function Reviews({ packageId }) {
         </div>
       ) : (
         <div className="reviewsList">
-          {reviews.map((review, index) => (
-            <div key={review.id || index} className="reviewItem">
-              <div className="reviewHeader">
-                <span className="userName">{review.userName || review.clientName || 'Usuário'}</span>
-                <span className="reviewDate">
-                  {review.createdAt ? new Date(review.createdAt).toLocaleDateString('pt-BR') : 
-                   review.date ? new Date(review.date).toLocaleDateString('pt-BR') : 
-                   'Data não disponível'}
-                </span>
-              </div>
-              
-              <div className="reviewRating">
-                <div className="stars">
-                  {renderStars(parseInt(review.rating) || 0)}
+          {reviews.map((review, index) => {
+            // Tentar obter o nome do usuário de diferentes campos
+            const userName = review.userName || 
+                           review.clientName || 
+                           review.user?.name || 
+                           review.user?.nome || 
+                           review.client?.name || 
+                           review.client?.nome ||
+                           `Usuário #${review.userId || review.clientId || 'Anônimo'}`;
+            
+            return (
+              <div key={review.id || index} className="reviewItem">
+                <div className="reviewHeader">
+                  <span className="userName">{userName}</span>
+                  <span className="reviewDate">
+                    {review.createdAt ? new Date(review.createdAt).toLocaleDateString('pt-BR') : 
+                     review.date ? new Date(review.date).toLocaleDateString('pt-BR') : 
+                     'Data não disponível'}
+                  </span>
                 </div>
-                <span className="ratingText">({review.rating || 0}/10)</span>
+                
+                <div className="reviewRating">
+                  <div className="stars">
+                    {renderStars(parseInt(review.rating) || 0)}
+                  </div>
+                  <span className="ratingText">({review.rating || 0}/10)</span>
+                </div>
+                
+                <p className="reviewComment">{review.comment || 'Sem comentário'}</p>
+                
+                {/* Debug info - remover em produção */}
+                <small style={{ color: '#999', fontSize: '0.8rem' }}>
+                  Debug: ID={review.id}, UserID={review.userId || review.clientId}, 
+                  UserName="{review.userName || review.clientName || 'N/A'}", 
+                  Rating={review.rating}, Comment="{review.comment}"
+                </small>
               </div>
-              
-              <p className="reviewComment">{review.comment || 'Sem comentário'}</p>
-              
-              {/* Debug info */}
-              <small style={{ color: '#999', fontSize: '0.8rem' }}>
-                Debug: ID={review.id}, Rating={review.rating}, Comment="{review.comment}"
-              </small>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
