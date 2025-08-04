@@ -18,20 +18,15 @@ export function MinhasReservas() {
   } = useUserReservations();
 
   useEffect(() => {
-    console.log('🏠 MinhasReservas montado');
-    console.log('Token presente:', !!token);
-    console.log('User:', user);
     
     // Verificar se está logado
     if (!token) {
-      console.log('❌ Token ausente, redirecionando para login');
       navigate('/login');
       return;
     }
     
     // Forçar carregamento das reservas se não há reservas e não está carregando
     if (!isLoading && reservations.length === 0 && !error) {
-      console.log('🔄 Forçando reload das reservas');
       loadReservations?.();
     }
   }, [token, navigate, isLoading, reservations.length, error, loadReservations]);

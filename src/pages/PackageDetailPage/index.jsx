@@ -6,6 +6,7 @@ import { ReservationModal } from '../../components/ReservationModal';
 import { CheckoutModal } from '../../components/CheckoutModal';
 import { Reviews } from '../../components/Reviews';
 import { notificationService } from '../../services/notificationService';
+import { useReview } from '../../hooks/useReview';
 import styles from './PackageDetailPage.module.css';
 import { ptBR } from 'date-fns/locale';
 import { format } from 'date-fns';
@@ -13,7 +14,7 @@ import { format } from 'date-fns';
 export function PackageDetailPage() {
   const { packageId } = useParams(); // Pega o ID da URL
   const navigate = useNavigate(); // Hook para navegação
-  const { token } = useSelector((state) => state.auth); // 3. Pega o token do Redux
+  const { token, user } = useSelector((state) => state.auth); // 3. Pega o token do Redux
 
   const [pkg, setPkg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,10 +24,23 @@ export function PackageDetailPage() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [reservationData, setReservationData] = useState(null);
 
+  // Hook para verificar se usuário pode avaliar
+  const { canReview, checkCanReview } = useReview(packageId);
+
    const handleProceedToCheckout = (travelers) => {
     setReservationData(travelers); // 3. Guarda os dados
     setIsReservationModalOpen(false); // Fecha o modal de reserva
     setIsCheckoutOpen(true); // Abre o modal de checkout
+  };
+
+  const handleReviewClick = () => {
+    if (!token) {
+      notificationService.review.createError('Você precisa estar logado para avaliar um pacote.');
+      navigate('/login');
+      return;
+    }
+    
+    navigate(`/avaliar/${packageId}`);
   };
 
   const formatarData = (data) => {
@@ -51,6 +65,13 @@ export function PackageDetailPage() {
     };
     loadPackageDetails();
   }, [packageId]); // Roda sempre que o ID na URL mudar
+
+  // Verificar se usuário pode avaliar quando estiver logado
+  useEffect(() => {
+    if (token && user && packageId) {
+      checkCanReview();
+    }
+  }, [token, user, packageId, checkCanReview]);
 
   const handleBuyClick = () => {
     if (!token) {
@@ -143,6 +164,17 @@ export function PackageDetailPage() {
 
             </div>
             <button onClick={handleBuyClick} className={styles.buyButton}>Compre Agora</button>
+            
+            {/* Botão para avaliar pacote - só aparece se usuário puder avaliar */}
+            {token && canReview && (
+              <button 
+                onClick={handleReviewClick} 
+                className={styles.reviewButton}
+              >
+                ⭐ Avaliar Pacote
+              </button>
+            )}
+            
             <span className={styles.installments}>Em até {price.installments || 12}x no cartão</span>
           </div>
         </div>

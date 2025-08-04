@@ -11,12 +11,8 @@ export const useUserReservations = () => {
 
   // Carregar reservas do usuário
   const loadReservations = async () => {
-    console.log('🔍 loadReservations iniciado');
-    console.log('User:', user);
-    console.log('Token:', token ? 'Token presente' : 'Token ausente');
     
     if (!token) {
-      console.log('❌ Token ausente - não carregando reservas');
       setReservations([]);
       setIsLoading(false);
       return;
@@ -26,13 +22,10 @@ export const useUserReservations = () => {
       setIsLoading(true);
       setError(null);
       
-      console.log('📡 Chamando reservationService.getUserReservations()');
       const data = await reservationService.getUserReservations();
-      console.log('✅ Dados recebidos:', data);
       
-      // Verificar se data é um array
       if (!Array.isArray(data)) {
-        console.warn('⚠️ Dados recebidos não são um array:', data);
+        console.warn('Dados recebidos não são um array:', data);
         setReservations([]);
         setIsLoading(false);
         return;
@@ -40,21 +33,18 @@ export const useUserReservations = () => {
       
       // Processar os dados para garantir que tenham a estrutura esperada
       const processedReservations = data.map(reservation => {
-        console.log('🔍 Processando reserva:', reservation);
         
         return {
           id: reservation.id,
-          packageId: reservation.packageId || reservation.travelPackageId || reservation.pacoteId,
-          packageName: reservation.packageName || reservation.travelPackageName || reservation.nomePacote || reservation.pacoteNome || 'Nome não disponível',
-          packageImage: reservation.packageImage || reservation.image || reservation.imagemPacote || 'src/assets/Fernando-de-Noronha-01.jpg',
-          dates: reservation.dates || formatDates(reservation.departureDate || reservation.dataIda, reservation.returnDate || reservation.dataVolta),
-          travelers: reservation.travelers || reservation.viajantes || [],
-          totalAmount: reservation.totalAmount || reservation.totalPrice || reservation.valorTotal || 0,
-          bookingDate: reservation.bookingDate || reservation.createdAt || reservation.dataCriacao,
-          status: reservation.status || reservation.statusReserva || 'finalizada', // Mudando para 'finalizada' para permitir avaliação
-          hasReview: reservation.hasReview || reservation.temAvaliacao || false
+          packageId: reservation.travelPackageId,
+          packageName: reservation.travelPackageDestination,
+          packageImage: reservation.travelPackageImageUrl,
+          dates: reservation.reservationDate || formatDates(reservation.departureDate || reservation.dataIda, reservation.returnDate || reservation.dataVolta)
         };
+
       });
+
+      console.log(processedReservations);
       
       setReservations(processedReservations);
     } catch (err) {
@@ -157,9 +147,6 @@ export const useUserReservations = () => {
 
   // Carregar dados quando o token mudar
   useEffect(() => {
-    console.log('🔄 useEffect executado - useUserReservations');
-    console.log('User ID:', user?.id);
-    console.log('Token exists:', !!token);
     loadReservations();
   }, [token]); // Removendo dependência do user?.id
 

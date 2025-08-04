@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import packageService from '../../services/packageService';
 import { useReview } from '../../hooks/useReview';
+import { useUserReservations } from '../../hooks/useReservations';
 import { notificationService } from '../../services/notificationService';
 import { ReviewForm } from './components';
 import { useErrorHandler } from '../../hooks/useErrorHandler';
@@ -24,6 +25,9 @@ export function AddReviewPage() {
 
   // Hook para gerenciar reviews
   const { addReview, canReview } = useReview(packageId);
+  
+  // Hook para gerenciar reservas (para marcar como avaliada)
+  const { markAsReviewed } = useUserReservations();
 
   // Dados vindos da página de reservas
   const reservationData = location.state;
@@ -84,8 +88,7 @@ export function AddReviewPage() {
         
         // Se veio de reservas, atualizar o estado da reserva
         if (reservationData?.fromReservations && reservationData?.reservationId) {
-          // Aqui poderia chamar uma função para atualizar o estado da reserva
-          // markAsReviewed(reservationData.reservationId);
+          markAsReviewed(reservationData.reservationId);
         }
         
         // Voltar para as reservas ou pacotes

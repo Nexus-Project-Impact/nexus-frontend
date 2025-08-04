@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import reviewService from '../services/reviewService';
+import reservationService from '../services/reservationService';
 import { notificationService } from '../services/notificationService';
 
 // Hook para gerenciar avaliações
@@ -51,8 +52,22 @@ export const useReview = (packageId) => {
     }
 
     try {
-      const result = await reviewService.canUserReview(packageId, user.id);
-      setCanReview(result.canReview);
+      // 1. Verificar se usuário já avaliou este pacote
+      const reviewCheck = await reviewService.canUserReview(packageId, user.id);
+      if (!reviewCheck.canReview) {
+        setCanReview(false);
+        return;
+      }
+
+      // 2. Verificar se usuário tem reserva finalizada para este pacote
+      const userReservations = await reservationService.getUserReservations();
+      const hasFinishedReservation = userReservations.some(reservation => {
+        const packageIdMatch = reservation.packageId === parseInt(packageId);
+        const isFinished = reservation.status === 'finalizada' || reservation.status === 'Finalizada';
+        return packageIdMatch && isFinished;
+      });
+
+      setCanReview(hasFinishedReservation);
     } catch (err) {
       console.error('Erro ao verificar permissão:', err);
       setCanReview(false);
@@ -64,10 +79,19 @@ export const useReview = (packageId) => {
     try {
       setError(null);
       
-      const newReview = await reviewService.create({
-        packageId: packageId,
+      // Preparar dados da avaliação
+      const reviewPayload = {
+        packageId: parseInt(packageId),
+        userId: user.id,
+        rating: parseInt(reviewData.rating),
+        comment: reviewData.comment || '',
+        clientName: user.name || user.nome || 'Usuário',
         ...reviewData
-      });
+      };
+
+      console.log('📝 Enviando avaliação:', reviewPayload);
+      
+      const newReview = await reviewService.create(reviewPayload);
 
       // Atualizar lista local
       setReviews(prev => [newReview, ...prev]);
@@ -136,7 +160,8 @@ export const useReview = (packageId) => {
     addReview,
     updateReview,
     deleteReview,
-    refreshReviews: loadReviews
+    refreshReviews: loadReviews,
+    checkCanReview // Expor função para verificação manual
   };
 };
 
