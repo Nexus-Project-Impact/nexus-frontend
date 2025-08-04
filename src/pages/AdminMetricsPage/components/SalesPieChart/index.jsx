@@ -4,16 +4,41 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function SalesPieChart({ salesData }) {
+export function SalesPieChart({ salesStatusData }) {
+  const totalQuantity = salesStatusData.reduce((sum, item) => sum + item.quantity, 0);
+  
   const data = {
-    labels: salesData.map(d => d.destination),
+    labels: salesStatusData.map(d => d.status),
     datasets: [{
-      label: '% de Vendas',
-      data: salesData.map(d => d.percentage),
-      backgroundColor: [ '#ffb84d', '#ff9900','#D35400', '#8c52ff', '#6a0dad', '#E74C3C'],
+      label: 'Quantidade',
+      data: salesStatusData.map(d => d.quantity),
+      backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
       borderColor: '#fff',
       borderWidth: 2,
     }],
   };
-  return <Pie data={data} />;
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true,
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            const percentage = ((context.parsed / totalQuantity) * 100).toFixed(1);
+            return `${context.label}: ${context.parsed} (${percentage}%)`;
+          }
+        }
+      }
+    }
+  };
+
+  return <Pie data={data} options={options} />;
 }
