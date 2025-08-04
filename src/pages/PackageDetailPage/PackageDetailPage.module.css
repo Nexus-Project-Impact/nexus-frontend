@@ -125,6 +125,33 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+.reviewButton {
+  width: 100%;
+  padding: 12px 24px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.reviewButton:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.reviewButton:active {
+  transform: translateY(0);
+}
 .installments {
   font-size: 0.8rem;
   color: #777;

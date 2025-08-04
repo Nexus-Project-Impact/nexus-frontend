@@ -18,25 +18,16 @@ export function MinhasReservas() {
   } = useUserReservations();
 
   useEffect(() => {
-    console.log('🏠 MinhasReservas montado');
-    console.log('Token presente:', !!token);
-    console.log('User:', user);
-    
     // Verificar se está logado
     if (!token) {
-      console.log('❌ Token ausente, redirecionando para login');
       navigate('/login');
       return;
     }
     
-    // Forçar carregamento das reservas se não há reservas e não está carregando
-    if (!isLoading && reservations.length === 0 && !error) {
-      console.log('🔄 Forçando reload das reservas');
-      loadReservations?.();
-    }
-  }, [token, navigate, isLoading, reservations.length, error, loadReservations]);
+    // Não precisa forçar reload aqui, o hook já carrega automaticamente
+  }, [token, navigate]);
 
-  const handleReviewClick = async (reservationId, packageId) => {
+  const handleReviewClick = async (reservationId, packageId, reservation) => {
     try {
       // Verificar se pode avaliar esta reserva específica
       const canReview = await canReviewReservation(reservationId);
@@ -46,19 +37,29 @@ export function MinhasReservas() {
         return;
       }
 
-      // Navegar para a página de adicionar avaliação
+      // Navegar para a página de adicionar avaliação com dados da reserva
       navigate(`/avaliar/${packageId}`, { 
         state: { 
-          reservationId, 
+          reservationId,
+          packageId,
+          packageName: reservation.packageName,
+          destination: reservation.destination || reservation.packageName,
+          departureDate: reservation.departureDate,
+          returnDate: reservation.returnDate,
+          packageImage: reservation.packageImage,
           fromReservations: true 
         } 
       });
     } catch (err) {
       console.error('Erro ao verificar permissão de avaliação:', err);
-      // Em caso de erro, permite navegar para avaliação
+      // Em caso de erro, permite navegar para avaliação com dados básicos
       navigate(`/avaliar/${packageId}`, { 
         state: { 
-          reservationId, 
+          reservationId,
+          packageId,
+          packageName: reservation.packageName,
+          destination: reservation.destination || reservation.packageName,
+          packageImage: reservation.packageImage,
           fromReservations: true 
         } 
       });
@@ -133,7 +134,7 @@ export function MinhasReservas() {
                     {!reservation.hasReview ? (
                       <button 
                         className={styles.reviewButton}
-                        onClick={() => handleReviewClick(reservation.id, reservation.packageId)}
+                        onClick={() => handleReviewClick(reservation.id, reservation.packageId, reservation)}
                       >
                         Avaliar Pacote
                       </button>

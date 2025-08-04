@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import reviewService from '../services/reviewService';
+import reservationService from '../services/reservationService';
 import { notificationService } from '../services/notificationService';
 
 // Hook para gerenciar avaliações
 export const useReview = (packageId) => {
+  // Debug: verificar o valor do packageId recebido (apenas se for inválido)
+  if (!packageId || packageId === '0' || isNaN(parseInt(packageId))) {
+    console.warn('DEBUG useReview - packageId recebido é inválido:', packageId, 'tipo:', typeof packageId);
+  }
+  
   const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState({
     averageRating: 0,
@@ -32,12 +38,28 @@ export const useReview = (packageId) => {
         reviewService.getPackageStats(packageId)
       ]);
 
-      setReviews(reviewsData);
-      setStats(statsData);
+      setReviews(reviewsData || []);
+      setStats(statsData || {
+        averageRating: 0,
+        totalReviews: 0,
+        ratingDistribution: {}
+      });
 
     } catch (err) {
-      setError('Erro ao carregar avaliações');
       console.error('Erro ao carregar reviews:', err);
+      
+      // Se é 404, não é um erro real - só não há reviews ainda
+      if (err.response?.status === 404) {
+        setReviews([]);
+        setStats({
+          averageRating: 0,
+          totalReviews: 0,
+          ratingDistribution: {}
+        });
+        setError(null);
+      } else {
+        setError('Erro ao carregar avaliações');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -51,11 +73,35 @@ export const useReview = (packageId) => {
     }
 
     try {
-      const result = await reviewService.canUserReview(packageId, user.id);
-      setCanReview(result.canReview);
+      // 1. Verificar se usuário já avaliou este pacote
+      const reviewCheck = await reviewService.canUserReview(packageId, user.id);
+      if (!reviewCheck.canReview) {
+        setCanReview(false);
+        return;
+      }
+
+      // 2. Verificar se usuário tem reserva finalizada para este pacote
+      const userReservations = await reservationService.getUserReservations();
+      
+      // Se não há reservas, não pode avaliar
+      if (!userReservations || userReservations.length === 0) {
+        setCanReview(false);
+        return;
+      }
+      
+      const hasFinishedReservation = userReservations.some(reservation => {
+        const packageIdMatch = reservation.packageId === parseInt(packageId) || 
+                              reservation.travelPackageId === parseInt(packageId);
+        const isFinished = reservation.status === 'finalizada' || reservation.status === 'Finalizada';
+        return packageIdMatch && isFinished;
+      });
+
+      setCanReview(hasFinishedReservation);
     } catch (err) {
       console.error('Erro ao verificar permissão:', err);
-      setCanReview(false);
+      
+      // Em caso de erro na verificação, permite avaliar se o usuário está logado
+      setCanReview(!!user?.id);
     }
   };
 
@@ -64,28 +110,84 @@ export const useReview = (packageId) => {
     try {
       setError(null);
       
-      const newReview = await reviewService.create({
-        packageId: packageId,
-        ...reviewData
-      });
-
-      // Atualizar lista local
-      setReviews(prev => [newReview, ...prev]);
       
-      // Recarregar estatísticas
-      const newStats = await reviewService.getPackageStats(packageId);
-      setStats(newStats);
+      
+      // Tentar obter packageId de múltiplas fontes
+      let finalPackageId = packageId;
+      
+      // Se packageId da URL não é válido, tentar obter do reviewData
+      if (!finalPackageId || finalPackageId === '0' || isNaN(parseInt(finalPackageId))) {
+        console.log('packageId da URL inválido, tentando outras fontes...');
+        
+        // Tentar obter do reviewData
+        if (reviewData.packageId) {
+          finalPackageId = reviewData.packageId;
+          console.log('Usando packageId do reviewData:', finalPackageId);
+        }
+        
+        // Tentar obter do reservationId (se houver)
+        if (!finalPackageId && reviewData.reservationId) {
+          console.log('Tentando obter packageId via reservationId (não implementado ainda)');
+        }
+      }
+      
+      // Verificar se packageId é válido
+      const packageIdNumber = parseInt(finalPackageId);
+      if (isNaN(packageIdNumber) || packageIdNumber <= 0) {
+        console.error('ERRO: packageId inválido após todas as tentativas!', { 
+          packageIdOriginal: packageId, 
+          finalPackageId, 
+          packageIdNumber,
+          reviewData 
+        });
+        throw new Error(`packageId inválido: ${finalPackageId}`);
+      }
+      
+      
+      // Preparar dados da avaliação
+      const reviewPayload = {
+        travelPackageId: packageIdNumber, // Usando o número validado
+        rating: parseInt(reviewData.rating),
+        comment: reviewData.comment || '',
+        // Adicionar campos do usuário se disponíveis
+        ...(user?.id && { userId: user.id }),
+        ...(user?.name && { clientName: user.name }),
+        ...(user?.nome && { clientName: user.nome }),
+        ...reviewData
+      };
 
-      // Usuário não pode mais avaliar após avaliar
-      setCanReview(false);
+      
 
-      notificationService.review.createSuccess();
+      
+      const newReview = await reviewService.create(reviewPayload);
+
+      // Atualizar lista local se a criação foi bem-sucedida
+      if (newReview) {
+        setReviews(prev => [newReview, ...prev]);
+        
+        // Recarregar estatísticas
+        try {
+          const newStats = await reviewService.getPackageStats(packageId);
+          setStats(newStats);
+        } catch (statsError) {
+          console.warn('Erro ao recarregar estatísticas:', statsError);
+        }
+
+        // Usuário não pode mais avaliar após avaliar
+        setCanReview(false);
+      }
+
       return { success: true, review: newReview };
     } catch (err) {
-      setError('Erro ao enviar avaliação');
       console.error('Erro ao adicionar review:', err);
-      notificationService.review.createError();
-      return { success: false, error: err.message };
+      
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.error || 
+                          err.message || 
+                          'Erro ao enviar avaliação';
+      
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     }
   };
 
@@ -123,7 +225,7 @@ export const useReview = (packageId) => {
   useEffect(() => {
     if (packageId) {
       loadReviews();
-      checkCanReview();
+      // Não chamar checkCanReview aqui para evitar loops infinitos
     }
   }, [packageId]);
 
@@ -136,7 +238,8 @@ export const useReview = (packageId) => {
     addReview,
     updateReview,
     deleteReview,
-    refreshReviews: loadReviews
+    refreshReviews: loadReviews,
+    checkCanReview // Expor função para verificação manual
   };
 };
 

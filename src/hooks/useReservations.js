@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import reservationService from '../services/reservationService';
+import packageService from '../services/packageService';
 
 // Hook para gerenciar reservas do usuário
 export const useUserReservations = () => {
@@ -11,14 +12,11 @@ export const useUserReservations = () => {
 
   // Carregar reservas do usuário
   const loadReservations = async () => {
-    console.log('🔍 loadReservations iniciado');
-    console.log('User:', user);
-    console.log('Token:', token ? 'Token presente' : 'Token ausente');
     
     if (!token) {
-      console.log('❌ Token ausente - não carregando reservas');
       setReservations([]);
       setIsLoading(false);
+      setError(null);
       return;
     }
 
@@ -26,41 +24,65 @@ export const useUserReservations = () => {
       setIsLoading(true);
       setError(null);
       
-      console.log('📡 Chamando reservationService.getUserReservations()');
       const data = await reservationService.getUserReservations();
-      console.log('✅ Dados recebidos:', data);
       
-      // Verificar se data é um array
+      // Se não há dados ou é null, trata como array vazio
+      if (!data) {
+        setReservations([]);
+        setIsLoading(false);
+        return;
+      }
+      
       if (!Array.isArray(data)) {
-        console.warn('⚠️ Dados recebidos não são um array:', data);
+        console.warn('Dados recebidos não são um array:', data);
+        setReservations([]);
+        setIsLoading(false);
+        return;
+      }
+      
+      // Se o array está vazio, é um caso válido (usuário sem reservas)
+      if (data.length === 0) {
         setReservations([]);
         setIsLoading(false);
         return;
       }
       
       // Processar os dados para garantir que tenham a estrutura esperada
-      const processedReservations = data.map(reservation => {
-        console.log('🔍 Processando reserva:', reservation);
+      const processedReservations = await Promise.all(data.map(async (reservation) => {
+          
+          // Tentar buscar dados do pacote para pegar as datas corretas
+          const packageData = await packageService.getPackageById(reservation.travelPackageId);
+          const finalDepartureDate = packageData?.departureDate || reservation.departureDate || reservation.dataIda;
+          const finalReturnDate = packageData?.returnDate || reservation.returnDate || reservation.dataVolta;
+          
+          const formattedDates = formatDates(finalDepartureDate, finalReturnDate);
+          
+          return {
+            id: reservation.id,
+            packageId: reservation.travelPackageId,
+            packageName: reservation.travelPackageDestination,
+            packageImage: reservation.travelPackageImageUrl,
+            dates: formattedDates,
+            departureDate: finalDepartureDate,
+            returnDate: finalReturnDate,
+            destination: reservation.travelPackageDestination
+          };
         
-        return {
-          id: reservation.id,
-          packageId: reservation.packageId || reservation.travelPackageId || reservation.pacoteId,
-          packageName: reservation.packageName || reservation.travelPackageName || reservation.nomePacote || reservation.pacoteNome || 'Nome não disponível',
-          packageImage: reservation.packageImage || reservation.image || reservation.imagemPacote || 'src/assets/Fernando-de-Noronha-01.jpg',
-          dates: reservation.dates || formatDates(reservation.departureDate || reservation.dataIda, reservation.returnDate || reservation.dataVolta),
-          travelers: reservation.travelers || reservation.viajantes || [],
-          totalAmount: reservation.totalAmount || reservation.totalPrice || reservation.valorTotal || 0,
-          bookingDate: reservation.bookingDate || reservation.createdAt || reservation.dataCriacao,
-          status: reservation.status || reservation.statusReserva || 'finalizada', // Mudando para 'finalizada' para permitir avaliação
-          hasReview: reservation.hasReview || reservation.temAvaliacao || false
-        };
-      });
+      }));
+
       
       setReservations(processedReservations);
     } catch (err) {
       console.error('Erro ao carregar reservas:', err);
-      setError(`Erro ao carregar suas reservas: ${err.response?.data?.message || err.message}`);
-      setReservations([]);
+      
+      // Se é erro 404, provavelmente o usuário não tem reservas
+      if (err.response?.status === 404) {
+        setReservations([]);
+        setError(null); // Não é um erro real, só não há reservas
+      } else {
+        setError(`Erro ao carregar suas reservas: ${err.response?.data?.message || err.message}`);
+        setReservations([]);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -75,26 +97,41 @@ export const useUserReservations = () => {
         const departure = new Date(today.getTime() + (7 * 24 * 60 * 60 * 1000)); // +7 dias
         const returnD = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000)); // +14 dias
         
-        const options = { day: 'numeric', month: 'short', year: 'numeric' };
-        const departureStr = departure.toLocaleDateString('pt-BR', options);
-        const returnStr = returnD.toLocaleDateString('pt-BR', options);
-        return `${departureStr} à ${returnStr}`;
+        // Usar o mesmo formato da tela de adicionar avaliação
+        const departureStr = departure.toLocaleDateString('pt-BR');
+        const returnStr = returnD.toLocaleDateString('pt-BR');
+        return `${departureStr} - ${returnStr}`;
       }
       
-      const departure = new Date(departureDate);
-      const returnD = returnDate ? new Date(returnDate) : null;
+      // Tentar parser a data de diferentes formatos
+      let departure;
+      if (typeof departureDate === 'string') {
+        // Se é uma string ISO, converter
+        departure = new Date(departureDate);
+      } else {
+        departure = new Date(departureDate);
+      }
+      
+      let returnD = null;
+      if (returnDate) {
+        if (typeof returnDate === 'string') {
+          returnD = new Date(returnDate);
+        } else {
+          returnD = new Date(returnDate);
+        }
+      }
       
       // Verificar se as datas são válidas
       if (isNaN(departure.getTime())) {
         return 'Datas não disponíveis';
       }
       
-      const options = { day: 'numeric', month: 'short', year: 'numeric' };
-      const departureStr = departure.toLocaleDateString('pt-BR', options);
+      // Usar o mesmo formato da tela de adicionar avaliação
+      const departureStr = departure.toLocaleDateString('pt-BR');
       
       if (returnD && !isNaN(returnD.getTime())) {
-        const returnStr = returnD.toLocaleDateString('pt-BR', options);
-        return `${departureStr} à ${returnStr}`;
+        const returnStr = returnD.toLocaleDateString('pt-BR');
+        return `${departureStr} - ${returnStr}`;
       }
       
       return departureStr;
@@ -105,10 +142,10 @@ export const useUserReservations = () => {
       const departure = new Date(today.getTime() + (7 * 24 * 60 * 60 * 1000));
       const returnD = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000));
       
-      const options = { day: 'numeric', month: 'short', year: 'numeric' };
-      const departureStr = departure.toLocaleDateString('pt-BR', options);
-      const returnStr = returnD.toLocaleDateString('pt-BR', options);
-      return `${departureStr} à ${returnStr}`;
+      // Usar o mesmo formato da tela de adicionar avaliação
+      const departureStr = departure.toLocaleDateString('pt-BR');
+      const returnStr = returnD.toLocaleDateString('pt-BR');
+      return `${departureStr} - ${returnStr}`;
     }
   };
 
@@ -157,9 +194,6 @@ export const useUserReservations = () => {
 
   // Carregar dados quando o token mudar
   useEffect(() => {
-    console.log('🔄 useEffect executado - useUserReservations');
-    console.log('User ID:', user?.id);
-    console.log('Token exists:', !!token);
     loadReservations();
   }, [token]); // Removendo dependência do user?.id
 

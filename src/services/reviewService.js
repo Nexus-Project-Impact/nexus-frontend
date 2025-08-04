@@ -2,10 +2,11 @@ import api from './api';
 
 // Serviço para gerenciar avaliações
 export const reviewService = {
+
   // Buscar todas as avaliações (getAll)
   getAll: async () => {
     try {
-      const response = await api.get('/reviews');
+      const response = await api.get('/Review/GetAllReviews');
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar todas as avaliações:', error);
@@ -16,7 +17,7 @@ export const reviewService = {
   // Buscar avaliações de um pacote específico (filtra do getAll)
   getByPackageId: async (packageId) => {
     try {
-      const response = await api.get('/reviews');
+      const response = await api.get('/Review/GetAllReviews');
       // Filtra as reviews do pacote específico no frontend
       const allReviews = response.data;
       const packageReviews = allReviews.filter(review => 
@@ -27,12 +28,12 @@ export const reviewService = {
       console.error('Erro ao buscar avaliações do pacote:', error);
       throw error;
     }
-  },
+  }, 
 
   // Buscar avaliação por ID
   getById: async (reviewId) => {
     try {
-      const response = await api.get(`/reviews/${reviewId}`);
+      const response = await api.get(`/Review/GetById/${reviewId}`);
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar avaliação:', error);
@@ -43,10 +44,20 @@ export const reviewService = {
   // Criar nova avaliação
   create: async (reviewData) => {
     try {
-      const response = await api.post('/reviews', reviewData);
+      // Debug: verificar o que está sendo enviado
+      console.log('DEBUG reviewService.create - dados recebidos:', reviewData);
+      console.log('DEBUG reviewService.create - travelPackageId:', reviewData.travelPackageId);
+      console.log('DEBUG reviewService.create - typeof travelPackageId:', typeof reviewData.travelPackageId);
+      
+      const response = await api.post('/Review/Create', reviewData);
+      
+      // Debug: verificar resposta do servidor
+      console.log('DEBUG reviewService.create - resposta do servidor:', response.data);
+      
       return response.data;
     } catch (error) {
       console.error('Erro ao criar avaliação:', error);
+      console.error('DEBUG reviewService.create - dados que causaram erro:', reviewData);
       throw error;
     }
   },
@@ -54,7 +65,7 @@ export const reviewService = {
   // Moderar avaliação (apenas admin)
   moderate: async (reviewId, action) => {
     try {
-      const response = await api.put(`/reviews/${reviewId}/moderate`, { action });
+      const response = await api.put(`/Review/Moderate/${reviewId}`, { action });
       return response.data;
     } catch (error) {
       console.error('Erro ao moderar avaliação:', error);
@@ -65,7 +76,7 @@ export const reviewService = {
   // Excluir avaliação (apenas admin)
   delete: async (reviewId) => {
     try {
-      await api.delete(`/reviews/${reviewId}`);
+      await api.delete(`/Review/Delete/${reviewId}`);
       return { success: true };
     } catch (error) {
       console.error('Erro ao excluir avaliação:', error);
@@ -116,30 +127,7 @@ export const reviewService = {
     }
   },
 
-  // Verificar se usuário pode avaliar (verificação frontend)
-  canUserReview: async (packageId, userId) => {
-    try {
-      const packageReviews = await this.getByPackageId(packageId);
-      
-      // Converte para int para comparação segura
-      const userIdInt = parseInt(userId);
-      
-      // Verifica se o usuário já avaliou este pacote
-      const userHasReviewed = packageReviews.some(review => {
-        const reviewUserId = parseInt(review.userId) || parseInt(review.clientId);
-        return reviewUserId === userIdInt;
-      });
-
-      return {
-        canReview: !userHasReviewed,
-        reason: userHasReviewed ? 'Usuário já avaliou este pacote' : 'Pode avaliar'
-      };
-    } catch (error) {
-      console.error('Erro ao verificar permissão:', error);
-      // Em caso de erro, permite avaliar
-      return { canReview: true, reason: 'Verificação não disponível' };
-    }
-  }
+  
 };
 
 export default reviewService;

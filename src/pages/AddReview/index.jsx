@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import packageService from '../../services/packageService';
 import { useReview } from '../../hooks/useReview';
+import { useUserReservations } from '../../hooks/useReservations';
 import { notificationService } from '../../services/notificationService';
 import { ReviewForm } from './components';
 import { useErrorHandler } from '../../hooks/useErrorHandler';
@@ -11,6 +13,25 @@ export function AddReviewPage() {
   const { packageId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Debug: verificar o valor do packageId
+  console.log('DEBUG AddReviewPage - packageId:', packageId, 'tipo:', typeof packageId);
+  console.log('DEBUG AddReviewPage - location.pathname:', location.pathname);
+  console.log('DEBUG AddReviewPage - window.location.href:', window.location.href);
+  
+  // Dados vindos da página de reservas
+  const reservationData = location.state;
+
+  // Tentar obter packageId de múltiplas fontes como fallback
+  const finalPackageId = packageId || reservationData?.packageId;
+  
+  // Verificação adicional se packageId é válido
+  const isValidPackageId = finalPackageId && finalPackageId !== '0' && !isNaN(parseInt(finalPackageId)) && parseInt(finalPackageId) > 0;
+  console.log('DEBUG AddReviewPage - isValidPackageId:', isValidPackageId);
+  
+  if (!isValidPackageId) {
+    console.error('ERRO: packageId inválido na URL!', { packageId, finalPackageId, pathname: location.pathname });
+  }
 
   const { token } = useSelector((state) => state.auth);
   const { handleAsync, error: hookError } = useErrorHandler();
@@ -23,12 +44,30 @@ export function AddReviewPage() {
   const [error, setError] = useState('');
 
   // Hook para gerenciar reviews
-  const { addReview, canReview } = useReview(packageId);
+  const { addReview, canReview } = useReview(finalPackageId);
+  
+  // Hook para gerenciar reservas (para marcar como avaliada)
+  const { markAsReviewed } = useUserReservations();
 
-  // Dados vindos da página de reservas
-  const reservationData = location.state;
+  // Debug apenas se há problema com packageId
+  if (!finalPackageId || finalPackageId === '0' || isNaN(parseInt(finalPackageId))) {
+    console.error('=== ERRO: packageId inválido ===');
+    console.error('1. packageId (da URL):', packageId);
+    console.error('2. reservationData?.packageId:', reservationData?.packageId);
+    console.error('3. location.pathname:', location.pathname);
+    console.error('4. reservationData completo:', reservationData);
+    console.error('===============================');
+  } else {
+    console.log('DEBUG: packageId válido encontrado:', finalPackageId);
+  }
 
   useEffect(() => {
+    // Debug: verificar o valor do packageId
+    console.log('DEBUG AddReviewPage useEffect - packageId:', packageId, 'tipo:', typeof packageId);
+    console.log('DEBUG AddReviewPage useEffect - finalPackageId:', finalPackageId, 'tipo:', typeof finalPackageId);
+    console.log('DEBUG AddReviewPage useEffect - location:', location);
+    console.log('DEBUG AddReviewPage useEffect - params completos:', { packageId });
+    
     // Verificar se está logado
     if (!token) {
       navigate('/login');
@@ -39,17 +78,22 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        const data = await handleAsync(() => packageService.getPackageById(packageId));
+        console.log('DEBUG loadPackageData - chamando getPackageById com finalPackageId:', finalPackageId);
+        const data = await packageService.getPackageById(finalPackageId);
+        console.log('DEBUG loadPackageData - dados retornados:', data);
         setPackageData(data);
       } catch (err) {
-        setError(hookError || 'Erro ao carregar dados do pacote');
+        setError('Erro ao carregar dados do pacote');
+        console.error('Erro ao carregar pacote:', err);
       } finally {
         setIsLoadingPackage(false);
       }
     };
 
-    loadPackageData();
-  }, [packageId, token, navigate]);
+    if (finalPackageId) {
+      loadPackageData();
+    }
+  }, [finalPackageId, token, navigate]);
 
   // Verificar se usuário pode avaliar (pode adicionar uma verificação adicional)
   useEffect(() => {
@@ -57,7 +101,7 @@ export function AddReviewPage() {
       // Opcional: mostrar aviso se usuário não pode avaliar
       console.log('Usuário já avaliou este pacote ou não tem permissão');
     }
-  }, [canReview, packageData, isLoadingPackage]);
+  }, [canReview, packageData, isLoadingPackage]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,6 +119,7 @@ export function AddReviewPage() {
       const result = await addReview({
         rating: rating,
         comment: comment,
+        packageId: finalPackageId, // Usar finalPackageId
         reservationId: reservationData?.reservationId // Se vier de uma reserva
       });
 
@@ -84,15 +129,14 @@ export function AddReviewPage() {
         
         // Se veio de reservas, atualizar o estado da reserva
         if (reservationData?.fromReservations && reservationData?.reservationId) {
-          // Aqui poderia chamar uma função para atualizar o estado da reserva
-          // markAsReviewed(reservationData.reservationId);
+          markAsReviewed(reservationData.reservationId);
         }
         
         // Voltar para as reservas ou pacotes
         if (reservationData?.fromReservations) {
           navigate('/reservas');
         } else {
-          navigate(`/pacotes/${packageId}`);
+          navigate(`/pacotes/${finalPackageId}`);
         }
       } else {
         setError(result.error || 'Erro ao enviar avaliação. Tente novamente.');
@@ -109,7 +153,7 @@ export function AddReviewPage() {
     if (reservationData?.fromReservations) {
       navigate('/reservas');
     } else {
-      navigate(`/pacotes/${packageId}`);
+      navigate(`/pacotes/${finalPackageId}`);
     }
   };
 
@@ -157,11 +201,53 @@ export function AddReviewPage() {
     );
   }
 
+  // Função para formatar as datas
+  const formatDateRange = (departureDate, returnDate) => {
+    if (!departureDate || !returnDate) return 'Datas não disponíveis';
+    
+    try {
+      const departure = new Date(departureDate).toLocaleDateString('pt-BR');
+      const returnD = new Date(returnDate).toLocaleDateString('pt-BR');
+      return `${departure} - ${returnD}`;
+    } catch (error) {
+      return 'Datas não disponíveis';
+    }
+  };
+
+  // Preparar dados para exibição - usar dados do state se disponíveis, senão usar dados da API
+  const getDisplayData = () => {
+    // Se veio das reservas ou página de detalhes com state
+    if (reservationData) {
+      return {
+        name: reservationData.packageName || packageData?.name || packageData?.title || 'Pacote',
+        destination: reservationData.destination || packageData?.destination || 'Destino não disponível',
+        dateRange: reservationData.departureDate && reservationData.returnDate 
+          ? formatDateRange(reservationData.departureDate, reservationData.returnDate)
+          : (packageData?.departureDate && packageData?.returnDate 
+            ? formatDateRange(packageData.departureDate, packageData.returnDate)
+            : 'Datas não disponíveis'),
+        image: reservationData.packageImage || packageData?.imageUrl || packageData?.image || packageData?.imagePackage
+      };
+    }
+    
+    // Se veio direto da página de detalhes sem state ou fallback para dados da API
+    return {
+      name: packageData?.name || packageData?.title || 'Pacote',
+      destination: packageData?.destination || 'Destino não disponível',
+      dateRange: packageData?.departureDate && packageData?.returnDate 
+        ? formatDateRange(packageData.departureDate, packageData.returnDate)
+        : 'Datas não disponíveis',
+      image: packageData?.imageUrl || packageData?.image || packageData?.imagePackage
+    };
+  };
+
+  const displayData = getDisplayData();
+
   return (
     <ReviewForm
-      destination={packageData.name}
-      dateRange={packageData.dates}
-      packageImage={packageData.image}
+      destination={displayData.name}
+      dateRange={displayData.dateRange}
+      packageImage={displayData.image}
       rating={rating}
       setRating={setRating}
       comment={comment}
