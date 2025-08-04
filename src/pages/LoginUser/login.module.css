@@ -81,6 +81,7 @@
 }
 
 .forgotPassword {
+  background: none; border: none; padding: 0;
   align-self: flex-end;
   margin-bottom: 25px;
   color: #8c52ff;

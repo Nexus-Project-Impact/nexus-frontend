@@ -15,6 +15,7 @@ export function LoginForm({
   isLoading,
   error,
   onRegisterClick,
+  onForgotPassClick,
 }) {
   return (
     <div className={styles.loginContainer}>
@@ -56,7 +57,9 @@ export function LoginForm({
           />
         </div>
 
-        <a href="#" className={styles.forgotPassword}>Esqueci a senha</a>
+        <button type="button" onClick={onForgotPassClick} className={styles.forgotPassword}>
+          Esqueci a senha
+        </button>
 
         <button type="submit" className={styles.loginButton} disabled={isLoading}>
           {isLoading ? 'Carregando...' : 'Login'}

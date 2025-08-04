@@ -106,3 +106,47 @@
   text-align: center;
   color: #888;
 }
+
+.boletoConfirmation {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.boletoGenerated {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.boletoGenerated h3 {
+  color: #28a745; /* Verde sucesso */
+}
+
+.barcodeWrapper {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.barcodeInput {
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-right: 10px;
+  font-size: 1rem;
+  font-family: 'Courier New', Courier, monospace; /* Fonte de código */
+  border-radius: 8px;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+.dueDate {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.button {
+  background-color: #8c52ff;
+  border-left: 10px;
+}
