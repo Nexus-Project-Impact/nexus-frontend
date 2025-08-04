@@ -76,9 +76,9 @@
 }
 
 .moderateButton {
-  color: #007bff;
+  color: #FF9900;
   background: none;
-  border: 1px solid #007bff;
+  border: 1px solid #FF9900;
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -89,7 +89,7 @@
 }
 
 .moderateButton:hover {
-  background-color: #007bff;
+  background-color: #FF9900;
   color: white;
 }
 
