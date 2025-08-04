@@ -20,7 +20,7 @@ export function useLogin() {
 
     setTimeout(() => {
       if (email === MOCK_USER.email && password === MOCK_USER.password) {
-        const fakeUser = { id: 1, name: 'Usuário Teste' };
+        const fakeUser = { id: 1, name: 'Bill Gates' };
         const fakeToken = 'token-secreto-mockado-para-frontend';
         
         // Salva no localStorage para persistência
