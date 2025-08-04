@@ -5,26 +5,44 @@ export const reviewService = {
   // Buscar todas as avaliações (getAll)
   getAll: async () => {
     try {
-      const response = await api.get('/reviews');
+      const response = await api.get('/Review/GetAllReviews');
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar todas as avaliações:', error);
+      
+      // Se erro 404, retorna array vazio (não há reviews ainda)
+      if (error.response?.status === 404) {
+        return [];
+      }
       throw error;
     }
   },
 
-  // Buscar avaliações de um pacote específico (filtra do getAll)
+  // Buscar avaliações de um pacote específico
   getByPackageId: async (packageId) => {
     try {
-      const response = await api.get('/reviews');
-      // Filtra as reviews do pacote específico no frontend
-      const allReviews = response.data;
-      const packageReviews = allReviews.filter(review => 
-        review.packageId === parseInt(packageId) || review.pacoteId === parseInt(packageId)
-      );
-      return packageReviews;
+      // Primeiro tenta buscar diretamente por packageId se houver endpoint específico
+      try {
+        const response = await api.get(`/Review/GetById/${packageId}`);
+        return response.data;
+      } catch (directError) {
+        // Se não houver endpoint específico, usa getAll e filtra
+        const response = await api.get('/Review/GetAllReviews');
+        const allReviews = response.data || [];
+        const packageReviews = allReviews.filter(review => 
+          review.packageId === parseInt(packageId) || 
+          review.pacoteId === parseInt(packageId) ||
+          review.travelPackageId === parseInt(packageId)
+        );
+        return packageReviews;
+      }
     } catch (error) {
       console.error('Erro ao buscar avaliações do pacote:', error);
+      
+      // Se erro 404, retorna array vazio
+      if (error.response?.status === 404) {
+        return [];
+      }
       throw error;
     }
   },
@@ -32,7 +50,7 @@ export const reviewService = {
   // Buscar avaliação por ID
   getById: async (reviewId) => {
     try {
-      const response = await api.get(`/reviews/${reviewId}`);
+      const response = await api.get(`/Review/GetById/${reviewId}`);
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar avaliação:', error);
@@ -43,7 +61,7 @@ export const reviewService = {
   // Criar nova avaliação
   create: async (reviewData) => {
     try {
-      const response = await api.post('/reviews', reviewData);
+      const response = await api.post('/Review/Create', reviewData);
       return response.data;
     } catch (error) {
       console.error('Erro ao criar avaliação:', error);
@@ -54,7 +72,7 @@ export const reviewService = {
   // Moderar avaliação (apenas admin)
   moderate: async (reviewId, action) => {
     try {
-      const response = await api.put(`/reviews/${reviewId}/moderate`, { action });
+      const response = await api.put(`/Review/Moderate/${reviewId}`, { action });
       return response.data;
     } catch (error) {
       console.error('Erro ao moderar avaliação:', error);
@@ -65,7 +83,7 @@ export const reviewService = {
   // Excluir avaliação (apenas admin)
   delete: async (reviewId) => {
     try {
-      await api.delete(`/reviews/${reviewId}`);
+      await api.delete(`/Review/Delete/${reviewId}`);
       return { success: true };
     } catch (error) {
       console.error('Erro ao excluir avaliação:', error);

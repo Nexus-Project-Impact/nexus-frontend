@@ -33,12 +33,28 @@ export const useReview = (packageId) => {
         reviewService.getPackageStats(packageId)
       ]);
 
-      setReviews(reviewsData);
-      setStats(statsData);
+      setReviews(reviewsData || []);
+      setStats(statsData || {
+        averageRating: 0,
+        totalReviews: 0,
+        ratingDistribution: {}
+      });
 
     } catch (err) {
-      setError('Erro ao carregar avaliações');
       console.error('Erro ao carregar reviews:', err);
+      
+      // Se é 404, não é um erro real - só não há reviews ainda
+      if (err.response?.status === 404) {
+        setReviews([]);
+        setStats({
+          averageRating: 0,
+          totalReviews: 0,
+          ratingDistribution: {}
+        });
+        setError(null);
+      } else {
+        setError('Erro ao carregar avaliações');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -61,8 +77,16 @@ export const useReview = (packageId) => {
 
       // 2. Verificar se usuário tem reserva finalizada para este pacote
       const userReservations = await reservationService.getUserReservations();
+      
+      // Se não há reservas, não pode avaliar
+      if (!userReservations || userReservations.length === 0) {
+        setCanReview(false);
+        return;
+      }
+      
       const hasFinishedReservation = userReservations.some(reservation => {
-        const packageIdMatch = reservation.packageId === parseInt(packageId);
+        const packageIdMatch = reservation.packageId === parseInt(packageId) || 
+                              reservation.travelPackageId === parseInt(packageId);
         const isFinished = reservation.status === 'finalizada' || reservation.status === 'Finalizada';
         return packageIdMatch && isFinished;
       });
@@ -70,7 +94,9 @@ export const useReview = (packageId) => {
       setCanReview(hasFinishedReservation);
     } catch (err) {
       console.error('Erro ao verificar permissão:', err);
-      setCanReview(false);
+      
+      // Em caso de erro na verificação, permite avaliar se o usuário está logado
+      setCanReview(!!user?.id);
     }
   };
 
@@ -81,11 +107,13 @@ export const useReview = (packageId) => {
       
       // Preparar dados da avaliação
       const reviewPayload = {
-        packageId: parseInt(packageId),
-        userId: user.id,
+        travelPackageId: parseInt(packageId), // Usando travelPackageId conforme padrão do backend
         rating: parseInt(reviewData.rating),
         comment: reviewData.comment || '',
-        clientName: user.name || user.nome || 'Usuário',
+        // Adicionar campos do usuário se disponíveis
+        ...(user?.id && { userId: user.id }),
+        ...(user?.name && { clientName: user.name }),
+        ...(user?.nome && { clientName: user.nome }),
         ...reviewData
       };
 
@@ -93,23 +121,33 @@ export const useReview = (packageId) => {
       
       const newReview = await reviewService.create(reviewPayload);
 
-      // Atualizar lista local
-      setReviews(prev => [newReview, ...prev]);
-      
-      // Recarregar estatísticas
-      const newStats = await reviewService.getPackageStats(packageId);
-      setStats(newStats);
+      // Atualizar lista local se a criação foi bem-sucedida
+      if (newReview) {
+        setReviews(prev => [newReview, ...prev]);
+        
+        // Recarregar estatísticas
+        try {
+          const newStats = await reviewService.getPackageStats(packageId);
+          setStats(newStats);
+        } catch (statsError) {
+          console.warn('Erro ao recarregar estatísticas:', statsError);
+        }
 
-      // Usuário não pode mais avaliar após avaliar
-      setCanReview(false);
+        // Usuário não pode mais avaliar após avaliar
+        setCanReview(false);
+      }
 
-      notificationService.review.createSuccess();
       return { success: true, review: newReview };
     } catch (err) {
-      setError('Erro ao enviar avaliação');
       console.error('Erro ao adicionar review:', err);
-      notificationService.review.createError();
-      return { success: false, error: err.message };
+      
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.error || 
+                          err.message || 
+                          'Erro ao enviar avaliação';
+      
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     }
   };
 

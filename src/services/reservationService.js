@@ -7,6 +7,10 @@ const reservationService = {
     try {
       const response = await api.get('/Reservation/MyReservations');
       
+      // Se não há dados ou é null, retorna array vazio
+      if (!response.data) {
+        return [];
+      }
       
       return response.data;
     } catch (error) {
@@ -14,6 +18,13 @@ const reservationService = {
       console.error('Status:', error.response?.status);
       console.error('Data:', error.response?.data);
       
+      // Se o erro for 404 (usuário sem reservas), retorna array vazio
+      if (error.response?.status === 404) {
+        return [];
+      }
+      
+      // Para outros erros, relança a exceção
+      throw error;
     }
   },
 

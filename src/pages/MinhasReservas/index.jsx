@@ -18,18 +18,14 @@ export function MinhasReservas() {
   } = useUserReservations();
 
   useEffect(() => {
-    
     // Verificar se está logado
     if (!token) {
       navigate('/login');
       return;
     }
     
-    // Forçar carregamento das reservas se não há reservas e não está carregando
-    if (!isLoading && reservations.length === 0 && !error) {
-      loadReservations?.();
-    }
-  }, [token, navigate, isLoading, reservations.length, error, loadReservations]);
+    // Não precisa forçar reload aqui, o hook já carrega automaticamente
+  }, [token, navigate]);
 
   const handleReviewClick = async (reservationId, packageId) => {
     try {
