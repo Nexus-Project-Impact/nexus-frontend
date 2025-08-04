@@ -1,0 +1,82 @@
+.pageContainer {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-right: 4px solid #FF9900;
+}
+
+.pageContainer h2 {
+  margin-top: 0;
+  color: #FF9900;
+}
+
+.detailsContainer {
+  display: grid;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.form {
+  display: grid;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.formGroup input,
+.formGroup textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.submitButton {
+  background-color: #8c52ff;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  justify-self: start; /* Alinha o botão à esquerda */
+}
+
+.buttonContainer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.actionLink {
+  color: #8c52ff;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  max-width: 140px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #8c52ff;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.actionLink:hover {
+  background-color: #8c52ff;
+  color: white;
+}
