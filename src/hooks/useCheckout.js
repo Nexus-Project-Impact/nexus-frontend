@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { notificationService } from '../services/notificationService';
 
 export function useCheckout(packageData, travelers) {
   const [paymentMethod, setPaymentMethod] = useState('credit');
@@ -18,7 +19,7 @@ export function useCheckout(packageData, travelers) {
     if (paymentMethod === 'debit') {
       console.log('Simulando compra com cartão de débito...');
       setTimeout(() => {
-        alert('Compra finalizada com sucesso! (Simulação)');
+        notificationService.booking.purchaseSuccess();
         setIsLoading(false);
         window.location.href = '/';
       }, 1500);
