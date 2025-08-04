@@ -1,0 +1,12 @@
+/* DENTRO DE: src/components/Layout/Layout.module.css */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ocupa no mínimo 100% da altura da tela */
+  width: 100%;
+}
+
+.mainContent {
+  flex-grow: 1; /* Faz este elemento crescer e ocupar o espaço disponível */
+  padding-top: 80px; /* Padding para não ficar atrás do Header fixo */
+}
