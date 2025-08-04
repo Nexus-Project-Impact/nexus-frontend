@@ -28,7 +28,7 @@ export const reviewService = {
       console.error('Erro ao buscar avaliações do pacote:', error);
       throw error;
     }
-  },
+  }, 
 
   // Buscar avaliação por ID
   getById: async (reviewId) => {
@@ -44,10 +44,20 @@ export const reviewService = {
   // Criar nova avaliação
   create: async (reviewData) => {
     try {
+      // Debug: verificar o que está sendo enviado
+      console.log('DEBUG reviewService.create - dados recebidos:', reviewData);
+      console.log('DEBUG reviewService.create - travelPackageId:', reviewData.travelPackageId);
+      console.log('DEBUG reviewService.create - typeof travelPackageId:', typeof reviewData.travelPackageId);
+      
       const response = await api.post('/Review/Create', reviewData);
+      
+      // Debug: verificar resposta do servidor
+      console.log('DEBUG reviewService.create - resposta do servidor:', response.data);
+      
       return response.data;
     } catch (error) {
       console.error('Erro ao criar avaliação:', error);
+      console.error('DEBUG reviewService.create - dados que causaram erro:', reviewData);
       throw error;
     }
   },

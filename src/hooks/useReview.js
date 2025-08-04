@@ -6,6 +6,11 @@ import { notificationService } from '../services/notificationService';
 
 // Hook para gerenciar avaliações
 export const useReview = (packageId) => {
+  // Debug: verificar o valor do packageId recebido (apenas se for inválido)
+  if (!packageId || packageId === '0' || isNaN(parseInt(packageId))) {
+    console.warn('DEBUG useReview - packageId recebido é inválido:', packageId, 'tipo:', typeof packageId);
+  }
+  
   const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState({
     averageRating: 0,
@@ -105,9 +110,52 @@ export const useReview = (packageId) => {
     try {
       setError(null);
       
+      // Debug: verificação mais detalhada do packageId
+      console.log('=== DEBUG addReview - Verificação do packageId ===');
+      console.log('packageId original:', packageId);
+      console.log('typeof packageId:', typeof packageId);
+      console.log('packageId é undefined?', packageId === undefined);
+      console.log('packageId é null?', packageId === null);
+      console.log('packageId é string vazia?', packageId === '');
+      console.log('packageId convertido com parseInt:', parseInt(packageId));
+      console.log('parseInt(packageId) é NaN?', isNaN(parseInt(packageId)));
+      
+      // Tentar obter packageId de múltiplas fontes
+      let finalPackageId = packageId;
+      
+      // Se packageId da URL não é válido, tentar obter do reviewData
+      if (!finalPackageId || finalPackageId === '0' || isNaN(parseInt(finalPackageId))) {
+        console.log('packageId da URL inválido, tentando outras fontes...');
+        
+        // Tentar obter do reviewData
+        if (reviewData.packageId) {
+          finalPackageId = reviewData.packageId;
+          console.log('Usando packageId do reviewData:', finalPackageId);
+        }
+        
+        // Tentar obter do reservationId (se houver)
+        if (!finalPackageId && reviewData.reservationId) {
+          console.log('Tentando obter packageId via reservationId (não implementado ainda)');
+        }
+      }
+      
+      // Verificar se packageId é válido
+      const packageIdNumber = parseInt(finalPackageId);
+      if (isNaN(packageIdNumber) || packageIdNumber <= 0) {
+        console.error('ERRO: packageId inválido após todas as tentativas!', { 
+          packageIdOriginal: packageId, 
+          finalPackageId, 
+          packageIdNumber,
+          reviewData 
+        });
+        throw new Error(`packageId inválido: ${finalPackageId}`);
+      }
+      
+      console.log('packageId final validado:', packageIdNumber);
+      
       // Preparar dados da avaliação
       const reviewPayload = {
-        travelPackageId: parseInt(packageId), // Usando travelPackageId conforme padrão do backend
+        travelPackageId: packageIdNumber, // Usando o número validado
         rating: parseInt(reviewData.rating),
         comment: reviewData.comment || '',
         // Adicionar campos do usuário se disponíveis
@@ -116,6 +164,11 @@ export const useReview = (packageId) => {
         ...(user?.nome && { clientName: user.nome }),
         ...reviewData
       };
+
+      // Debug: verificar o payload antes de enviar
+      console.log('DEBUG addReview - packageId original:', packageId);
+      console.log('DEBUG addReview - packageId convertido:', packageIdNumber);
+      console.log('DEBUG addReview - payload completo:', reviewPayload);
 
       
       const newReview = await reviewService.create(reviewPayload);

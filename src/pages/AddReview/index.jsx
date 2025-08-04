@@ -14,6 +14,25 @@ export function AddReviewPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Debug: verificar o valor do packageId
+  console.log('DEBUG AddReviewPage - packageId:', packageId, 'tipo:', typeof packageId);
+  console.log('DEBUG AddReviewPage - location.pathname:', location.pathname);
+  console.log('DEBUG AddReviewPage - window.location.href:', window.location.href);
+  
+  // Dados vindos da página de reservas
+  const reservationData = location.state;
+
+  // Tentar obter packageId de múltiplas fontes como fallback
+  const finalPackageId = packageId || reservationData?.packageId;
+  
+  // Verificação adicional se packageId é válido
+  const isValidPackageId = finalPackageId && finalPackageId !== '0' && !isNaN(parseInt(finalPackageId)) && parseInt(finalPackageId) > 0;
+  console.log('DEBUG AddReviewPage - isValidPackageId:', isValidPackageId);
+  
+  if (!isValidPackageId) {
+    console.error('ERRO: packageId inválido na URL!', { packageId, finalPackageId, pathname: location.pathname });
+  }
+
   const { token } = useSelector((state) => state.auth);
   const { handleAsync, error: hookError } = useErrorHandler();
   
@@ -25,15 +44,30 @@ export function AddReviewPage() {
   const [error, setError] = useState('');
 
   // Hook para gerenciar reviews
-  const { addReview, canReview } = useReview(packageId);
+  const { addReview, canReview } = useReview(finalPackageId);
   
   // Hook para gerenciar reservas (para marcar como avaliada)
   const { markAsReviewed } = useUserReservations();
 
-  // Dados vindos da página de reservas
-  const reservationData = location.state;
+  // Debug apenas se há problema com packageId
+  if (!finalPackageId || finalPackageId === '0' || isNaN(parseInt(finalPackageId))) {
+    console.error('=== ERRO: packageId inválido ===');
+    console.error('1. packageId (da URL):', packageId);
+    console.error('2. reservationData?.packageId:', reservationData?.packageId);
+    console.error('3. location.pathname:', location.pathname);
+    console.error('4. reservationData completo:', reservationData);
+    console.error('===============================');
+  } else {
+    console.log('DEBUG: packageId válido encontrado:', finalPackageId);
+  }
 
   useEffect(() => {
+    // Debug: verificar o valor do packageId
+    console.log('DEBUG AddReviewPage useEffect - packageId:', packageId, 'tipo:', typeof packageId);
+    console.log('DEBUG AddReviewPage useEffect - finalPackageId:', finalPackageId, 'tipo:', typeof finalPackageId);
+    console.log('DEBUG AddReviewPage useEffect - location:', location);
+    console.log('DEBUG AddReviewPage useEffect - params completos:', { packageId });
+    
     // Verificar se está logado
     if (!token) {
       navigate('/login');
@@ -44,7 +78,9 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        const data = await packageService.getPackageById(packageId);
+        console.log('DEBUG loadPackageData - chamando getPackageById com finalPackageId:', finalPackageId);
+        const data = await packageService.getPackageById(finalPackageId);
+        console.log('DEBUG loadPackageData - dados retornados:', data);
         setPackageData(data);
       } catch (err) {
         setError('Erro ao carregar dados do pacote');
@@ -54,8 +90,10 @@ export function AddReviewPage() {
       }
     };
 
-    loadPackageData();
-  }, [packageId, token, navigate]);
+    if (finalPackageId) {
+      loadPackageData();
+    }
+  }, [finalPackageId, token, navigate]);
 
   // Verificar se usuário pode avaliar (pode adicionar uma verificação adicional)
   useEffect(() => {
@@ -63,7 +101,7 @@ export function AddReviewPage() {
       // Opcional: mostrar aviso se usuário não pode avaliar
       console.log('Usuário já avaliou este pacote ou não tem permissão');
     }
-  }, [canReview, packageData, isLoadingPackage]);
+  }, [canReview, packageData, isLoadingPackage]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +119,7 @@ export function AddReviewPage() {
       const result = await addReview({
         rating: rating,
         comment: comment,
+        packageId: finalPackageId, // Usar finalPackageId
         reservationId: reservationData?.reservationId // Se vier de uma reserva
       });
 
@@ -97,7 +136,7 @@ export function AddReviewPage() {
         if (reservationData?.fromReservations) {
           navigate('/reservas');
         } else {
-          navigate(`/pacotes/${packageId}`);
+          navigate(`/pacotes/${finalPackageId}`);
         }
       } else {
         setError(result.error || 'Erro ao enviar avaliação. Tente novamente.');
@@ -114,7 +153,7 @@ export function AddReviewPage() {
     if (reservationData?.fromReservations) {
       navigate('/reservas');
     } else {
-      navigate(`/pacotes/${packageId}`);
+      navigate(`/pacotes/${finalPackageId}`);
     }
   };
 

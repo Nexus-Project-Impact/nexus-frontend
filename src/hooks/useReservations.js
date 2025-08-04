@@ -70,7 +70,6 @@ export const useUserReservations = () => {
         
       }));
 
-      console.log('Reservas processadas:', processedReservations);
       
       setReservations(processedReservations);
     } catch (err) {
