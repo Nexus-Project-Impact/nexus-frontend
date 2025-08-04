@@ -56,7 +56,7 @@ export default function AppRoutes(){
                     <Route path="/admin/pacotes/editar/:id" element={<AdminEditPackage />} />
                     <Route path="/admin/reservas" element={<AdminReservation/>} />
                     <Route path="/admin/reservas/visualizar/:id" element={<AdminReservationDetails/>} />
-                    <Route path="/admin/comentarios" element={<AdminCommentModerationPage />} />
+                    <Route path="/admin/avaliacoes" element={<AdminCommentModerationPage />} />
                     <Route path="/admin/metricas" element={<AdminMetricsPage />} />
                 </Route>
             </Routes>
