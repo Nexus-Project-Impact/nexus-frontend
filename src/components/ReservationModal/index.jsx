@@ -74,7 +74,7 @@ export function ReservationModal({ isOpen, onClose, onSaveAndProceed }) {
           className={styles.addButton}
           disabled={travelers.length >= 5}
         >
-          Adicionar Viajante
+          Adicionar viajante
         </button>
 
         <div className={styles.footer}>
