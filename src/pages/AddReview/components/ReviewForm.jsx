@@ -1,4 +1,5 @@
 import React from 'react';
+import { ImageWithFallback } from '../../../components/ImageWithFallback';
 import styles from '../review.module.css'; // Crie um CSS module similar ao do login
 
 export function ReviewForm({
@@ -30,10 +31,11 @@ export function ReviewForm({
       <div className={styles.infoSection}>
         {packageImage && (
           <div className={styles.packageImageContainer}>
-            <img 
+            <ImageWithFallback 
               src={packageImage} 
               alt={destination}
               className={styles.packageImage}
+              fallbackSrc="/src/assets/nexus-logo.png"
             />
           </div>
         )}
