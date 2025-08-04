@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getReservationsByUserId } from '../../services/reservationService';
+import reservationService from '../../services/reservationService';
 import styles from './ProfilePage.module.css';
 
 // Sub-componente para os dados do usuário
@@ -46,7 +46,7 @@ function MyReservations({ userId }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getReservationsByUserId(userId).then(data => {
+    reservationService.getById(userId).then(data => {
       setReservations(data);
       setIsLoading(false);
     });

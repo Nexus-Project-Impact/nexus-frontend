@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getReservationById } from '../services/reservationService';
+import reservationService from '../services/reservationService';
 
 export function useReservationDetails(reservationId) {
   const [reservation, setReservation] = useState(null);
@@ -10,7 +10,7 @@ export function useReservationDetails(reservationId) {
       const fetchReservationDetails = async () => {
         setIsLoading(true);
         try {
-          const data = await getReservationById(reservationId);
+          const data = await reservationService.getById(reservationId);
           console.log('Detalhes da reserva carregados:', data);
           setReservation(data);
         } catch (error) {

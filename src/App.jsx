@@ -17,6 +17,7 @@ function PacotesPage() { return <h1>Página de Pacotes</h1>; }
 import PerfilPage from './pages/PerfilPage';
 import { MinhasReservas } from './pages/MinhasReservas';
 import { AddReviewPage } from './pages/AddReview';
+import AppRoutes from './routes';
 
 function App() {
   return (
@@ -30,19 +31,8 @@ function App() {
       }}
     >
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<PackagesPage />} />
-            <Route path="pacotes" element={<PackagesPage />} />
-            <Route path="pacotes/:packageId" element={<PackageDetailPage />} />
-            <Route path="login" element={<LoginPage />} />
-            {/* ✅ NOVAS ROTAS */}
-            <Route path="reservas" element={<MinhasReservas />} />
-            <Route path="avaliar/:packageId" element={<AddReviewPage />} />
-            <Route path="perfil" element={<PerfilPage />} />
-          </Route>
-        </Routes>
-                     
+        <AppRoutes />
+            
          {/* Container para as notificações */}
       <ToastContainer
         position="top-right"

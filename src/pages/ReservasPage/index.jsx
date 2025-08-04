@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getReservationsByUserId } from '../../services/reservationService';
+import reservationService from '../../services/reservationService';
 import { ReservationCard } from './components/ReservationCard';
 import styles from './ReservasPage.module.css';
 
@@ -12,7 +12,7 @@ export default function ReservasPage() {
   useEffect(() => {
     // Garante que só busca as reservas se o usuário existir
     if (user?.id) {
-      getReservationsByUserId(user.id).then(data => {
+      reservationService.getById(user.id).then(data => {
         setReservations(data);
         setIsLoading(false);
       });

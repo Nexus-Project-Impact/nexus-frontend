@@ -37,7 +37,7 @@ const packageService = {
         return response.data;
     },
     getByValue: async (minValue, maxValue) => {
-        const response = await api.get(`/TravelPackage/GetByValue/${minValue, maxValue}`);
+        const response = await api.get(`/TravelPackageControler/GetByValue/${minValue, maxValue}`);
         return response.data;
     },
 
