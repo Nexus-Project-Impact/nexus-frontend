@@ -63,9 +63,17 @@ export function ReservationModal({ isOpen, onClose, onSaveAndProceed }) {
           ))}
         </div>
 
-        
+        {travelers.length >= 5 && (
+          <div className={styles.limitMessage}>
+            Limite máximo de 5 viajantes atingido
+          </div>
+        )}
 
-        <button onClick={addTraveler} className={styles.addButton}>
+        <button 
+          onClick={addTraveler} 
+          className={styles.addButton}
+          disabled={travelers.length >= 5}
+        >
           Adicionar Viajante
         </button>
 
