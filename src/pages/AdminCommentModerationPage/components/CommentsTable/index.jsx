@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CommentsTable.module.css';
 
-export function CommentsTable({ comments, onDelete }) {
+export function CommentsTable({ comments, onDelete, onModerate }) {
   return (
     <table className={styles.table}>
       <thead>
@@ -57,10 +57,23 @@ export function CommentsTable({ comments, onDelete }) {
                   'N/A'
               }
             </td>
-            <td>
-              <button onClick={() => onDelete(review.id)} className={styles.deleteButton}>
-                Excluir
-              </button>
+            <td className={styles.actionsColumn}>
+              <div className={styles.actionsContainer}>
+                <button 
+                  onClick={() => onModerate(review.id, review.comment || '')} 
+                  className={styles.moderateButton}
+                  title="Moderar comentário"
+                >
+                  Moderar
+                </button>
+                <button 
+                  onClick={() => onDelete(review.id)} 
+                  className={styles.deleteButton}
+                  title="Excluir avaliação"
+                >
+                  Excluir
+                </button>
+              </div>
             </td>
           </tr>
         ))}

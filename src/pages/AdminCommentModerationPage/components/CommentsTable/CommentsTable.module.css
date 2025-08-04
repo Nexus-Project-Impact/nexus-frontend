@@ -63,16 +63,47 @@
   font-weight: 500;
 }
 
+.actionsColumn {
+  width: 140px;
+  min-width: 140px;
+}
+
+.actionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.moderateButton {
+  color: #007bff;
+  background: none;
+  border: 1px solid #007bff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.moderateButton:hover {
+  background-color: #007bff;
+  color: white;
+}
+
 .deleteButton {
   color: #dc3545;
   background: none;
   border: 1px solid #dc3545;
-  padding: 8px 16px;
-  border-radius: 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 .deleteButton:hover {
@@ -101,6 +132,16 @@
   .ratingStars {
     font-size: 12px;
   }
+  
+  .actionsContainer {
+    gap: 6px;
+  }
+  
+  .moderateButton,
+  .deleteButton {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -118,5 +159,16 @@
   
   .commentCell {
     max-width: 150px;
+  }
+  
+  .actionsColumn {
+    width: 100px;
+    min-width: 100px;
+  }
+  
+  .moderateButton,
+  .deleteButton {
+    padding: 3px 6px;
+    font-size: 0.7rem;
   }
 }
