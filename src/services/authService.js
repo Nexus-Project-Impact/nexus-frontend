@@ -1,7 +1,13 @@
-// aqui estamos importando a API, para termos conexão com o back
 import { api } from './api';
+import axios from 'axios';
 
-// LOGIN: envia as credenciais e armazena o token no localStorage
+const anonymousApi = axios.create({
+  baseURL: 'https://localhost:7164/',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 export async function login(email, password) {
   try {
     const response = await api.post('/Auth/login', { email, password });
@@ -18,7 +24,6 @@ export async function login(email, password) {
   }
 }
 
-// LOGIN ADMIN: login específico para administradores
 export async function login_admin(email, password){
   try {
     const response = await api.post('/Auth/login-admin', { email, password });
@@ -35,7 +40,6 @@ export async function login_admin(email, password){
   }
 }
 
-// REGISTRO: registrar novo usuário
 export async function register(name, email, password, phone, cpf) {
   try {
     const response = await api.post('/Auth/register', { name, email, password, phone, cpf });
@@ -59,19 +63,80 @@ export async function register(name, email, password, phone, cpf) {
   }
 }
 
-// ESQUECEU A SENHA: envia email para reset (REQUER AUTORIZAÇÃO)
+
 export async function forgotPassword(email) {
   try {
-    const response = await api.post('/Auth/forgot-password', { email });
+    
+    const response = await anonymousApi.post('/Auth/forgot-password', { email });
     console.log('Email de recuperação enviado:', response.data);
-    return response.data;
+    
+    return {
+      success: response.data.success || true,
+      message: response.data.message || 'Email de recuperação enviado'
+    };
   } catch (error) {
     console.error('Erro ao solicitar recuperação de senha:', error);
     throw error;
   }
 }
 
-// LOGOUT: faz logout no servidor e limpa dados locais (REQUER AUTORIZAÇÃO)
+export async function resetPasswordLoggedUser(currentPassword, newPassword) {
+  try {
+    const response = await api.post('/Auth/change-password', {
+      currentPassword: currentPassword,
+      newPassword: newPassword
+    });
+    console.log('Senha alterada com sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao alterar senha:', error);
+    throw error;
+  }
+}
+
+export async function resetPasswordWithCode(email, code, newPassword) {
+  try {
+    console.log('Tentando resetar senha com:', { email, code, newPassword });
+    
+    const response = await anonymousApi.post('/Auth/reset-password', {
+      email: email,
+      code: code,
+      newPassword: newPassword
+    });
+    console.log('Senha resetada com código:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao resetar senha com código:', error);
+    console.error('Detalhes do erro:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url,
+      message: error.response?.data?.message || error.message
+    });
+    
+    if (error.response?.status === 401) {
+      throw new Error('O endpoint reset-password requer autorização. Backend precisa ser ajustado para aceitar código sem token.');
+    }
+    
+    throw error;
+  }
+}
+
+export async function resetPasswordWithToken(token, newPassword) {
+  try {
+    // Usar anonymousApi para não incluir token de autorização
+    const response = await anonymousApi.post('/Auth/reset-password-with-token', {
+      token: token,
+      newPassword: newPassword
+    });
+    console.log('Senha resetada com token:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao resetar senha com token:', error);
+    throw error;
+  }
+}
+
 export async function logout() {
   try {
     // Faz logout no servidor
@@ -90,13 +155,11 @@ export async function logout() {
   }
 }
 
-// VERIFICAR SE ESTÁ LOGADO: verifica se token existe e é válido
 export function isAuthenticated() {
   const token = localStorage.getItem('token');
   if (!token) return false;
   
   try {
-    // Verifica se o token não está expirado (se for JWT)
     const payload = JSON.parse(atob(token.split('.')[1]));
     const currentTime = Date.now() / 1000;
     
@@ -131,7 +194,6 @@ export function getUserFromToken() {
   }
 }
 
-// OBTER TOKEN: retorna o token atual
 export function getToken() {
   return localStorage.getItem('token');
 }
