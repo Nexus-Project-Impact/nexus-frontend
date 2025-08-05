@@ -7,31 +7,41 @@ export function useAdminReservations() {
   const [reservations, setReservations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchReservations = async () => {
-      setIsLoading(true);
-      try {
-        const data = await reservationService.getAll();
-        console.log('Reservas carregadas:', data);
-        setReservations(data);
-      } catch (error) {
-        console.error('Erro ao carregar reservas:', error);
-        alert('Não foi possível carregar as reservas.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const searchReservations = async (filters = {}) => {
+    setIsLoading(true);
+    try {
+      const data = await reservationService.searchWithFilters(filters);
+      console.log('Reservas carregadas/filtradas:', data);
+      setReservations(data);
+    } catch (error) {
+      console.error('Erro ao buscar reservas:', error);
+      alert('Não foi possível buscar as reservas.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchReservations();
+  useEffect(() => {
+    // Carrega todas as reservas na inicialização (sem filtros)
+    searchReservations();
   }, []);
 
   const handleViewReservation = (reservationId) => {
-    navigate(`/admin/reservas/visualizar/${reservationId}`);
+    // Encontra a reserva completa pelos dados já carregados
+    const selectedReservation = reservations.find(reservation => 
+      reservation.id === reservationId || reservation.reservationId === reservationId
+    );
+    
+    // Navega passando os dados da reserva via state
+    navigate(`/admin/reservas/visualizar/${reservationId}`, {
+      state: { reservationData: selectedReservation }
+    });
   };
 
   return {
     reservations,
     isLoading,
+    searchReservations,
     handleViewReservation
   };
 }
