@@ -5,11 +5,10 @@ import packageService from '../../services/packageService';
 import { ReservationModal } from '../../components/ReservationModal';
 import { CheckoutModal } from '../../components/CheckoutModal';
 import { Reviews } from '../../components/Reviews';
+import { LocationMap } from '../../components/LocationMap';
 import { notificationService } from '../../services/notificationService';
 import { useReview } from '../../hooks/useReview';
 import styles from './PackageDetailPage.module.css';
-import { ptBR } from 'date-fns/locale';
-import { format } from 'date-fns';
 
 export function PackageDetailPage() {
   const { packageId } = useParams(); // Pega o ID da URL
@@ -65,11 +64,6 @@ export function PackageDetailPage() {
     });
   };
 
-  const formatarData = (data) => {
-    return format(new Date(data), "EEE d MMM yyyy", { locale: ptBR });
-  };
-
-
   useEffect(() => {
     const loadPackageDetails = async () => {
       try {
@@ -101,7 +95,7 @@ export function PackageDetailPage() {
     };
     
     checkReviewPermission();
-  }, [token, user?.id, packageId, pkg?.id, isLoading]); // Usando IDs específicos para evitar loops
+  }, [token, user, packageId, pkg, isLoading, checkCanReview]); // Dependências completas
 
   const handleBuyClick = () => {
     if (!token) {
@@ -122,7 +116,6 @@ export function PackageDetailPage() {
   if (!pkg) return <p>Pacote não encontrado.</p>;
 
   const {
-  id,
   title = pkg.name || 'Título não disponível',
   imageUrl = pkg.image || mainImage || 'https://via.placeholder.com/400x300',
   destination = pkg.destination || 'Destino não disponível',
@@ -141,6 +134,10 @@ export function PackageDetailPage() {
         {/* Coluna da Esquerda */}
         <div className={styles.leftColumn}>
           <img src={imageUrl} alt="Imagem principal do destino" className={styles.mainImage} />
+          
+          {/* Mapa da Localização */}
+          <LocationMap destination={destination} className={styles.locationMap} />
+          
           <button onClick={() => navigate(-1)} className={styles.backButton}>Voltar</button>
         </div>
 
