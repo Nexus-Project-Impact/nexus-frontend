@@ -33,6 +33,26 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
+  background-color: #f5f5f5;
+  color: #333;
+  font-family: inherit;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 60px;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.formGroup input[type="file"] {
+  padding: 4px;
+}
+
+.formGroup small {
+  margin-top: 4px;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .submitButton {

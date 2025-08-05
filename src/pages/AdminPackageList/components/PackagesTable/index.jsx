@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './PackagesTable.module.css';
 
 // A tabela recebe os pacotes e uma função para lidar com a exclusão
-export function PackagesTable({ packages, onDelete }) {
+export function PackagesTable({ packages, onDelete, deletingId }) {
   // Verificação de segurança
   if (!packages || !Array.isArray(packages)) {
     return (
@@ -47,7 +47,13 @@ export function PackagesTable({ packages, onDelete }) {
             </td>
             <td className={styles.actions}>
               <Link to={`/admin/pacotes/editar/${pkg.id}`} className={styles.actionLink}>Editar</Link>
-              <button onClick={() => onDelete(pkg.id)} className={`${styles.actionLink} ${styles.deleteButton}`}>Excluir</button>
+              <button 
+                onClick={() => onDelete(pkg.id)} 
+                className={`${styles.actionLink} ${styles.deleteButton}`}
+                disabled={deletingId === pkg.id}
+              >
+                {deletingId === pkg.id ? 'Excluindo...' : 'Excluir'}
+              </button>
             </td>
           </tr>
         ))}

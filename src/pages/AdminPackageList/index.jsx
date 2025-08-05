@@ -8,6 +8,7 @@ export default function AdminPackageListPage() {
   const [packages, setPackages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
   const fetchPackages = async () => {
     setIsLoading(true);
@@ -15,14 +16,6 @@ export default function AdminPackageListPage() {
     try {
       const data = await packageService.getPackages();
       // Garantir que data é um array
-      console.log('=== DADOS DOS PACOTES DA API ===');
-      console.log('Dados recebidos:', data);
-      console.log('Tipo:', typeof data);
-      console.log('É array:', Array.isArray(data));
-      if (data && data.length > 0) {
-        console.log('Primeiro pacote:', data[0]);
-        console.log('Campos disponíveis:', Object.keys(data[0]));
-      }
       setPackages(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Erro ao carregar pacotes:', err);
@@ -38,15 +31,60 @@ export default function AdminPackageListPage() {
   }, []);
 
   const handleDelete = async (id) => {
-    // Pede confirmação antes de excluir
-    if (window.confirm('Tem certeza que deseja excluir este pacote?')) {
+    // Buscar informações do pacote para mostrar na confirmação
+    const packageToDelete = packages.find(pkg => pkg.id === id);
+    const packageName = packageToDelete?.title || packageToDelete?.name || `Pacote ID: ${id}`;
+    
+    // Pede confirmação antes de excluir com nome do pacote
+    const confirmMessage = `Tem certeza que deseja excluir o pacote "${packageName}"?\n\nEsta ação não pode ser desfeita.`;
+    
+    if (window.confirm(confirmMessage)) {
+      setDeletingId(id); // Marca este ID como sendo excluído
+      
       try {
+        console.log(`Excluindo pacote com ID: ${id}`);
         await packageService.deletePackage(id);
+        
+        // Feedback de sucesso
+        alert(`Pacote "${packageName}" excluído com sucesso!`);
+        
         // Atualiza a lista de pacotes após a exclusão
-        fetchPackages();
+        await fetchPackages();
       } catch (err) {
         console.error('Erro ao excluir pacote:', err);
-        alert('Erro ao excluir pacote. Tente novamente.');
+        console.error('Erro completo:', {
+          message: err.message,
+          status: err.response?.status,
+          statusText: err.response?.statusText,
+          data: err.response?.data,
+          url: err.config?.url,
+          method: err.config?.method
+        });
+        
+        // Tratamento de erro mais específico
+        let errorMessage = 'Erro ao excluir pacote. Tente novamente.';
+        
+        if (err.response?.status === 404) {
+          errorMessage = 'Pacote não encontrado. Pode já ter sido excluído.';
+        } else if (err.response?.status === 403) {
+          errorMessage = 'Você não tem permissão para excluir este pacote.';
+        } else if (err.response?.status === 409) {
+          errorMessage = 'Não é possível excluir este pacote pois ele possui reservas associadas.';
+        } else if (err.response?.status === 500) {
+          if (err.response?.data?.message?.includes('entity changes')) {
+            errorMessage = 'Não é possível excluir este pacote pois ele possui reservas, avaliações ou outros dados associados. Exclua primeiro os registros dependentes.';
+          } else {
+            errorMessage = 'Erro interno do servidor. Verifique se o pacote não possui dependências.';
+          }
+        } else if (err.response?.data?.message) {
+          errorMessage = err.response.data.message;
+        } else if (err.response?.data?.errors) {
+          errorMessage = `Erro de validação: ${Object.values(err.response.data.errors).flat().join(', ')}`;
+        }
+        
+        alert(errorMessage);
+      } finally {
+        setDeletingId(null); // Remove o estado de loading
       }
     }
   };
@@ -84,7 +122,7 @@ export default function AdminPackageListPage() {
           <p>Nenhum pacote encontrado.</p>
         </div>
       ) : (
-        <PackagesTable packages={packages} onDelete={handleDelete} />
+        <PackagesTable packages={packages} onDelete={handleDelete} deletingId={deletingId} />
       )}
 
       <div className={styles.addButtonContainer}>
