@@ -113,6 +113,27 @@ export const notificationService = {
         position: "top-right",
         autoClose: 4000,
       });
+    },
+    
+    forgotPasswordSuccess: () => {
+      toast.success("E-mail de recuperação enviado! Verifique sua caixa de entrada.", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    },
+    
+    forgotPasswordError: () => {
+      toast.error("Erro ao solicitar recuperação de senha. Tente novamente.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+    },
+    
+    logoutError: () => {
+      toast.error("Erro durante logout, mas você foi desconectado.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   },
 
