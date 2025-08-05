@@ -7,10 +7,6 @@ export function AdminReservationDetails() {
   const { id } = useParams();
   const { reservation, isLoading, error } = useReservationDetails(id);
 
-  console.log('AdminReservationDetails - ID:', id);
-  console.log('AdminReservationDetails - Reservation:', reservation);
-  console.log('AdminReservationDetails - IsLoading:', isLoading);
-
   if (isLoading) {
     return (
       <div className={styles.pageContainer}>

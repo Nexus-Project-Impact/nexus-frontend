@@ -14,7 +14,6 @@ export default function AdminPackageListPage() {
     setError(null);
     try {
       const data = await packageService.getPackages();
-      console.log('Pacotes carregados:', data);
       // Garantir que data é um array
       setPackages(Array.isArray(data) ? data : []);
     } catch (err) {

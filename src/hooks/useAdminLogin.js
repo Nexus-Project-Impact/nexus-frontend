@@ -28,7 +28,6 @@ export function useAdminLogin() {
     try {
       // Usar endpoint real do authService
       const data = await login_admin(email.trim(), password);
-      console.log('Login admin realizado com sucesso:', data);
       
       if (data.token) {
         // Extrair dados do usuário do token
