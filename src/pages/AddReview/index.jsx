@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import packageService from '../../services/packageService';
+import { getPackageImageUrl } from '../../services/imageService';
 import { useReview } from '../../hooks/useReview';
 import { useUserReservations } from '../../hooks/useReservations';
 import { notificationService } from '../../services/notificationService';
@@ -226,7 +227,7 @@ export function AddReviewPage() {
           : (packageData?.departureDate && packageData?.returnDate 
             ? formatDateRange(packageData.departureDate, packageData.returnDate)
             : 'Datas não disponíveis'),
-        image: reservationData.packageImage || packageData?.imageUrl || packageData?.image || packageData?.imagePackage
+        image: reservationData.packageImage || getPackageImageUrl(packageData)
       };
     }
     
@@ -237,7 +238,7 @@ export function AddReviewPage() {
       dateRange: packageData?.departureDate && packageData?.returnDate 
         ? formatDateRange(packageData.departureDate, packageData.returnDate)
         : 'Datas não disponíveis',
-      image: packageData?.imageUrl || packageData?.image || packageData?.imagePackage
+      image: getPackageImageUrl(packageData)
     };
   };
 
