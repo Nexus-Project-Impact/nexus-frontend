@@ -1,0 +1,60 @@
+.card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+  gap: 20px;
+}
+
+.cardImage {
+  width: 200px;
+  height: auto;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.packageName {
+  margin-top: 0;
+  color: #333;
+}
+
+.cardContent p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+.status {
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 5px;
+  color: white;
+}
+
+.confirmada {
+  background-color: #28a745; /* Verde */
+}
+
+.pendente {
+  background-color: #ffc107; /* Amarelo */
+}
+
+.detailsButton {
+  margin-top: auto;
+  align-self: flex-start;
+  text-decoration: none;
+  color: #8c52ff;
+  font-weight: bold;
+}

@@ -1,0 +1,267 @@
+.reviewsContainer {
+  margin-top: 40px;
+  padding: 32px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  min-height: 600px;
+}
+
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.reviewsHeader h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.averageRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratingNumber {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff9900;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.starFilled {
+  color: #ff9900;
+  font-size: 1.2rem;
+}
+
+.starEmpty {
+  color: #ddd;
+  font-size: 1.2rem;
+}
+
+.reviewCount {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.addReviewButton {
+  background: #8854FF;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 32px;
+  transition: background 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.addReviewButton:hover {
+  background: #6d1b7b;
+}
+
+.addReviewForm {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 32px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  border: 2px solid #8854FF;
+  box-shadow: 0 4px 12px rgba(136, 84, 255, 0.15);
+}
+
+.addReviewForm h4 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.formDescription {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 24px;
+  padding: 12px;
+  background: rgba(136, 84, 255, 0.1);
+  border-radius: 6px;
+  border-left: 4px solid #8854FF;
+}
+
+.ratingInput, .commentInput {
+  margin-bottom: 24px;
+}
+
+.ratingInput label, .commentInput label {
+  display: block;
+  margin-bottom: 12px;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.ratingInput select {
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 200px;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.ratingInput select:focus {
+  border-color: #8854FF;
+  outline: none;
+}
+
+.commentInput textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.commentInput textarea:focus {
+  border-color: #8854FF;
+  outline: none;
+}
+
+.commentInput textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.submitButton {
+  background: #ff9900;
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+  display: block;
+}
+
+.submitButton:hover {
+  background: #e68a00;
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reviewsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.reviewItem {
+  padding: 24px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.reviewItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.userName {
+  font-weight: bold;
+  color: #333;
+}
+
+.reviewDate {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ratingText {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.reviewComment {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .reviewsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .averageRating {
+    align-self: flex-start;
+  }
+
+  .reviewsContainer {
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .reviewsList {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .addReviewForm {
+    padding: 20px;
+  }
+
+  .addReviewButton {
+    max-width: none;
+  }
+
+  .submitButton {
+    max-width: none;
+  }
+}

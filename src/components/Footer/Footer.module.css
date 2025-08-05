@@ -1,0 +1,50 @@
+.footer {
+  width: 100%;
+  padding: 20px 0;
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  color: #6c757d;
+  margin-top: auto; /* Chave para o sticky footer */
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 30px;
+}
+
+.links {
+  display: flex;
+  gap: 25px;
+}
+
+.links a {
+  color: #6c757d;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: #8c52ff;
+}
+
+.copyright {
+  font-size: 0.9rem;
+
+}
+
+span {
+  margin-right: 15px;
+}

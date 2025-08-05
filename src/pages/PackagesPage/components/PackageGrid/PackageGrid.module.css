@@ -1,0 +1,6 @@
+.grid {
+  display: grid;
+  /* Cria colunas responsivas: elas terão no mínimo 300px e no máximo 1fr (fração do espaço) */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
