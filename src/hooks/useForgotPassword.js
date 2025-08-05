@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { forgotPassword } from '../services/authService';
-import { notificationService } from '../services/notificationService';
 
 export function useForgotPassword() {
   const [email, setEmail] = useState('');
@@ -14,6 +13,7 @@ export function useForgotPassword() {
     setError(null);
     setIsSuccess(false);
 
+
     if (!email?.trim()) {
       setError('Email é obrigatório');
       setIsLoading(false);
@@ -21,33 +21,16 @@ export function useForgotPassword() {
     }
 
     try {
-      // Chamar forgotPassword do authService
+      
       await forgotPassword(email.trim());
       
-      // Sucesso
+
       setIsSuccess(true);
-      notificationService.auth.forgotPasswordSuccess();
-      
       return true;
       
     } catch (err) {
-      console.error('Erro ao solicitar recuperação de senha:', err);
       
-      let errorMessage = 'Erro ao solicitar recuperação de senha';
-      
-      if (err.response?.data?.message) {
-        errorMessage = err.response.data.message;
-      } else if (err.response?.status === 404) {
-        errorMessage = 'Email não encontrado';
-      } else if (err.response?.status === 429) {
-        errorMessage = 'Muitas tentativas. Tente novamente em alguns minutos.';
-      } else if (err.response?.status === 500) {
-        errorMessage = 'Erro interno do servidor. Tente novamente.';
-      }
-      
-      setError(errorMessage);
-      notificationService.auth.forgotPasswordError();
-      
+      setError('Erro ao solicitar recuperação de senha');
       return false;
       
     } finally {
