@@ -2,25 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import packageService from '../../services/packageService';
 import { PackagesTable } from './components/PackagesTable';
+import { AdminSearchBar } from './components/AdminSearchBar';
 import styles from './AdminPackageList.module.css';
 
 export default function AdminPackageListPage() {
-  const [packages, setPackages] = useState([]);
+  const [allPackages, setAllPackages] = useState([]); // Todos os pacotes originais
+  const [filteredPackages, setFilteredPackages] = useState([]); // Pacotes filtrados
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [hasActiveFilters, setHasActiveFilters] = useState(false);
 
   const fetchPackages = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await packageService.getPackages();
+      const data = await packageService.getAllActive();
       // Garantir que data é um array
-      setPackages(Array.isArray(data) ? data : []);
+      const packagesArray = Array.isArray(data) ? data : [];
+      setAllPackages(packagesArray);
+      setFilteredPackages(packagesArray); // Inicialmente mostra todos
     } catch (err) {
       console.error('Erro ao carregar pacotes:', err);
       setError('Erro ao carregar pacotes. Tente novamente.');
-      setPackages([]);
+      setAllPackages([]);
+      setFilteredPackages([]);
     } finally {
       setIsLoading(false);
     }
@@ -32,7 +38,7 @@ export default function AdminPackageListPage() {
 
   const handleDelete = async (id) => {
     // Buscar informações do pacote para mostrar na confirmação
-    const packageToDelete = packages.find(pkg => pkg.id === id);
+    const packageToDelete = allPackages.find(pkg => pkg.id === id);
     const packageName = packageToDelete?.title || packageToDelete?.name || `Pacote ID: ${id}`;
     
     // Pede confirmação antes de excluir com nome do pacote
@@ -89,24 +95,75 @@ export default function AdminPackageListPage() {
     }
   };
 
+  // Função para aplicar filtros
+  const handleSearch = (filters) => {
+    setIsLoading(true);
+    let results = [...allPackages];
+    let hasFilters = false;
+
+    // Filtro por destino
+    if (filters.destination && filters.destination.trim() !== '') {
+      hasFilters = true;
+      results = results.filter((pkg) =>
+        (pkg.destination || '').toLowerCase().includes(filters.destination.toLowerCase())
+      );
+    }
+
+    // Filtro por data
+    if (filters.dateRange && filters.dateRange[0] !== null && filters.dateRange[1] !== null) {
+      hasFilters = true;
+      const [startDate, endDate] = filters.dateRange;
+      results = results.filter((pkg) => {
+        if (!pkg.departureDate) return false;
+        const pkgDate = new Date(pkg.departureDate);
+        return pkgDate >= startDate && pkgDate <= endDate;
+      });
+    }
+
+    // Filtro por preço
+    if (filters.price && filters.price !== '') {
+      hasFilters = true;
+      if (filters.price === '10000+') {
+        results = results.filter((pkg) => {
+          const pkgValue = pkg.value || pkg.price || pkg.pricePackage || 0;
+          return pkgValue >= 10000;
+        });
+      } else {
+        const [minValue, maxValue] = filters.price.split('-').map(Number);
+        results = results.filter((pkg) => {
+          const pkgValue = pkg.value || pkg.price || pkg.pricePackage || 0;
+          return pkgValue >= minValue && pkgValue <= maxValue;
+        });
+      }
+    }
+
+    setHasActiveFilters(hasFilters);
+    setFilteredPackages(results);
+    setIsLoading(false);
+  };
+
+  // Função para limpar filtros
+  const handleClearFilters = () => {
+    setFilteredPackages(allPackages);
+    setHasActiveFilters(false);
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Lista de Pacotes</h1>
       
-      {/* Barra de Pesquisa (funcionalidade a ser adicionada) */}
-      <div className={styles.searchBar}>
-        <input type="text" placeholder="Destino" />
-        <input type="date" placeholder="Data de Ida" />
-        <input type="text" placeholder="ID do pacote" />
-        <button className={styles.searchButton}>
-          <svg xmlns="http://www.w3.org/2000/svg" 
-          xmlnsXlink="http://www.w3.org/1999/xlink" 
-          enableBackground="new 0 0 32 32" id="Glyph" width='30px' height="30px"
-          version="1.1" viewBox="0 0 32 32" xmlSpace="preserve">
-          <path fill="white" d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z" id="XMLID_223_"/>
-          </svg>
-        </button>
-      </div>
+      {/* Barra de Filtros */}
+      <AdminSearchBar 
+        onSearch={handleSearch} 
+        onClear={handleClearFilters}
+      />
+
+      {/* Indicador de filtros ativos */}
+      {hasActiveFilters && (
+        <div className={styles.filterIndicator}>
+          <p>Mostrando {filteredPackages.length} de {allPackages.length} pacotes</p>
+        </div>
+      )}
 
       {isLoading ? (
         <p>Carregando pacotes...</p>
@@ -117,12 +174,16 @@ export default function AdminPackageListPage() {
             Tentar novamente
           </button>
         </div>
-      ) : packages.length === 0 ? (
+      ) : filteredPackages.length === 0 ? (
         <div style={{ padding: '20px', textAlign: 'center' }}>
-          <p>Nenhum pacote encontrado.</p>
+          {hasActiveFilters ? (
+            <p>Nenhum pacote encontrado com os filtros aplicados.</p>
+          ) : (
+            <p>Nenhum pacote encontrado.</p>
+          )}
         </div>
       ) : (
-        <PackagesTable packages={packages} onDelete={handleDelete} deletingId={deletingId} />
+        <PackagesTable packages={filteredPackages} onDelete={handleDelete} deletingId={deletingId} />
       )}
 
       <div className={styles.addButtonContainer}>
