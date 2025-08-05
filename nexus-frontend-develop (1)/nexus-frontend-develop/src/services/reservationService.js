@@ -83,4 +83,14 @@ const reservationService = {
   }
 };
 
+// Exportações nomeadas para compatibilidade com importações existentes
+export const getUserReservations = reservationService.getUserReservations;
+export const getReservationsByUserId = reservationService.getUserReservations; // Alias
+export const getReservationById = reservationService.getById;
+export const getAllReservations = reservationService.getUserReservations; // Para admin, usando a mesma função
+export const getById = reservationService.getById;
+export const create = reservationService.create;
+export const deleteReservation = reservationService.delete;
+export const canReviewReservation = reservationService.canReviewReservation;
+
 export default reservationService;

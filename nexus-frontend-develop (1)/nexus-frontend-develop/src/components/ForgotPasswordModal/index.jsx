@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForgotPassword } from '../../hooks/useForgotPassword';
 import styles from './ForgotPasswordModal.module.css';
 import nexusLogo from '../../assets/nexus-logo-white.png'; // Reutilizando o logo
 
 export function ForgotPasswordModal({ isOpen, onClose }) {
+  console.log('ForgotPasswordModal renderizado:', { isOpen });
+  const navigate = useNavigate();
+  
   const { 
     email, setEmail, isLoading, isSuccess, 
     handlePasswordReset, resetState 
@@ -15,6 +19,12 @@ export function ForgotPasswordModal({ isOpen, onClose }) {
       setTimeout(resetState, 300); // Adiciona um pequeno delay
     }
   }, [isOpen]);
+
+  // Função para ir para tela de redefinir senha
+  const handleGoToResetPage = () => {
+    onClose(); // Fecha o modal
+    navigate('/reset-password'); // Navega para a página de redefinir senha
+  };
 
   if (!isOpen) return null;
 
@@ -30,9 +40,11 @@ export function ForgotPasswordModal({ isOpen, onClose }) {
         <div className={styles.rightPanel}>
           {isSuccess ? (
             <div className={styles.successView}>
-              <h3>Link Enviado!</h3>
-              <p>Verifique sua caixa de entrada (e a pasta de spam) para redefinir sua senha.</p>
-              <button onClick={onClose} className={styles.actionButton}>Fechar</button>
+              <h3>Código Enviado!</h3>
+              <p>Verifique seu email. Você receberá um código de 6 dígitos para redefinir sua senha.</p>
+              <button onClick={handleGoToResetPage} className={styles.actionButton}>
+                Continuar para Redefinir Senha
+              </button>
             </div>
           ) : (
             <form onSubmit={handlePasswordReset}>

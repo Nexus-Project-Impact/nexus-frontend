@@ -3,7 +3,7 @@
 
 // imports e dependencias 
 import { useState } from 'react';
-import { resetPassword } from '../services/authService';
+import { resetPasswordLoggedUser } from '../services/authService';
 import { notificationService } from '../services/notificationService';
 
 // estados das consts
@@ -42,13 +42,8 @@ export function useResetPassword() {
     }
     
     try {
-      // Preparar objeto conforme modelo RequestResetPassword
-      const requestResetPassword = {
-        currentPassword: currentPassword.trim(),
-        newPassword: newPassword.trim()
-      };
-      
-      await resetPassword(requestResetPassword);
+      // Para usuário logado que quer trocar senha
+      await resetPasswordLoggedUser(currentPassword.trim(), newPassword.trim());
       
       // Notificação de sucesso
       notificationService.success("Senha redefinida com sucesso!");

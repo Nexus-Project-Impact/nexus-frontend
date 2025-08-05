@@ -57,7 +57,10 @@ export function LoginForm({
           />
         </div>
 
-        <button type="button" onClick={onForgotPassClick} className={styles.forgotPassword}>
+        <button type="button" onClick={() => {
+          console.log('Botão Esqueci a senha clicado!');
+          onForgotPassClick();
+        }} className={styles.forgotPassword}>
           Esqueci a senha
         </button>
 

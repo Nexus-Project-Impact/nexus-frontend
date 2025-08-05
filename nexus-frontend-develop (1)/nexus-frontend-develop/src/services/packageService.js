@@ -43,5 +43,15 @@ const packageService = {
 
 };
 
+// Exportações nomeadas para compatibilidade com importações existentes
+export const getPackages = packageService.getPackages;
+export const getPackageById = packageService.getPackageById;
+export const createPackage = packageService.createPackage;
+export const updatePackage = packageService.updatePackage;
+export const deletePackage = packageService.deletePackage;
+export const deletePackageById = packageService.deletePackage; // Alias para deletePackage
+export const getByDepartureDate = packageService.getByDepartureDate;
+export const getByDestination = packageService.getByDestination;
+export const getByValue = packageService.getByValue;
 
 export default packageService;

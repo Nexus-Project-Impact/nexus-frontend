@@ -27,7 +27,10 @@ function LoginPage() {
     <div style={loginPageStyles}>
       <LoginForm {...loginProps} 
       onRegisterClick={() => setIsRegisterOpen(true)} 
-      onForgotPassClick={() => setIsForgotPassOpen(true)}/>
+      onForgotPassClick={() => {
+        console.log('Abrindo modal de esqueci a senha');
+        setIsForgotPassOpen(true);
+      }}/>
       <RegisterModal isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
       <ForgotPasswordModal isOpen={isForgotPassOpen} onClose={() => setIsForgotPassOpen(false)} />
     </div>

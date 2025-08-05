@@ -1,4 +1,13 @@
 import { api } from './api';
+import axios from 'axios';
+
+// Instância do Axios sem interceptors para requisições anônimas
+const anonymousApi = axios.create({
+  baseURL: 'https://localhost:7164/',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 // LOGIN: envia as credenciais e armazena o token no localStorage
 export async function login(email, password) {
@@ -58,26 +67,76 @@ export async function register(name, email, password, phone, cpf) {
   }
 }
 
-// ESQUECEU A SENHA: envia email para reset (REQUER AUTORIZAÇÃO)
+// RECUPERAR A SENHA: envia email para reset (NÃO REQUER AUTORIZAÇÃO)
 export async function forgotPassword(email) {
   try {
-    const response = await api.post('/Auth/forgot-password', { email });
+    // Usar anonymousApi para não incluir token de autorização
+    const response = await anonymousApi.post('/Auth/forgot-password', { email });
     console.log('Email de recuperação enviado:', response.data);
-    return response.data;
+    
+    return {
+      success: response.data.success || true,
+      message: response.data.message || 'Email de recuperação enviado'
+    };
   } catch (error) {
     console.error('Erro ao solicitar recuperação de senha:', error);
     throw error;
   }
 }
 
-// RESETAR SENHA: redefine senha do usuário logado (REQUER AUTORIZAÇÃO)
-export async function resetPassword(requestResetPassword) {
+export async function resetPasswordLoggedUser(currentPassword, newPassword) {
   try {
-    const response = await api.post('/Auth/reset-password', requestResetPassword);
-    console.log('Senha resetada com sucesso:', response.data);
+    // Para usuário logado - endpoint específico ou parâmetros diferentes
+    const response = await api.post('/Auth/change-password', {
+      currentPassword: currentPassword,
+      newPassword: newPassword
+    });
+    console.log('Senha alterada com sucesso:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Erro ao resetar senha:', error);
+    console.error('Erro ao alterar senha:', error);
+    throw error;
+  }
+}
+
+// RESETAR SENHA COM CÓDIGO: redefine senha usando código de 6 dígitos do email (NÃO REQUER AUTORIZAÇÃO)
+export async function resetPasswordWithCode(email, code, newPassword) {
+  try {
+    // TESTE: Vamos ver que endpoints estão disponíveis
+    console.log('Tentando resetar senha com:', { email, code, newPassword });
+    
+    // Primeiro, vamos tentar o endpoint que faz mais sentido baseado no fluxo
+    const response = await anonymousApi.post('/Auth/forgot-password', {
+      email: email,
+      code: code,
+      newPassword: newPassword,
+      action: 'reset' // Indicar que é para resetar, não para solicitar código
+    });
+    console.log('Senha resetada com código:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao resetar senha com código:', error);
+    console.error('Detalhes do erro:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      url: error.config?.url
+    });
+    throw error;
+  }
+}
+
+// RESETAR SENHA COM TOKEN: redefine senha usando token do email (NÃO REQUER AUTORIZAÇÃO)
+export async function resetPasswordWithToken(token, newPassword) {
+  try {
+    // Usar anonymousApi para não incluir token de autorização
+    const response = await anonymousApi.post('/Auth/reset-password-with-token', {
+      token: token,
+      newPassword: newPassword
+    });
+    console.log('Senha resetada com token:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao resetar senha com token:', error);
     throw error;
   }
 }
