@@ -66,3 +66,29 @@ input{
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ...existing code... */
+.inputWithValidation {
+  position: relative;
+  flex: 1;
+}
+
+.validationMessage {
+  display: block;
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+.inputError {
+  border: 2px solid #ff6b6b !important;
+  background-color: #ffe6e6;
+}
+
+.inputError:focus {
+  border-color: #ff5252 !important;
+  box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+}
+/* ...existing code... */
