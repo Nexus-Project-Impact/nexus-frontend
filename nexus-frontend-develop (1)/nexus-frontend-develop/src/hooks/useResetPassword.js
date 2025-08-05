@@ -6,12 +6,10 @@ import { useState } from 'react';
 import { resetPasswordLoggedUser } from '../services/authService';
 import { notificationService } from '../services/notificationService';
 
-// estados das consts
 export function useResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // RESETAR SENHA: redefine senha do usuário logado (REQUER AUTORIZAÇÃO)
   const handleResetPassword = async (currentPassword, newPassword, confirmPassword) => {
     setIsLoading(true);
     setError('');
@@ -42,10 +40,8 @@ export function useResetPassword() {
     }
     
     try {
-      // Para usuário logado que quer trocar senha
       await resetPasswordLoggedUser(currentPassword.trim(), newPassword.trim());
       
-      // Notificação de sucesso
       notificationService.success("Senha redefinida com sucesso!");
       
       return true;
@@ -75,13 +71,11 @@ export function useResetPassword() {
     }
   };
 
-  // Limpar estados
   const clearError = () => {
     setError('');
   };
 
   return { 
-    // Estados de controle
     isLoading, 
     error, 
     
