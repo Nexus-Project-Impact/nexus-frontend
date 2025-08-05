@@ -119,9 +119,9 @@ export function getUserFromToken() {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return {
-      id: payload.sub || payload.userId || payload.id,
+      id: payload.nameid || payload.sub || payload.userId || payload.id, // nameid é o userId correto
       email: payload.email,
-      name: payload.name,
+      name: payload.unique_name || payload.name || payload.userName || payload.fullName, // unique_name tem o nome completo
       roles: payload.role || payload.roles || [],
       exp: payload.exp
     };
