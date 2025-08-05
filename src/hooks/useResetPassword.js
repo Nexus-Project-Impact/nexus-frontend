@@ -1,18 +1,19 @@
+// Hook para lógica de redefinição de senha
+// controla reset password para usuário logado (REQUER AUTORIZAÇÃO)
+
+// imports e dependencias 
 import { useState } from 'react';
-import { resetPassword } from '../services/authService';
+import { resetPasswordLoggedUser } from '../services/authService';
 import { notificationService } from '../services/notificationService';
 
-// estados das consts
 export function useResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // RESETAR SENHA: redefine senha do usuário logado (REQUER AUTORIZAÇÃO)
   const handleResetPassword = async (currentPassword, newPassword, confirmPassword) => {
     setIsLoading(true);
     setError('');
     
-    // Validações básicas
     if (!currentPassword?.trim()) {
       setError('Senha atual é obrigatória');
       setIsLoading(false);
@@ -38,15 +39,8 @@ export function useResetPassword() {
     }
     
     try {
-      // Preparar objeto conforme modelo RequestResetPassword
-      const requestResetPassword = {
-        currentPassword: currentPassword.trim(),
-        newPassword: newPassword.trim()
-      };
+      await resetPasswordLoggedUser(currentPassword.trim(), newPassword.trim());
       
-      await resetPassword(requestResetPassword);
-      
-      // Notificação de sucesso
       notificationService.success("Senha redefinida com sucesso!");
       
       return true;
@@ -76,13 +70,11 @@ export function useResetPassword() {
     }
   };
 
-  // Limpar estados
   const clearError = () => {
     setError('');
   };
 
   return { 
-    // Estados de controle
     isLoading, 
     error, 
     
