@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import reservationService from '../services/reservationService';
 import packageService from '../services/packageService';
+import { getPackageImageUrl } from '../services/imageService';
+
 
 // Hook para gerenciar reservas do usuário
 export const useUserReservations = () => {
@@ -50,18 +52,28 @@ export const useUserReservations = () => {
       // Processar os dados para garantir que tenham a estrutura esperada
       const processedReservations = await Promise.all(data.map(async (reservation) => {
           
-          // Tentar buscar dados do pacote para pegar as datas corretas
+          // Debug: log da estrutura da reserva
+          console.log('Estrutura da reserva recebida:', reservation);
+          
+          // Tentar buscar dados do pacote para pegar as datas corretas e a imagem
           const packageData = await packageService.getPackageById(reservation.travelPackageId);
+          console.log('Dados do pacote obtidos:', packageData);
+          
           const finalDepartureDate = packageData?.departureDate || reservation.departureDate || reservation.dataIda;
           const finalReturnDate = packageData?.returnDate || reservation.returnDate || reservation.dataVolta;
           
           const formattedDates = formatDates(finalDepartureDate, finalReturnDate);
           
+          // Usar o serviço de imagem para construir a URL correta
+          const packageImage = getPackageImageUrl(packageData) || getPackageImageUrl(reservation);
+          
+          console.log('URL da imagem construída:', packageImage);
+          
           return {
             id: reservation.id,
             packageId: reservation.travelPackageId,
             packageName: reservation.travelPackageDestination,
-            packageImage: reservation.travelPackageImageUrl,
+            packageImage: packageImage,
             dates: formattedDates,
             departureDate: finalDepartureDate,
             returnDate: finalReturnDate,

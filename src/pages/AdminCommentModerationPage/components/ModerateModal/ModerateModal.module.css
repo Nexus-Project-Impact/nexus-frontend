@@ -1,0 +1,152 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modalContent {
+  background: white;
+  padding: 0;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 720px;
+  overflow: visible;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 153, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 2px solid #FF9900;
+  background: linear-gradient(135deg, #fff 0%, #fafafa 100%);
+  border-radius: 16px 16px 0 0;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #FF9900;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.closeButton:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.modalForm {
+  padding: 20px;
+  overflow: visible;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.fieldHelp {
+  margin-top: 4px;
+  color: #666;
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  min-height: 80px;
+  resize: vertical;
+  transition: 0.3s ease;
+  background-color: #fff;
+  color: #333;
+}
+
+.textarea:focus {
+  border-color: #FF9900;
+  box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+  outline: none;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #fafafa 0%, #fff 100%);
+  border-radius: 0 0 16px 16px;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+.cancelButton:hover {
+  background: #e9ecef;
+  color: #333;
+}
+
+.saveButton {
+  background: #FF9900;
+  color: white;
+  border: 1px solid #FF9900;
+}
+
+.saveButton:hover {
+  background: #e68800;
+  border-color: #e68800;
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+}
