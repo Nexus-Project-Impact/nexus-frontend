@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useReservationDetails } from '../../hooks/useReservationDetails';
+import { formatCpf, formatPhone } from '../../utils/formatters';
 import styles from '../AdminReservation/AdminReservation.module.css';
 
 export function AdminReservationDetails() {
@@ -59,13 +60,16 @@ export function AdminReservationDetails() {
             <strong>ID do Cliente:</strong> {reservation.userId || 'N/A'}
           </div>
           <div className={styles.detailItem}>
-            <strong>Nome:</strong> {reservation.clientName || reservation.userName || reservation.user?.name || 'N/A'}
+            <strong>Nome:</strong> {reservation.clientName || reservation.userName}
           </div>
           <div className={styles.detailItem}>
-            <strong>E-mail:</strong> {reservation.clientEmail || reservation.userEmail || reservation.user?.email || 'N/A'}
+            <strong>CPF:</strong> {reservation.userDocument ? formatCpf(reservation.userDocument) : 'N/A'}
           </div>
           <div className={styles.detailItem}>
-            <strong>Telefone:</strong> {reservation.clientPhone || reservation.userPhone || reservation.user?.phone || 'N/A'}
+            <strong>E-mail:</strong> {reservation.clientEmail || reservation.userEmail || 'N/A'}
+          </div>
+          <div className={styles.detailItem}>
+            <strong>Telefone:</strong> {reservation.clientPhone || reservation.userPhone ? formatPhone(reservation.clientPhone || reservation.userPhone) : 'N/A'}
           </div>
         </div>
 
@@ -78,24 +82,51 @@ export function AdminReservationDetails() {
             <strong>Número da Reserva:</strong> {reservation.reservationNumber || 'N/A'}
           </div>
           <div className={styles.detailItem}>
-            <strong>Pacote:</strong> {reservation.packageName || reservation.travelPackageName || reservation.travelPackage?.name || `Pacote ID: ${reservation.travelPackageId}` || 'N/A'}
+            <strong>Nº Reserva:</strong> {reservation.reservationNumber || 'N/A'}
           </div>
           <div className={styles.detailItem}>
-            <strong>Data da Viagem:</strong> {reservation.travelDate || reservation.departureDate || reservation.travelPackage?.departureDate || 'N/A'}
+            <strong>Pacote:</strong> {reservation.travelPackageName || reservation.packageName || 'N/A'}
           </div>
           <div className={styles.detailItem}>
-            <strong>Data da Reserva:</strong> {reservation.reservationDate ? new Date(reservation.reservationDate).toLocaleDateString('pt-BR') : (reservation.createdAt ? new Date(reservation.createdAt).toLocaleDateString('pt-BR') : 'N/A')}
+            <strong>Destino:</strong> {reservation.travelPackageDestination || 'N/A'}
           </div>
+          <div className={styles.detailItem}>
+            <strong>Data da Reserva:</strong> {reservation.reservationDate || reservation.reservationDateFormatted}
+          </div>
+          
+          {/* Lista de Viajantes */}
+          <div className={styles.detailItem}>
+            <strong>Viajantes:</strong>
+            {reservation.traveler && reservation.traveler.length > 0 ? (
+              <div className={styles.travelersContainer}>
+                {reservation.traveler.map((traveler, index) => (
+                  <div key={traveler.id || index} className={styles.travelerItem}>
+                    <div className={styles.travelerInfo}>
+                      <span className={styles.travelerName}>
+                        {index + 1}. {traveler.name}
+                      </span>
+                      <span className={styles.travelerDoc}>
+                        RG: {traveler.rg || 'N/A'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <span>Nenhum viajante cadastrado</span>
+            )}
+          </div>
+
           <div className={styles.detailItem}>
             <strong>Status de Pagamento:</strong> 
-            <span className={getStatusBadgeClass(reservation.paymentStatus || reservation.status)}>
-              {reservation.paymentStatus || reservation.status || 'Pendente'}
+            <span className={getStatusBadgeClass(reservation.paymentStatus || reservation.statusPayment)}>
+              {reservation.paymentStatus || reservation.statusPayment}
             </span>
           </div>
           <div className={styles.detailItem}>
-            <strong>Preço Total:</strong> 
+            <strong>Valor Total:</strong> 
             <span className={styles.priceCell}>
-              R$ {(reservation.totalPrice || reservation.price || reservation.travelPackage?.price || 0).toLocaleString('pt-BR')}
+              R$ {(reservation.totalValue || reservation.travelPackageValue || reservation.totalPrice || 0).toLocaleString('pt-BR')}
             </span>
           </div>
         </div>

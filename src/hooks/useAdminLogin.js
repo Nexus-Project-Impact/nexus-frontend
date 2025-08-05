@@ -18,7 +18,6 @@ export function useAdminLogin() {
     setIsLoading(true);
     setError(null);
 
-    // Validação básica
     if (!email.trim() || !password.trim()) {
       setError('Email e senha são obrigatórios');
       setIsLoading(false);
@@ -26,15 +25,12 @@ export function useAdminLogin() {
     }
 
     try {
-      // Usar endpoint real do authService
       const data = await login_admin(email.trim(), password);
       
       if (data.token) {
-        // Extrair dados do usuário do token
         const user = getUserFromToken();
         
         if (user) {
-          // Verificar se o usuário tem permissão de admin
           const isAdmin = Array.isArray(user.roles) ? 
             user.roles.includes('Admin') : 
             user.roles === 'Admin';

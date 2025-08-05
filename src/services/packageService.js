@@ -9,6 +9,11 @@ const packageService = {
         return response.data;
     },
 
+    getPackagesActive: async () => {
+        const response = await api.get('/TravelPackage/GetAllActive');
+        return response.data;
+    },
+
     getPackageById: async (id) => {
         const response = await api.get(`/TravelPackage/GetById/${id}`);
         return response.data;

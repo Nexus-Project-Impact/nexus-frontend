@@ -7,8 +7,12 @@ export function useCheckout(packageData, travelers) {
   const [boletoData, setBoletoData] = useState(null);
 
   const totalPrice = useMemo(() => {
-    if (!packageData || !travelers) return 0;
-    return packageData.price.current * travelers.length;
+    if (!packageData || !travelers || !packageData.price) return 0;
+    
+    // Verifica se price.current existe, senão usa price diretamente
+    const priceValue = packageData.price.current || packageData.price;
+    
+    return priceValue * travelers.length;
   }, [packageData, travelers]);
   
   // A função agora é apenas para os métodos que NÃO são Stripe

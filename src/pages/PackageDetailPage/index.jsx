@@ -135,17 +135,6 @@ export function PackageDetailPage() {
         {/* Coluna da Esquerda */}
         <div className={styles.leftColumn}>
           <img src={imageUrl} alt="Imagem principal do destino" className={styles.mainImage} />
-          {/* <div className={styles.thumbnailGallery}>
-            {pkg.gallery.map((imgSrc, index) => (
-              <img
-                key={index}
-                src={imgSrc}
-                alt={`Imagem ${index + 1} de ${pkg.name}`}
-                className={mainImage === imgSrc ? styles.activeThumbnail : styles.thumbnail}
-                onClick={() => setMainImage(imgSrc)}
-              />
-            ))}
-          </div> */}
           <button onClick={() => navigate(-1)} className={styles.backButton}>Voltar</button>
         </div>
 
@@ -158,29 +147,14 @@ export function PackageDetailPage() {
               {new Date(departureDate).toLocaleDateString('pt-BR')} - {new Date(returnDate).toLocaleDateString('pt-BR')}
             </p>
           )}
-
-           {/* <p className={styles.cardDates}>
-          {`${formatarData(departureDate)} - ${formatarData(returnDate)}`}
-        </p> */}
           
           <div className={styles.descriptionBox}>
             <h4>DESCRIÇÃO</h4>
-            {/* Usando optional chaining (?.) para mais segurança */}
-            {/* <p><strong>Voo</strong></p>
-            <p>Hora da Ida: {pkg.description?.flight?.departureTime} - {pkg.description?.flight?.from}</p>
-            <p>Companhia Aérea: {pkg.description?.flight?.company}</p>
-            <p>Hora da Volta: {pkg.description?.flight?.returnTime} - {pkg.description?.flight?.to}</p>
-            <p>Companhia Aérea: {pkg.description?.flight?.company}</p>
-            <br />
-            <p><strong>Hotel</strong></p>
-            <p>{pkg.description?.hotel?.name}</p>
-            <p>Endereço: {pkg.description?.hotel?.address}</p> */}
             <p>{description}</p>
           </div>
 
           <div className={styles.bookingBox}>
             <p>Voo + Hospedagem</p>
-            {/* <span className={styles.originalPrice}>de R$ {pkg.price.original.toLocaleString('pt-BR')}</span> */}
             <div  className={styles.price}>
 
             <p>Preço por pessoa </p>

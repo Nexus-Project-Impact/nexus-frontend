@@ -15,7 +15,7 @@ export function PackagesPage() {
       try {
         setIsLoading(true);
 
-        const data = await packageService.getPackages();
+        const data = await packageService.getPackagesActive();
         const mappedPackages = data.map((pkg) => ({
           id: pkg.id,
           title: pkg.title || pkg.name,
