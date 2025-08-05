@@ -9,27 +9,35 @@ export function useForgotPassword() {
 
   const handlePasswordReset = async (event) => {
     event.preventDefault();
+    console.log('Botão Recuperar Senha clicado!', { email });
     setIsLoading(true);
     setError(null);
     setIsSuccess(false);
 
-
     if (!email?.trim()) {
+      console.log('Email vazio, mostrando erro');
       setError('Email é obrigatório');
       setIsLoading(false);
       return false;
     }
 
     try {
+      console.log('Enviando email de recuperação para:', email.trim());
+      const response = await forgotPassword(email.trim());
       
-      await forgotPassword(email.trim());
-      
+      console.log('Resposta do forgotPassword:', response);
 
+      console.log('Email de recuperação enviado com sucesso');
       setIsSuccess(true);
-      return true;
+      
+      return {
+        success: true,
+        message: response.message || 'Email de recuperação enviado',
+        email: email.trim()
+      };
       
     } catch (err) {
-      
+      console.error('Erro no handlePasswordReset:', err);
       setError('Erro ao solicitar recuperação de senha');
       return false;
       
@@ -44,5 +52,13 @@ export function useForgotPassword() {
     setError(null);
   };
 
-  return { email, setEmail, isLoading, isSuccess, error, handlePasswordReset, resetState };
+  return { 
+    email, 
+    setEmail, 
+    isLoading, 
+    isSuccess, 
+    error, 
+    handlePasswordReset, 
+    resetState
+  };
 }
