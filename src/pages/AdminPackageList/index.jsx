@@ -72,9 +72,9 @@ export default function AdminPackageListPage() {
           errorMessage = 'Não é possível excluir este pacote pois ele possui reservas associadas.';
         } else if (err.response?.status === 500) {
           if (err.response?.data?.message?.includes('entity changes')) {
-            errorMessage = 'Não é possível excluir este pacote pois ele possui reservas, avaliações ou outros dados associados. Exclua primeiro os registros dependentes.';
+            errorMessage = 'O backend precisa ser configurado para permitir exclusão mantendo as referências nas reservas e avaliações. Configure DeleteBehavior.NoAction no Entity Framework.';
           } else {
-            errorMessage = 'Erro interno do servidor. Verifique se o pacote não possui dependências.';
+            errorMessage = 'Erro interno do servidor. O backend precisa permitir exclusão de pacotes mantendo referências existentes.';
           }
         } else if (err.response?.data?.message) {
           errorMessage = err.response.data.message;

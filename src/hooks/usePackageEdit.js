@@ -74,25 +74,40 @@ export function usePackageEdit(packageId) {
     setIsLoading(true);
     
     try {
-      // Criar FormData para enviar a imagem (se houver)
-      const formData = new FormData();
-      formData.append('Title', packageData.title);
-      formData.append('Description', packageData.description);
-      formData.append('Destination', packageData.destination);
-      formData.append('Duration', parseInt(packageData.duration));
-      formData.append('DepartureDate', packageData.departureDate);
-      formData.append('ReturnDate', packageData.returnDate);
-      formData.append('Value', parseFloat(packageData.value));
+      let dataToSend;
       
-      // Só adiciona a imagem se uma nova foi selecionada
+      // Se há uma nova imagem, usar FormData
       if (packageData.image) {
+        console.log("Enviando com nova imagem (FormData)");
+        const formData = new FormData();
+        formData.append('Title', packageData.title);
+        formData.append('Description', packageData.description);
+        formData.append('Destination', packageData.destination);
+        formData.append('Duration', parseInt(packageData.duration));
+        formData.append('DepartureDate', packageData.departureDate);
+        formData.append('ReturnDate', packageData.returnDate);
+        formData.append('Value', parseFloat(packageData.value));
         formData.append('Image', packageData.image);
+        dataToSend = formData;
+      } else {
+        // Se não há nova imagem, enviar JSON
+        console.log("Enviando sem nova imagem (JSON)");
+        dataToSend = {
+          title: packageData.title,
+          description: packageData.description,
+          destination: packageData.destination,
+          duration: parseInt(packageData.duration),
+          departureDate: packageData.departureDate,
+          returnDate: packageData.returnDate,
+          value: parseFloat(packageData.value)
+        };
       }
 
       console.log("Atualizando pacote com ID:", packageId);
       console.log("Dados do pacote:", packageData);
+      console.log("Tipo de dados enviados:", packageData.image ? 'FormData' : 'JSON');
       
-      await packageService.updatePackage(packageId, formData);
+      await packageService.updatePackage(packageId, dataToSend);
       alert("Pacote atualizado com sucesso!");
       navigate('/admin/pacotes');
     } catch (error) {
