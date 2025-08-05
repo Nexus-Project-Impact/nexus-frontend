@@ -29,7 +29,7 @@ export default function AdminMetricsPage() {
       setMetrics(data);
     } catch (err) {
       console.error('Erro ao carregar métricas:', err);
-      setError('Erro ao carregar métricas. Dados mock sendo exibidos.');
+      setError('Erro ao carregar métricas. Verifique a conexão com o servidor.');
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +82,28 @@ export default function AdminMetricsPage() {
 
   if (isLoading) return <div className={styles.loading}>Carregando métricas...</div>;
 
+  if (!metrics) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Métricas</h1>
+        </div>
+        
+        {error && (
+          <div className={styles.errorBanner}>
+            {error}
+          </div>
+        )}
+        
+        <DateFilter 
+          onDateChange={handleDateChange} 
+          onError={handleDateError}
+          exportActions={exportButtons} 
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -101,22 +123,34 @@ export default function AdminMetricsPage() {
       />
       
       <div className={styles.kpiGrid}>
-        <StatCard title="Total de Reservas" value={metrics.summary.totalReservations} />
-        <StatCard title="Total de Clientes" value={metrics.summary.totalClients} />
-        <StatCard title="Top Destino" value={metrics.summary.topDestinations[0]} />
+        <StatCard title="Total de Reservas" value={metrics.summary?.totalReservations || 0} />
+        <StatCard title="Total de Clientes" value={metrics.summary?.totalClients || 0} />
+        <StatCard title="Top Destino" value={metrics.summary?.topDestinations?.[0] || 'N/A'} />
       </div>
 
       <div className={styles.chartsGrid}>
         <div className={styles.chartContainer}>
           <h3>Vendas por Destino</h3>
           <div>
-            <RevenueBarChart salesDestinationData={metrics.salesByDestination} />
+            {metrics.salesByDestination?.length > 0 ? (
+              <RevenueBarChart salesDestinationData={metrics.salesByDestination} />
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                Nenhum dado disponível
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.chartContainer}>
           <h3>Vendas por Status</h3>
           <div>
-            <SalesPieChart salesStatusData={metrics.salesByStatus} />
+            {metrics.salesByStatus?.length > 0 ? (
+              <SalesPieChart salesStatusData={metrics.salesByStatus} />
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                Nenhum dado disponível
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -125,16 +159,22 @@ export default function AdminMetricsPage() {
         <div className={styles.chartContainer}>
           <h3>Vendas por Período</h3>
           <div>
-            <SalesLineChart salesPeriodData={metrics.salesByPeriod} />
+            {metrics.salesByPeriod?.length > 0 ? (
+              <SalesLineChart salesPeriodData={metrics.salesByPeriod} />
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                Nenhum dado disponível
+              </div>
+            )}
           </div>
         </div>
         
         <div className={styles.summaryCard}>
           <h4>Resumo Geral (KPI)</h4>
           <ul>
-            <li>Total de Reservas: {metrics.summary.totalReservations}</li>
-            <li>Total de Clientes: {metrics.summary.totalClients}</li>
-            <li>Top Destinos: {metrics.summary.topDestinations.join(', ')}</li>
+            <li>Total de Reservas: {metrics.summary?.totalReservations || 0}</li>
+            <li>Total de Clientes: {metrics.summary?.totalClients || 0}</li>
+            <li>Top Destinos: {metrics.summary?.topDestinations?.length > 0 ? metrics.summary.topDestinations.join(', ') : 'Nenhum destino disponível'}</li>
           </ul>
         </div>
       </div>
