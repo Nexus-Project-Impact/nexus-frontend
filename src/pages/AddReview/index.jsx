@@ -14,11 +14,6 @@ export function AddReviewPage() {
   const { packageId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Debug: verificar o valor do packageId
-  console.log('DEBUG AddReviewPage - packageId:', packageId, 'tipo:', typeof packageId);
-  console.log('DEBUG AddReviewPage - location.pathname:', location.pathname);
-  console.log('DEBUG AddReviewPage - window.location.href:', window.location.href);
   
   // Dados vindos da página de reservas
   const reservationData = location.state;
@@ -28,7 +23,6 @@ export function AddReviewPage() {
   
   // Verificação adicional se packageId é válido
   const isValidPackageId = finalPackageId && finalPackageId !== '0' && !isNaN(parseInt(finalPackageId)) && parseInt(finalPackageId) > 0;
-  console.log('DEBUG AddReviewPage - isValidPackageId:', isValidPackageId);
   
   if (!isValidPackageId) {
     console.error('ERRO: packageId inválido na URL!', { packageId, finalPackageId, pathname: location.pathname });
@@ -50,25 +44,7 @@ export function AddReviewPage() {
   // Hook para gerenciar reservas (para marcar como avaliada)
   const { markAsReviewed } = useUserReservations();
 
-  // Debug apenas se há problema com packageId
-  if (!finalPackageId || finalPackageId === '0' || isNaN(parseInt(finalPackageId))) {
-    console.error('=== ERRO: packageId inválido ===');
-    console.error('1. packageId (da URL):', packageId);
-    console.error('2. reservationData?.packageId:', reservationData?.packageId);
-    console.error('3. location.pathname:', location.pathname);
-    console.error('4. reservationData completo:', reservationData);
-    console.error('===============================');
-  } else {
-    console.log('DEBUG: packageId válido encontrado:', finalPackageId);
-  }
-
   useEffect(() => {
-    // Debug: verificar o valor do packageId
-    console.log('DEBUG AddReviewPage useEffect - packageId:', packageId, 'tipo:', typeof packageId);
-    console.log('DEBUG AddReviewPage useEffect - finalPackageId:', finalPackageId, 'tipo:', typeof finalPackageId);
-    console.log('DEBUG AddReviewPage useEffect - location:', location);
-    console.log('DEBUG AddReviewPage useEffect - params completos:', { packageId });
-    
     // Verificar se está logado
     if (!token) {
       navigate('/login');
@@ -79,9 +55,7 @@ export function AddReviewPage() {
     const loadPackageData = async () => {
       try {
         setIsLoadingPackage(true);
-        console.log('DEBUG loadPackageData - chamando getPackageById com finalPackageId:', finalPackageId);
         const data = await packageService.getPackageById(finalPackageId);
-        console.log('DEBUG loadPackageData - dados retornados:', data);
         setPackageData(data);
       } catch (err) {
         setError('Erro ao carregar dados do pacote');
@@ -100,7 +74,6 @@ export function AddReviewPage() {
   useEffect(() => {
     if (!canReview && packageData && !isLoadingPackage) {
       // Opcional: mostrar aviso se usuário não pode avaliar
-      console.log('Usuário já avaliou este pacote ou não tem permissão');
     }
   }, [canReview, packageData, isLoadingPackage]); 
 

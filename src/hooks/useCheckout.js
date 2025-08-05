@@ -21,7 +21,6 @@ export function useCheckout(packageData, travelers) {
     setIsLoading(true);
 
     if (paymentMethod === 'debit') {
-      console.log('Simulando compra com cartão de débito...');
       setTimeout(() => {
         notificationService.booking.purchaseSuccess();
         setIsLoading(false);
@@ -30,7 +29,6 @@ export function useCheckout(packageData, travelers) {
     }
 
     if (paymentMethod === 'boleto') {
-      console.log('Gerando boleto...');
       setTimeout(() => {
         const fakeBarcode = '12345 67890 12345 67890 12345 67890 1 12345678901234';
         setBoletoData({ barcode: fakeBarcode, dueDate: 'Vencimento em 3 dias úteis' });

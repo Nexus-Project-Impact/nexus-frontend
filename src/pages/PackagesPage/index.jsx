@@ -40,10 +40,8 @@ export function PackagesPage() {
   const handleSearch = (filters) => {
     setIsLoading(true);
     let results = [...allPackages];
-    console.log(filters)
 
     if (filters.destination !== "") {
-      console.log("entrei no destination")
       results = results.filter((pkg) =>
         pkg.destination
           .toLowerCase()
@@ -52,7 +50,6 @@ export function PackagesPage() {
     }
 
     if (filters.dateRange[0] !== null) {
-      console.log("entrei no date")
       results = results.filter((pkg) => {
         const pkgDate = new Date(pkg.departureDate);
         return (
@@ -62,16 +59,13 @@ export function PackagesPage() {
     }
 
     if (filters.price !== "") {
-      console.log("entrei no price", filters.price)
       const [minValue, maxValue] = filters.price.split("-").map(Number);
       results = results.filter((pkg) => {
         const pkgValue = pkg.value;
-        console.log("pkgValue", pkgValue, "minValue", minValue, "maxValue", maxValue)
         return pkgValue >= minValue && pkgValue <= maxValue;
       });
     }
 
-    console.log("resultado ", results)
     setFilteredPackages(results);
     setIsLoading(false);
   };

@@ -6,6 +6,7 @@ export function useReservationDetails(reservationId) {
   const location = useLocation();
   const [reservation, setReservation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (reservationId) {
@@ -33,12 +34,15 @@ export function useReservationDetails(reservationId) {
         fetchReservationDetails();
       }
     } else {
+      console.log('Nenhum ID de reserva fornecido');
+      setError('ID de reserva não fornecido');
       setIsLoading(false);
     }
   }, [reservationId, location.state]);
 
   return {
     reservation,
-    isLoading
+    isLoading,
+    error
   };
 }
