@@ -135,6 +135,34 @@ export const notificationService = {
       });
     },
     
+    purchaseError: () => {
+      toast.error("Erro ao processar pagamento. Tente novamente.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+    },
+    
+    pixCreated: () => {
+      toast.success("PIX gerado com sucesso! 💚 Escaneie o QR Code ou copie o código para pagar.", {
+        position: "top-center",
+        autoClose: 6000,
+      });
+    },
+    
+    boletoCreated: () => {
+      toast.success("Boleto gerado com sucesso! 📄 Use o código de barras para pagar no seu banco.", {
+        position: "top-center",
+        autoClose: 6000,
+      });
+    },
+    
+    copied: () => {
+      toast.info("Código copiado para a área de transferência! 📋", {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+    },
+    
     addToCart: (packageName) => {
       toast.success(`${packageName} foi adicionado ao carrinho!`, {
         position: "bottom-right",
