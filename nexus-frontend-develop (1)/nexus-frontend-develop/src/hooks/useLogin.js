@@ -4,7 +4,7 @@
 // imports e dependencias 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login, login_admin, logout, forgotPassword, register, isAuthenticated, getUserFromToken, getToken } from '../services/authService';
+import { login, login_admin, logout, forgotPassword, resetPassword, register, isAuthenticated, getUserFromToken, getToken } from '../services/authService';
 import { useDispatch } from 'react-redux';
 import { setCredentials, clearCredentials } from '../store/authSlice'; // guarda os dados do usuário e o token no Redux
 import { notificationService } from '../services/notificationService';
@@ -190,13 +190,11 @@ export function useLogin() {
     setIsLoading(true);
     
     try {
-      // Chamar logout do authService (limpa token do servidor e localStorage)
+    
       await logout();
       
-      // Limpar dados do Redux
       dispatch(clearCredentials());
-      
-      // Notificação de sucesso
+
       notificationService.auth.logoutSuccess();
       
       // Redirecionar para página de login
@@ -205,7 +203,6 @@ export function useLogin() {
     } catch (err) {
       console.error('Erro no logout:', err);
       
-      // Mesmo com erro no servidor, limpar dados locais
       dispatch(clearCredentials());
       navigate('/login');
       
@@ -242,7 +239,6 @@ export function useLogin() {
       
       let errorMessage = 'Erro ao solicitar recuperação de senha';
       
-      // Tratamento de erros específicos do backend
       if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
       } else if (err.response?.status === 404) {
@@ -263,7 +259,75 @@ export function useLogin() {
     }
   };
 
-  // FUNÇÕES AUXILIARES DE VERIFICAÇÃO
+  // RESETAR SENHA: redefine senha do usuário logado (REQUER AUTORIZAÇÃO)
+  const handleResetPassword = async (currentPassword, newPassword, confirmPassword) => {
+    setIsLoading(true);
+    setError('');
+    
+    // Validações básicas
+    if (!currentPassword?.trim()) {
+      setError('Senha atual é obrigatória');
+      setIsLoading(false);
+      return false;
+    }
+    
+    if (!newPassword?.trim()) {
+      setError('Nova senha é obrigatória');
+      setIsLoading(false);
+      return false;
+    }
+    
+    if (newPassword.length < 6) {
+      setError('Nova senha deve ter pelo menos 6 caracteres');
+      setIsLoading(false);
+      return false;
+    }
+    
+    if (confirmPassword && newPassword !== confirmPassword) {
+      setError('Senhas não coincidem');
+      setIsLoading(false);
+      return false;
+    }
+    
+    try {
+      // Preparar objeto conforme modelo RequestResetPassword
+      const requestResetPassword = {
+        currentPassword: currentPassword.trim(),
+        newPassword: newPassword.trim()
+      };
+      
+      await resetPassword(requestResetPassword);
+      
+      // Notificação de sucesso
+      notificationService.success("Senha redefinida com sucesso!");
+      
+      return true;
+      
+    } catch (err) {
+      console.error('Erro ao resetar senha:', err);
+      
+      let errorMessage = 'Erro ao redefinir senha';
+      
+      if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err.response?.status === 400) {
+        errorMessage = 'Senha atual incorreta';
+      } else if (err.response?.status === 401) {
+        errorMessage = 'Você precisa estar logado para redefinir a senha';
+      } else if (err.response?.status === 422) {
+        errorMessage = 'Dados inválidos para redefinição de senha';
+      }
+      
+      setError(errorMessage);
+      notificationService.error(errorMessage);
+      
+      return false;
+      
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const checkAuthStatus = () => {
     return isAuthenticated();
   };
@@ -308,6 +372,7 @@ export function useLogin() {
     handleRegister,
     handleLogout,
     handleForgotPassword,
+    handleResetPassword,
     
     // Funções auxiliares
     checkAuthStatus,

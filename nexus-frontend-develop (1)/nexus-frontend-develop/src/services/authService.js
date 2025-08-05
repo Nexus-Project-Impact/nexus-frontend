@@ -1,9 +1,5 @@
 import { api } from './api';
 
-// ============================================================================
-// AUTENTICAÇÃO BÁSICA (ENDPOINTS EXISTENTES NO BACKEND)
-// ============================================================================
-
 // LOGIN: envia as credenciais e armazena o token no localStorage
 export async function login(email, password) {
   try {
@@ -70,6 +66,18 @@ export async function forgotPassword(email) {
     return response.data;
   } catch (error) {
     console.error('Erro ao solicitar recuperação de senha:', error);
+    throw error;
+  }
+}
+
+// RESETAR SENHA: redefine senha do usuário logado (REQUER AUTORIZAÇÃO)
+export async function resetPassword(requestResetPassword) {
+  try {
+    const response = await api.post('/Auth/reset-password', requestResetPassword);
+    console.log('Senha resetada com sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao resetar senha:', error);
     throw error;
   }
 }
