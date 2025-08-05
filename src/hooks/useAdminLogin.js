@@ -43,7 +43,7 @@ export function useAdminLogin() {
           if (isAdmin) {
             dispatch(setCredentials({ user, token: data.token }));
             notificationService.auth.loginSuccess(user.name);
-            navigate('/admin'); // Redirecionar para área admin
+            navigate('/admin/pacotes'); // Redirecionar para área admin de pacotes
           } else {
             setError('Usuário não possui permissões de administrador');
             notificationService.auth.loginError();

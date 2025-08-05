@@ -3,7 +3,20 @@ import styles from '../../AdminReservation.module.css';
 
 export function ReservationsTable({ reservations, onViewReservation }) {
   
+  // Verificação de segurança
+  if (!reservations || !Array.isArray(reservations)) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <p>Não foi possível carregar os dados das reservas.</p>
+      </div>
+    );
+  }
+
   const getStatusBadgeClass = (status) => {
+    if (!status || typeof status !== 'string') {
+      return styles.statusBadge;
+    }
+    
     switch (status.toLowerCase()) {
       case 'pago':
         return `${styles.statusBadge} ${styles.statusPago}`;
@@ -33,18 +46,18 @@ export function ReservationsTable({ reservations, onViewReservation }) {
       <tbody>
         {reservations.map((reservation) => (
           <tr key={reservation.id}>
-            <td>{reservation.userId}</td>
-            <td>{reservation.clientName}</td>
-            <td>{reservation.id}</td>
-            <td>{reservation.travelDate}</td>
-            <td>{reservation.reservationDate}</td>
+            <td>{reservation.userId || 'N/A'}</td>
+            <td>{reservation.clientName || reservation.userName || 'N/A'}</td>
+            <td>{reservation.id || 'N/A'}</td>
+            <td>{reservation.travelDate || reservation.departureDate || 'N/A'}</td>
+            <td>{reservation.reservationDate || reservation.createdAt || 'N/A'}</td>
             <td>
-              <span className={getStatusBadgeClass(reservation.paymentStatus)}>
-                {reservation.paymentStatus}
+              <span className={getStatusBadgeClass(reservation.paymentStatus || 'pendente')}>
+                {reservation.paymentStatus || 'Pendente'}
               </span>
             </td>
             <td className={styles.priceCell}>
-              R$ {reservation.totalPrice.toLocaleString('pt-BR')}
+              R$ {(reservation.totalPrice || reservation.price || 0).toLocaleString('pt-BR')}
             </td>
             <td className={styles.actions}>
               <button 
