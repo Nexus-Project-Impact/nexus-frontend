@@ -102,15 +102,14 @@ export async function resetPasswordLoggedUser(currentPassword, newPassword) {
 // RESETAR SENHA COM CÓDIGO: redefine senha usando código de 6 dígitos do email (NÃO REQUER AUTORIZAÇÃO)
 export async function resetPasswordWithCode(email, code, newPassword) {
   try {
-    // TESTE: Vamos ver que endpoints estão disponíveis
     console.log('Tentando resetar senha com:', { email, code, newPassword });
     
-    // Primeiro, vamos tentar o endpoint que faz mais sentido baseado no fluxo
-    const response = await anonymousApi.post('/Auth/forgot-password', {
+    // Como o backend não tem endpoint específico, vamos tentar o endpoint existente
+    // mas passando dados que indiquem que é para resetar com código
+    const response = await anonymousApi.post('/Auth/reset-password', {
       email: email,
       code: code,
-      newPassword: newPassword,
-      action: 'reset' // Indicar que é para resetar, não para solicitar código
+      newPassword: newPassword
     });
     console.log('Senha resetada com código:', response.data);
     return response.data;
@@ -119,8 +118,15 @@ export async function resetPasswordWithCode(email, code, newPassword) {
     console.error('Detalhes do erro:', {
       status: error.response?.status,
       data: error.response?.data,
-      url: error.config?.url
+      url: error.config?.url,
+      message: error.response?.data?.message || error.message
     });
+    
+    // Se for 401, pode ser que o endpoint precise de token mesmo com código
+    if (error.response?.status === 401) {
+      throw new Error('O endpoint reset-password requer autorização. Backend precisa ser ajustado para aceitar código sem token.');
+    }
+    
     throw error;
   }
 }
