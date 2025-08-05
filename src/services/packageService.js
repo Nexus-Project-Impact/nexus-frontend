@@ -15,7 +15,14 @@ const packageService = {
     } ,
 
     createPackage: async (travelPackage) =>{
-        const response = await api.post('/TravelPackage/Create', travelPackage);
+        // Se for FormData (com imagem), usar headers multipart
+        const config = travelPackage instanceof FormData ? {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        } : {};
+        
+        const response = await api.post('/TravelPackage/Create', travelPackage, config);
         return response.data;
     },
 
