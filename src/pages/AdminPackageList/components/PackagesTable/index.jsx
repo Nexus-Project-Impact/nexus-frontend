@@ -18,10 +18,11 @@ export function PackagesTable({ packages, onDelete }) {
       <thead>
         <tr>
           <th>ID</th>
+          <th>Título</th>
           <th>Destino</th>
-          <th>Data</th>
-          <th>Voo</th>
-          <th>Hotel</th>
+          <th>Data de Ida</th>
+          <th>Data de Retorno</th>
+          <th>Descrição</th>
           <th>Preço</th>
           <th>Ações</th>
         </tr>
@@ -29,16 +30,21 @@ export function PackagesTable({ packages, onDelete }) {
       <tbody>
         {packages.map((pkg) => (
           <tr key={pkg.id}>
-            <td>{pkg.id}</td>
-            <td>{pkg.name || 'N/A'}</td>
-            <td>{pkg.dates || pkg.departureDate || 'N/A'}</td>
+            <td>{pkg.id || 'N/A'}</td>
+            <td>{pkg.title || pkg.name || 'N/A'}</td>
+            <td>{pkg.destination || pkg.destino || 'N/A'}</td>
+            <td>{pkg.departureDate ? new Date(pkg.departureDate).toLocaleDateString('pt-BR') : 'N/A'}</td>
+            <td>{pkg.returnDate ? new Date(pkg.returnDate).toLocaleDateString('pt-BR') : 'N/A'}</td>
             <td>
-              {pkg.detailsPackage?.flight?.company || pkg.description?.flight?.company || 'N/A'} - 
-              Ida: {pkg.detailsPackage?.flight?.departureTime || pkg.description?.flight?.departureTime || 'N/A'} | 
-              Volta: {pkg.detailsPackage?.flight?.returnTime || pkg.description?.flight?.returnTime || 'N/A'}
+              {pkg.description || pkg.details || 'N/A'}
             </td>
-            <td>{pkg.detailsPackage?.hotel?.name || pkg.description?.hotel?.name || 'N/A'}</td>
-            <td>R$ {pkg.pricePackage?.toLocaleString('pt-BR') || pkg.price?.toLocaleString('pt-BR') || 'N/A'}</td>
+            <td>
+              R$ {pkg.price || pkg.pricePackage || pkg.value ? 
+                (pkg.price || pkg.pricePackage || pkg.value).toLocaleString('pt-BR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                }) : 'N/A'}
+            </td>
             <td className={styles.actions}>
               <Link to={`/admin/pacotes/editar/${pkg.id}`} className={styles.actionLink}>Editar</Link>
               <button onClick={() => onDelete(pkg.id)} className={`${styles.actionLink} ${styles.deleteButton}`}>Excluir</button>

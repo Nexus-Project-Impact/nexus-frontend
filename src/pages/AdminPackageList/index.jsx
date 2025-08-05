@@ -15,6 +15,14 @@ export default function AdminPackageListPage() {
     try {
       const data = await packageService.getPackages();
       // Garantir que data é um array
+      console.log('=== DADOS DOS PACOTES DA API ===');
+      console.log('Dados recebidos:', data);
+      console.log('Tipo:', typeof data);
+      console.log('É array:', Array.isArray(data));
+      if (data && data.length > 0) {
+        console.log('Primeiro pacote:', data[0]);
+        console.log('Campos disponíveis:', Object.keys(data[0]));
+      }
       setPackages(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Erro ao carregar pacotes:', err);
@@ -50,7 +58,7 @@ export default function AdminPackageListPage() {
       {/* Barra de Pesquisa (funcionalidade a ser adicionada) */}
       <div className={styles.searchBar}>
         <input type="text" placeholder="Destino" />
-        <input type="text" placeholder="09/08 - 09/09" />
+        <input type="date" placeholder="Data de Ida" />
         <input type="text" placeholder="ID do pacote" />
         <button className={styles.searchButton}>
           <svg xmlns="http://www.w3.org/2000/svg" 
