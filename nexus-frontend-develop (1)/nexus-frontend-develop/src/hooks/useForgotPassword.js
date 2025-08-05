@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { forgotPassword } from '../services/authService';
 
 export function useForgotPassword() {
   const [email, setEmail] = useState('');
@@ -6,20 +7,35 @@ export function useForgotPassword() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(null);
 
-  const handlePasswordReset = (event) => {
+  const handlePasswordReset = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
     setIsSuccess(false);
 
-    // Simulação de chamada de API
-    console.log(`Simulando envio de link de recuperação para: ${email}`);
-    
-    setTimeout(() => {
-      // Simplesmente damos sucesso para qualquer e-mail no nosso protótipo
-      setIsSuccess(true);
+
+    if (!email?.trim()) {
+      setError('Email é obrigatório');
       setIsLoading(false);
-    }, 1500);
+      return false;
+    }
+
+    try {
+      
+      await forgotPassword(email.trim());
+      
+
+      setIsSuccess(true);
+      return true;
+      
+    } catch (err) {
+      
+      setError('Erro ao solicitar recuperação de senha');
+      return false;
+      
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetState = () => {
