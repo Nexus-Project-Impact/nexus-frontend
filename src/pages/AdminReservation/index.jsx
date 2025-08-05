@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAdminReservations } from '../../hooks/useAdminReservations';
 import { ReservationsTable } from './components/ReservationsTable';
+import { formatDate, validateDate } from '../../utils/formatters';
 import styles from './AdminReservation.module.css';
 
 export function AdminReservation() {
@@ -12,6 +13,12 @@ export function AdminReservation() {
   } = useAdminReservations();
   const [nameFilter, setNameFilter] = useState('');
   const [cpfFilter, setCpfFilter] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
+
+  const handleDateChange = (e) => {
+    const formatted = formatDate(e.target.value);
+    setDateFilter(formatted);
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -25,12 +32,17 @@ export function AdminReservation() {
       filters.cpf = cpfFilter.trim();
     }
 
+    if (dateFilter.trim()) {
+      filters.date = dateFilter.trim();
+    }
+
     await searchReservations(filters);
   };
 
   const handleClearFilters = async () => {
     setNameFilter('');
     setCpfFilter('');
+    setDateFilter('');
     // Busca sem filtros (todas as reservas)
     await searchReservations();
   };
@@ -61,6 +73,13 @@ export function AdminReservation() {
                 placeholder="Filtrar por CPF" 
                 value={cpfFilter}
                 onChange={(e) => setCpfFilter(e.target.value)}
+              />
+              <input 
+                type="text" 
+                placeholder="Filtrar por Data (dd/mm/yyyy)" 
+                value={dateFilter}
+                onChange={handleDateChange}
+                maxLength="10"
               />
               <button type="submit" className={styles.searchButton}>
                 <svg 

@@ -17,7 +17,7 @@ export default function AdminPackageListPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await packageService.getAllActive();
+      const data = await packageService.getPackagesActive();
       // Garantir que data é um array
       const packagesArray = Array.isArray(data) ? data : [];
       setAllPackages(packagesArray);

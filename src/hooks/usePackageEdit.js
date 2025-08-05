@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { convertBRDateToISO, convertISODateToBR, formatCurrencyInput, parseCurrencyInput } from '../utils/formatters';
 import packageService from '../services/packageService';
 
 export function usePackageEdit(packageId) {
@@ -28,21 +29,14 @@ export function usePackageEdit(packageId) {
           const data = await packageService.getPackageById(packageId);
           console.log('Dados recebidos da API:', data);
           
-          // Formatear as datas para o formato datetime-local do HTML
-          const formatDateForInput = (dateString) => {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toISOString().slice(0, 16); // formato YYYY-MM-DDTHH:mm
-          };
-          
           setPackageData({
             title: data.title || '',
             description: data.description || '',
             destination: data.destination || '',
             duration: data.duration || '',
-            departureDate: formatDateForInput(data.departureDate),
-            returnDate: formatDateForInput(data.returnDate),
-            value: data.value || '',
+            departureDate: convertISODateToBR(data.departureDate),
+            returnDate: convertISODateToBR(data.returnDate),
+            value: data.value ? formatCurrencyInput(data.value.toString()) : '',
             image: null // Arquivo não pode ser pré-carregado
           });
         } catch (error) {
@@ -74,6 +68,13 @@ export function usePackageEdit(packageId) {
     setIsLoading(true);
     
     try {
+      // Converter datas do formato brasileiro para ISO
+      const departureISO = convertBRDateToISO(packageData.departureDate);
+      const returnISO = convertBRDateToISO(packageData.returnDate);
+      
+      // Converter valor formatado para número decimal
+      const valueDecimal = parseCurrencyInput(packageData.value);
+      
       let dataToSend;
       
       // Se há uma nova imagem, usar FormData
@@ -84,9 +85,9 @@ export function usePackageEdit(packageId) {
         formData.append('Description', packageData.description);
         formData.append('Destination', packageData.destination);
         formData.append('Duration', parseInt(packageData.duration));
-        formData.append('DepartureDate', packageData.departureDate);
-        formData.append('ReturnDate', packageData.returnDate);
-        formData.append('Value', parseFloat(packageData.value));
+        formData.append('DepartureDate', departureISO);
+        formData.append('ReturnDate', returnISO);
+        formData.append('Value', valueDecimal);
         formData.append('Image', packageData.image);
         dataToSend = formData;
       } else {
@@ -97,14 +98,16 @@ export function usePackageEdit(packageId) {
           description: packageData.description,
           destination: packageData.destination,
           duration: parseInt(packageData.duration),
-          departureDate: packageData.departureDate,
-          returnDate: packageData.returnDate,
-          value: parseFloat(packageData.value)
+          departureDate: departureISO,
+          returnDate: returnISO,
+          value: valueDecimal
         };
       }
 
       console.log("Atualizando pacote com ID:", packageId);
       console.log("Dados do pacote:", packageData);
+      console.log("Datas convertidas - Partida:", departureISO, "Retorno:", returnISO);
+      console.log("Valor convertido:", valueDecimal);
       console.log("Tipo de dados enviados:", packageData.image ? 'FormData' : 'JSON');
       
       await packageService.updatePackage(packageId, dataToSend);

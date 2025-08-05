@@ -1,12 +1,34 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useReservationDetails } from '../../hooks/useReservationDetails';
-import { formatCpf, formatPhone } from '../../utils/formatters';
+import { formatCpf, formatPhone, formatCurrency } from '../../utils/formatters';
 import styles from '../AdminReservation/AdminReservation.module.css';
 
 export function AdminReservationDetails() {
   const { id } = useParams();
   const { reservation, isLoading, error } = useReservationDetails(id);
+
+  // Função para formatar data de reserva
+  const formatReservationDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    
+    try {
+      // Se a data já está no formato brasileiro, retorna como está
+      if (dateString.includes('/')) {
+        return dateString;
+      }
+      
+      // Se a data está no formato ISO (YYYY-MM-DD), converte para DD/MM/YYYY
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString('pt-BR');
+      }
+      
+      return dateString;
+    } catch (error) {
+      return dateString;
+    }
+  };
 
   if (isLoading) {
     return (
@@ -91,7 +113,7 @@ export function AdminReservationDetails() {
             <strong>Destino:</strong> {reservation.travelPackageDestination || 'N/A'}
           </div>
           <div className={styles.detailItem}>
-            <strong>Data da Reserva:</strong> {reservation.reservationDate || reservation.reservationDateFormatted}
+            <strong>Data da Reserva:</strong> {formatReservationDate(reservation.reservationDate || reservation.reservationDateFormatted)}
           </div>
           
           {/* Lista de Viajantes */}
@@ -126,7 +148,7 @@ export function AdminReservationDetails() {
           <div className={styles.detailItem}>
             <strong>Valor Total:</strong> 
             <span className={styles.priceCell}>
-              R$ {(reservation.totalValue || reservation.travelPackageValue || reservation.totalPrice || 0).toLocaleString('pt-BR')}
+              {formatCurrency(reservation.totalValue || reservation.travelPackageValue || reservation.totalPrice || 0)}
             </span>
           </div>
         </div>

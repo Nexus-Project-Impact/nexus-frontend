@@ -1,12 +1,50 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { usePackageEdit } from '../../hooks/usePackageEdit';
+import { formatDate, validateDate, formatCurrencyInput } from '../../utils/formatters';
 import styles from './AdminEditPackage.module.css';
 import { Link } from 'react-router-dom';
 
 export function AdminEditPackage() {
   const { id } = useParams();
-  const { packageData, isLoading, isFetching, handleChange, handleSubmit } = usePackageEdit(id);
+  const { packageData, isLoading, isFetching, handleChange, handleSubmit: submitPackage } = usePackageEdit(id);
+
+  const handleDateChange = (field, value) => {
+    const formatted = formatDate(value);
+    handleChange({
+      target: {
+        name: field,
+        value: formatted
+      }
+    });
+  };
+
+  const handleCurrencyChange = (e) => {
+    const formatted = formatCurrencyInput(e.target.value);
+    handleChange({
+      target: {
+        name: 'value',
+        value: formatted
+      }
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validar datas antes do envio
+    if (packageData.departureDate && !validateDate(packageData.departureDate)) {
+      alert('Data de ida inválida. Use o formato dd/mm/yyyy');
+      return;
+    }
+    
+    if (packageData.returnDate && !validateDate(packageData.returnDate)) {
+      alert('Data de retorno inválida. Use o formato dd/mm/yyyy');
+      return;
+    }
+    
+    submitPackage(e);
+  };
 
   // Lidar com o estado de carregamento inicial
   if (isFetching) {
@@ -72,40 +110,42 @@ export function AdminEditPackage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="departureDate">Data de Ida</label>
+            <label htmlFor="departureDate">Data de Ida (dd/mm/yyyy)</label>
             <input 
               id="departureDate" 
               name="departureDate" 
-              type="datetime-local" 
+              type="text" 
+              placeholder="ex: 15/08/2025"
               value={packageData.departureDate} 
-              onChange={handleChange} 
+              onChange={(e) => handleDateChange('departureDate', e.target.value)}
+              maxLength="10"
               required 
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="returnDate">Data de Retorno</label>
+            <label htmlFor="returnDate">Data de Retorno (dd/mm/yyyy)</label>
             <input 
               id="returnDate" 
               name="returnDate" 
-              type="datetime-local" 
+              type="text" 
+              placeholder="ex: 22/08/2025"
               value={packageData.returnDate} 
-              onChange={handleChange} 
+              onChange={(e) => handleDateChange('returnDate', e.target.value)}
+              maxLength="10"
               required 
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="value">Preço</label>
+            <label htmlFor="value">Preço (R$)</label>
             <input 
               id="value" 
               name="value" 
-              type="number" 
-              step="0.01"
-              placeholder="ex: 3590.00"
+              type="text" 
+              placeholder="ex: 3.590,00"
               value={packageData.value} 
-              onChange={handleChange} 
-              min="0"
+              onChange={handleCurrencyChange} 
               required 
             />
           </div>
