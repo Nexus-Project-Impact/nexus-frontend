@@ -172,6 +172,9 @@ export function PackageDetailPage() {
             
             <span className={styles.installments}>Em até {price.installments || 12}x no cartão</span>
           </div>
+          
+          {/* Botão Voltar - visível apenas em mobile */}
+          <button onClick={() => navigate(-1)} className={`${styles.backButton} ${styles.backButtonMobile}`}>Voltar</button>
         </div>
       </div>
       

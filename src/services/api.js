@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // 1º passo: definir a URL/ENDPOIN base para integração com o backend
 export const api = axios.create({
-  baseURL: 'https://localhost:7164', // Coloque aqui a porta do seu backend
+  baseURL: 'http://localhost:5235' || 'https://localhost:7164', // Coloque aqui a porta do seu backend
 
   headers: {
         'Content-Type' : 'application/json'
