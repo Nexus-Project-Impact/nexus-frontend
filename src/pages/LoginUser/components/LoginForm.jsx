@@ -18,6 +18,11 @@ export function LoginForm({
   onForgotPassClick,
 }) {
   return (
+    <>
+    <div className={styles.bodyContainer}>
+      <div className={styles.imageSectionResponsive}>
+        <img src={beachImage} alt="Praia" className={styles.beachImageResponsive} />
+    </div>
     <div className={styles.loginContainer}>
       {/* Coluna da Esquerda com a Imagem */}
       <div className={styles.imageSection}>
@@ -72,5 +77,8 @@ export function LoginForm({
         {error && <p className={styles.errorText}>{error}</p>}
       </form>
     </div>
+
+    </div>
+    </>
   );
 }

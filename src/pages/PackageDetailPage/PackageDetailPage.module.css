@@ -56,6 +56,20 @@
   background-color: #fff;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #ff9900;
+  color: white;
+}
+
+.backButtonDesktop {
+  display: block;
+}
+
+.backButtonMobile {
+  display: none;
 }
 
 .tagline {
@@ -72,6 +86,16 @@
   padding: 10px;
   text-align: center;
   margin: 15px 0;
+}
+
+.cardDates {
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  color: #ff9900;
+  padding: 10px;
+  text-align: center;
+  margin: 15px 0;
+  font-weight: 500;
 }
 
 .descriptionBox {
@@ -155,4 +179,223 @@
 .installments {
   font-size: 0.8rem;
   color: #777;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet - 768px e abaixo */
+@media screen and (max-width: 768px) {
+  .container {
+    width: 95%;
+    margin: 15px auto;
+    padding: 0 10px;
+  }
+
+  .destinationTitle {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .leftColumn {
+    order: 1;
+  }
+
+  .rightColumn {
+    order: 2;
+  }
+
+  .mainImage {
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  .tagline {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .currentPrice {
+    font-size: 2rem;
+  }
+
+  .descriptionBox {
+    padding: 15px;
+  }
+
+  .bookingBox {
+    padding: 15px;
+  }
+
+  .backButton {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .backButtonDesktop {
+    display: block;
+  }
+
+  .backButtonMobile {
+    display: none;
+  }
+}
+
+/* Mobile - 480px e abaixo */
+@media screen and (max-width: 480px) {
+  .container {
+    width: 100%;
+    margin: 10px auto;
+    padding: 0 15px;
+  }
+
+  .destinationTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    padding: 0 10px;
+  }
+
+  .detailsGrid {
+    gap: 20px;
+  }
+
+  .mainImage {
+    border-radius: 10px;
+    max-height: 250px;
+    margin-bottom: 10px;
+  }
+
+  .tagline {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .cardDates {
+    font-size: 0.9rem;
+    padding: 8px;
+    margin: 10px 0;
+  }
+
+  .descriptionBox {
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+  }
+
+  .descriptionBox h4 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .bookingBox {
+    padding: 12px;
+  }
+
+  .price {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .currentPrice {
+    font-size: 1.8rem;
+  }
+
+  .buyButton {
+    padding: 12px;
+    font-size: 1rem;
+    margin: 8px 0;
+  }
+
+  .reviewButton {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    margin: 8px 0;
+  }
+
+  .installments {
+    font-size: 0.75rem;
+  }
+
+  .backButton {
+    padding: 10px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  .backButtonDesktop {
+    display: none; /* Esconde o botão da esquerda em mobile */
+  }
+
+  .backButtonMobile {
+    display: block; /* Mostra o botão da direita em mobile */
+    width: 100%;
+    margin-top: 15px;
+    text-align: center;
+  }
+}
+
+/* Mobile pequeno - 360px e abaixo */
+@media screen and (max-width: 360px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  .destinationTitle {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .mainImage {
+    max-height: 200px;
+    border-radius: 8px;
+  }
+
+  .tagline {
+    font-size: 1.1rem;
+  }
+
+  .currentPrice {
+    font-size: 1.6rem;
+  }
+
+  .descriptionBox {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .bookingBox {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .buyButton {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  .reviewButton {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+
+  .backButtonDesktop {
+    display: none;
+  }
+
+  .backButtonMobile {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 }

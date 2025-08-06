@@ -1,4 +1,3 @@
-// DENTRO DE: src/components/CheckoutModal/CheckoutForm.jsx
 import React, { useState } from 'react';
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 

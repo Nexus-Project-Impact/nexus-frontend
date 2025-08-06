@@ -152,7 +152,7 @@ export function PackageDetailPage() {
               />
             ))}
           </div> */}
-          <button onClick={() => navigate(-1)} className={styles.backButton}>Voltar</button>
+          <button onClick={() => navigate(-1)} className={`${styles.backButton} ${styles.backButtonDesktop}`}>Voltar</button>
         </div>
 
         {/* Coluna da Direita */}
@@ -207,6 +207,9 @@ export function PackageDetailPage() {
             
             <span className={styles.installments}>Em até {price.installments || 12}x no cartão</span>
           </div>
+          
+          {/* Botão Voltar - visível apenas em mobile */}
+          <button onClick={() => navigate(-1)} className={`${styles.backButton} ${styles.backButtonMobile}`}>Voltar</button>
         </div>
       </div>
       

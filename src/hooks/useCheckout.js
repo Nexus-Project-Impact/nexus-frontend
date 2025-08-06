@@ -7,7 +7,7 @@ export function useCheckout(packageData, travelers) {
   const [boletoData, setBoletoData] = useState(null);
 
   const totalPrice = useMemo(() => {
-    if (!packageData || !travelers) return 0;
+    if (!packageData || !travelers || !packageData.price) return 0;
     return packageData.price.current * travelers.length;
   }, [packageData, travelers]);
   

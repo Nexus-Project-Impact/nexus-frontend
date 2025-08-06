@@ -13,6 +13,7 @@ const formatarData = (data) => {
   };
 
   return (
+    <div className={styles.cardContainerSpace}>
     <div className={styles.card}>
       <img src={imageUrl} alt={`Viagem para ${title}`} className={styles.cardImage} />
       <div className={styles.cardContent}>
@@ -25,6 +26,7 @@ const formatarData = (data) => {
         <button className={styles.cardButton}>Saiba Mais</button>
         </Link>
       </div>
+    </div>
     </div>
   );
 }

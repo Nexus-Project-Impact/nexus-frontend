@@ -5,6 +5,7 @@ import { useLogin } from '../../hooks/useLogin'; // Verifique se o caminho do im
 import { LoginForm } from './components/LoginForm';
 import { RegisterModal } from '../../components/RegisterModal';
 import { ForgotPasswordModal } from '../../components/ForgotPasswordModal';
+import styles from './login.module.css';
 
 // Estilos para centralizar o formulário na área de conteúdo do Layout
 const loginPageStyles = {
@@ -24,7 +25,7 @@ function LoginPage() {
   // O componente agora só se preocupa em renderizar o seu próprio conteúdo.
   // O Header e o Footer são adicionados automaticamente pelo <Layout />.
   return (
-    <div style={loginPageStyles}>
+    <div className={styles.pageWrapper}>
       <LoginForm {...loginProps} 
       onRegisterClick={() => setIsRegisterOpen(true)} 
       onForgotPassClick={() => setIsForgotPassOpen(true)}/>

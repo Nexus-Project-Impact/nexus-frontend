@@ -77,7 +77,7 @@ export function PackagesPage() {
   };
 
   return (
-    <div>
+    <div className={styles.packageContainer}>
       <div className={styles.heroSection}>
         <h1 className={styles.heroTitle}>Nexus</h1>
         {

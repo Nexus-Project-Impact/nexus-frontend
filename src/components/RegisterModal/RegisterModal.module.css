@@ -9,6 +9,9 @@
   justify-content: center;
   align-items: center;
   z-index: 2000;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite scroll em telas pequenas */
 }
 
 input {
@@ -19,10 +22,13 @@ input {
   background: white;
   padding: 40px;
   border-radius: 20px;
-  width: 90%;
+  width: 100%;
   max-width: 450px;
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin: auto;
+  max-height: 90vh; /* Limita altura máxima */
+  overflow-y: auto; /* Scroll interno se necessário */
 }
 
 .modalContent h2 {
@@ -103,4 +109,174 @@ input {
 .successMessage {
   text-align: center;
   color: #333;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet - 768px e abaixo */
+@media screen and (max-width: 768px) {
+  .modalOverlay {
+    padding: 15px;
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .modalContent {
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .modalContent h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+
+  .modalContent input {
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  .submitButton {
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  .closeButton {
+    top: 12px;
+    right: 15px;
+    font-size: 1.8rem;
+  }
+}
+
+/* Mobile - 480px e abaixo */
+@media screen and (max-width: 480px) {
+  .modalOverlay {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .modalContent {
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    min-height: auto;
+  }
+
+  .modalContent h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .modalContent input {
+    padding: 12px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    margin-bottom: 3px;
+  }
+
+  .inputGroup {
+    margin-bottom: 12px;
+  }
+
+  .fieldError {
+    font-size: 0.8rem;
+    margin-top: 3px;
+  }
+
+  .submitButton {
+    padding: 12px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+  }
+
+  .closeButton {
+    top: 10px;
+    right: 12px;
+    font-size: 1.6rem;
+  }
+
+  .errorText {
+    font-size: 0.9rem;
+    margin-top: 12px;
+  }
+}
+
+/* Mobile pequeno - 360px e abaixo */
+@media screen and (max-width: 360px) {
+  .modalOverlay {
+    padding: 5px;
+    padding-top: 15px;
+  }
+
+  .modalContent {
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .modalContent h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .modalContent input {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .inputGroup {
+    margin-bottom: 10px;
+  }
+
+  .fieldError {
+    font-size: 0.75rem;
+  }
+
+  .submitButton {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .closeButton {
+    top: 8px;
+    right: 10px;
+    font-size: 1.4rem;
+  }
+}
+
+/* Mobile landscape - altura limitada */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .modalOverlay {
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+
+  .modalContent {
+    max-height: 95vh;
+    padding: 15px;
+  }
+
+  .modalContent h2 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  .modalContent input {
+    padding: 8px;
+    margin-bottom: 2px;
+  }
+
+  .inputGroup {
+    margin-bottom: 8px;
+  }
+
+  .submitButton {
+    padding: 8px;
+  }
 }
