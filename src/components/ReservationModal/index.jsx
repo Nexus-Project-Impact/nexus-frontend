@@ -57,36 +57,7 @@ export function ReservationModal({ isOpen, onClose, onSaveAndProceed }) {
                   )}
                 </div>
               </div>
-              <div className={styles.inputRow}>
-                <div className={styles.inputWithValidation}>
-                  <input
-                    type="text"
-                    placeholder="CPF"
-                    value={traveler.cpf}
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/\D/g, '');
-                      if (value.length <= 11) {
-                        // Formata CPF: XXX.XXX.XXX-XX
-                        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-                        handleTravelerChange(index, 'cpf', value);
-                      }
-                    }}
-                    className={`${styles.inputHalf} ${traveler.cpf && traveler.cpf.replace(/\D/g, '').length !== 11 ? styles.inputError : ''}`}
-                  />
-                  {traveler.cpf && traveler.cpf.replace(/\D/g, '').length !== 11 && (
-                    <span className={styles.validationMessage}>
-                      CPF deve ter 11 dígitos
-                    </span>
-                  )}
-                </div>
-                <input
-                  type="date"
-                  placeholder="Data de Nascimento"
-                  value={traveler.dob}
-                  onChange={(e) => handleTravelerChange(index, 'dob', e.target.value)}
-                  className={styles.inputHalf}
-                />
-              </div>
+
             </div>
           ))}
         </div>

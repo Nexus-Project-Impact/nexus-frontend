@@ -9,8 +9,6 @@ export function useReservation(onSaveAndProceed) {
     id: 1,
     name: user?.name || '',
     rg: '',
-    cpf: '',
-    dob: '', // Data de Nascimento (Date of Birth)
   };
 
   const [travelers, setTravelers] = useState([initialTraveler]);
@@ -30,7 +28,7 @@ export function useReservation(onSaveAndProceed) {
     }
     setTravelers([
       ...travelers,
-      { id: travelers.length + 1, name: '', rg: '', cpf: '', dob: '' },
+      { id: travelers.length + 1, name: '', rg: '' },
     ]);
   };
 

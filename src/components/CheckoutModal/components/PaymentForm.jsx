@@ -152,8 +152,24 @@ export function PaymentForm({ paymentMethod, totalPrice, packageData, travelers,
   const [isLoading, setIsLoading] = useState(false);
   const [paymentResult, setPaymentResult] = useState(null);
   const [error, setError] = useState(null);
+  
+  // Obter userId do localStorage ou Redux (dependendo da implementação)
+  const getUserId = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.nameid || payload.sub || payload.userId || payload.id;
+      } catch (error) {
+        console.error('Erro ao extrair userId do token:', error);
+        return null;
+      }
+    }
+    return null;
+  };
 
   const paymentData = {
+    userId: getUserId(),
     amountPaid: totalPrice,
     receipt: `Pagamento ${paymentMethod} - ${packageData.title || packageData.name} - ${new Date().toISOString()}`,
     travelPackageId: packageData.id || packageData.packageId || 1,
