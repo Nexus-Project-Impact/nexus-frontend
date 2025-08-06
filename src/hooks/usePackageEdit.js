@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { convertBRDateToISO, convertISODateToBR } from '../utils/formatters';
 import packageService from '../services/packageService';
 
 export function usePackageEdit(packageId) {
   const navigate = useNavigate();
   const [packageData, setPackageData] = useState({
-    name: '',
+    title: '',
+    description: '',
     destination: '',
-    image: '',
-    gallery: [],
-    dates: '',
-    price: { current: 0, old: 0 },
-    details: '',
-    included: [],
-    notIncluded: [],
+    duration: '',
+    departureDate: '',
+    returnDate: '',
+    value: '',
+    image: null
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
@@ -26,9 +26,19 @@ export function usePackageEdit(packageId) {
         setIsFetching(true);
         try {
           console.log('Buscando dados do pacote com ID:', packageId);
-          const data = await packageService.getById(packageId);
+          const data = await packageService.getPackageById(packageId);
           console.log('Dados recebidos da API:', data);
-          setPackageData(data);
+          
+          setPackageData({
+            title: data.title || '',
+            description: data.description || '',
+            destination: data.destination || '',
+            duration: data.duration || '',
+            departureDate: convertISODateToBR(data.departureDate),
+            returnDate: convertISODateToBR(data.returnDate),
+            value: data.value || '',
+            image: null // Arquivo não pode ser pré-carregado
+          });
         } catch (error) {
           console.error("Erro ao buscar dados do pacote:", error);
           alert("Não foi possível carregar os dados do pacote.");
@@ -44,19 +54,67 @@ export function usePackageEdit(packageId) {
   }, [packageId]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPackageData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target;
+    
+    if (type === 'file') {
+      setPackageData(prev => ({ ...prev, [name]: files[0] }));
+    } else {
+      setPackageData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log("Salvando dados do pacote:", packageData);
-    setTimeout(() => {
-      setIsLoading(false);
-      alert("Pacote salvo com sucesso! (Simulação)");
+    
+    try {
+      // Converter datas do formato brasileiro para ISO
+      const departureISO = convertBRDateToISO(packageData.departureDate);
+      const returnISO = convertBRDateToISO(packageData.returnDate);
+      
+      let dataToSend;
+      
+      // Se há uma nova imagem, usar FormData
+      if (packageData.image) {
+        console.log("Enviando com nova imagem (FormData)");
+        const formData = new FormData();
+        formData.append('Title', packageData.title);
+        formData.append('Description', packageData.description);
+        formData.append('Destination', packageData.destination);
+        formData.append('Duration', parseInt(packageData.duration));
+        formData.append('DepartureDate', departureISO);
+        formData.append('ReturnDate', returnISO);
+        formData.append('Value', parseFloat(packageData.value));
+        formData.append('Image', packageData.image);
+        dataToSend = formData;
+      } else {
+        // Se não há nova imagem, enviar JSON
+        console.log("Enviando sem nova imagem (JSON)");
+        dataToSend = {
+          title: packageData.title,
+          description: packageData.description,
+          destination: packageData.destination,
+          duration: parseInt(packageData.duration),
+          departureDate: departureISO,
+          returnDate: returnISO,
+          value: parseFloat(packageData.value)
+        };
+      }
+
+      console.log("Atualizando pacote com ID:", packageId);
+      console.log("Dados do pacote:", packageData);
+      console.log("Datas convertidas - Partida:", departureISO, "Retorno:", returnISO);
+      console.log("Tipo de dados enviados:", packageData.image ? 'FormData' : 'JSON');
+      
+      await packageService.updatePackage(packageId, dataToSend);
+      alert("Pacote atualizado com sucesso!");
       navigate('/admin/pacotes');
-    }, 1000);
+    } catch (error) {
+      console.error('Erro ao atualizar pacote:', error);
+      alert('Erro ao atualizar pacote. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return { packageData, isLoading, isFetching, handleChange, handleSubmit, setPackageData };

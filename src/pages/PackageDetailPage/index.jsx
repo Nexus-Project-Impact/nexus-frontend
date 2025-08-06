@@ -5,11 +5,10 @@ import packageService from '../../services/packageService';
 import { ReservationModal } from '../../components/ReservationModal';
 import { CheckoutModal } from '../../components/CheckoutModal';
 import { Reviews } from '../../components/Reviews';
+import { LocationMap } from '../../components/LocationMap';
 import { notificationService } from '../../services/notificationService';
 import { useReview } from '../../hooks/useReview';
 import styles from './PackageDetailPage.module.css';
-import { ptBR } from 'date-fns/locale';
-import { format } from 'date-fns';
 
 export function PackageDetailPage() {
   const { packageId } = useParams(); // Pega o ID da URL
@@ -45,12 +44,6 @@ export function PackageDetailPage() {
       return;
     }
     
-    // Debug: verificar packageId antes de navegar
-    console.log('DEBUG PackageDetailPage - handleReviewClick packageId:', packageId);
-    console.log('DEBUG PackageDetailPage - handleReviewClick pkg.id:', pkg?.id);
-    console.log('DEBUG PackageDetailPage - handleReviewClick pkg:', pkg);
-    console.log('DEBUG PackageDetailPage - URL que será criada:', `/avaliar/${packageId}`);
-    
     // Passar dados do pacote para a página de avaliação
     navigate(`/avaliar/${packageId}`, {
       state: {
@@ -64,11 +57,6 @@ export function PackageDetailPage() {
       }
     });
   };
-
-  const formatarData = (data) => {
-    return format(new Date(data), "EEE d MMM yyyy", { locale: ptBR });
-  };
-
 
   useEffect(() => {
     const loadPackageDetails = async () => {
@@ -101,7 +89,7 @@ export function PackageDetailPage() {
     };
     
     checkReviewPermission();
-  }, [token, user?.id, packageId, pkg?.id, isLoading]); // Usando IDs específicos para evitar loops
+  }, [token, user, packageId, pkg, isLoading, checkCanReview]); // Dependências completas
 
   const handleBuyClick = () => {
     if (!token) {
@@ -122,7 +110,6 @@ export function PackageDetailPage() {
   if (!pkg) return <p>Pacote não encontrado.</p>;
 
   const {
-  id,
   title = pkg.name || 'Título não disponível',
   imageUrl = pkg.image || mainImage || 'https://via.placeholder.com/400x300',
   destination = pkg.destination || 'Destino não disponível',
@@ -141,18 +128,11 @@ export function PackageDetailPage() {
         {/* Coluna da Esquerda */}
         <div className={styles.leftColumn}>
           <img src={imageUrl} alt="Imagem principal do destino" className={styles.mainImage} />
-          {/* <div className={styles.thumbnailGallery}>
-            {pkg.gallery.map((imgSrc, index) => (
-              <img
-                key={index}
-                src={imgSrc}
-                alt={`Imagem ${index + 1} de ${pkg.name}`}
-                className={mainImage === imgSrc ? styles.activeThumbnail : styles.thumbnail}
-                onClick={() => setMainImage(imgSrc)}
-              />
-            ))}
-          </div> */}
-          <button onClick={() => navigate(-1)} className={`${styles.backButton} ${styles.backButtonDesktop}`}>Voltar</button>
+          
+          {/* Mapa da Localização */}
+          <LocationMap destination={destination} className={styles.locationMap} />
+          
+          <button onClick={() => navigate(-1)} className={styles.backButton}>Voltar</button>
         </div>
 
         {/* Coluna da Direita */}
@@ -164,29 +144,14 @@ export function PackageDetailPage() {
               {new Date(departureDate).toLocaleDateString('pt-BR')} - {new Date(returnDate).toLocaleDateString('pt-BR')}
             </p>
           )}
-
-           {/* <p className={styles.cardDates}>
-          {`${formatarData(departureDate)} - ${formatarData(returnDate)}`}
-        </p> */}
           
           <div className={styles.descriptionBox}>
             <h4>DESCRIÇÃO</h4>
-            {/* Usando optional chaining (?.) para mais segurança */}
-            {/* <p><strong>Voo</strong></p>
-            <p>Hora da Ida: {pkg.description?.flight?.departureTime} - {pkg.description?.flight?.from}</p>
-            <p>Companhia Aérea: {pkg.description?.flight?.company}</p>
-            <p>Hora da Volta: {pkg.description?.flight?.returnTime} - {pkg.description?.flight?.to}</p>
-            <p>Companhia Aérea: {pkg.description?.flight?.company}</p>
-            <br />
-            <p><strong>Hotel</strong></p>
-            <p>{pkg.description?.hotel?.name}</p>
-            <p>Endereço: {pkg.description?.hotel?.address}</p> */}
             <p>{description}</p>
           </div>
 
           <div className={styles.bookingBox}>
             <p>Voo + Hospedagem</p>
-            {/* <span className={styles.originalPrice}>de R$ {pkg.price.original.toLocaleString('pt-BR')}</span> */}
             <div  className={styles.price}>
 
             <p>Preço por pessoa </p>

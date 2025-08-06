@@ -14,10 +14,19 @@ export function RegisterModal({ isOpen, onClose }) {
     isLoading,
     success,
     fieldErrors,
-    handleRegister
+    handleRegister,
+    resetForm
   } = useRegister();
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [confirmPasswordError, setConfirmPasswordError] = React.useState('');
+
+  // Função para fechar o modal e resetar o formulário
+  const handleClose = () => {
+    resetForm();
+    setConfirmPassword('');
+    setConfirmPasswordError('');
+    onClose();
+  };
 
   // Validação de confirmação de senha
   const handleConfirmPasswordChange = (value) => {
@@ -35,14 +44,14 @@ export function RegisterModal({ isOpen, onClose }) {
 
   // handleRegister já faz a validação de senha internamente
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
+    <div className={styles.modalOverlay} onClick={handleClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton} onClick={onClose}>×</button>
+        <button className={styles.closeButton} onClick={handleClose}>×</button>
         {success ? (
           <div className={styles.successMessage}>
             <h2>Cadastro realizado com sucesso!</h2>
             <p>Você já pode fazer o login.</p>
-            <button onClick={onClose} className={styles.submitButton}>Fechar</button>
+            <button onClick={handleClose} className={styles.submitButton}>Fechar</button>
           </div>
         ) : (
           <form onSubmit={e => {
@@ -76,6 +85,7 @@ export function RegisterModal({ isOpen, onClose }) {
                 placeholder="Telefone (11) 99999-9999" 
                 value={phone} 
                 onChange={e => setPhone(formatPhone(e.target.value))} 
+                maxLength="15"
                 required 
                 disabled={isLoading}
                 className={fieldErrors.phone ? styles.inputError : ''}
@@ -90,6 +100,7 @@ export function RegisterModal({ isOpen, onClose }) {
                 placeholder="CPF 000.000.000-00" 
                 value={cpf} 
                 onChange={e => setCpf(formatCpf(e.target.value))} 
+                maxLength="14"
                 required 
                 disabled={isLoading}
                 className={fieldErrors.cpf ? styles.inputError : ''}

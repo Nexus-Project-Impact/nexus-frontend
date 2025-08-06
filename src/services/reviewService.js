@@ -115,12 +115,34 @@ const reviewService = {
   },
 
   // Moderar avaliação (apenas admin)
-  moderate: async (reviewId, action) => {
+  moderate: async (reviewId, moderationData) => {
     try {
-      const response = await api.put(`/Review/Moderate/${reviewId}`, { action });
+      console.log('reviewService.moderate: Moderando avaliação', { reviewId, moderationData });
+      
+      // Estruturar o payload conforme esperado pelo backend
+      const payload = {
+        newComment: moderationData.newComment || moderationData.comment || '',
+        moderationReason: moderationData.moderationReason || moderationData.reason || ''
+      };
+      
+      console.log('reviewService.moderate: Payload enviado:', payload);
+      
+      const response = await api.put(`/Review/Moderate/${reviewId}`, payload);
+      console.log('reviewService.moderate: Resposta do servidor:', response.data);
+      
       return response.data;
     } catch (error) {
       console.error('Erro ao moderar avaliação:', error);
+      console.error('reviewService.moderate: reviewId:', reviewId);
+      console.error('reviewService.moderate: moderationData:', moderationData);
+      
+      // Log detalhado do erro para debug
+      if (error.response) {
+        console.error('reviewService.moderate: Status:', error.response.status);
+        console.error('reviewService.moderate: Data:', error.response.data);
+        console.error('reviewService.moderate: Headers:', error.response.headers);
+      }
+      
       throw error;
     }
   },

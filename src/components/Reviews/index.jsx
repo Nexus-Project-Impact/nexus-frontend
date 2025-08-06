@@ -10,13 +10,6 @@ export function Reviews({ packageId }) {
     error
   } = useReview(packageId);
 
-  // Debug: verificar os dados recebidos
-  console.log('Reviews Component - packageId:', packageId);
-  console.log('Reviews Component - reviews:', reviews);
-  console.log('Reviews Component - stats:', stats);
-  console.log('Reviews Component - isLoading:', isLoading);
-  console.log('Reviews Component - error:', error);
-
   const renderStars = (rating) => {
     const stars = [];
     
@@ -90,13 +83,6 @@ export function Reviews({ packageId }) {
                 </div>
                 
                 <p className="reviewComment">{review.comment || 'Sem comentário'}</p>
-                
-                {/* Debug info - remover em produção */}
-                <small style={{ color: '#999', fontSize: '0.8rem' }}>
-                  Debug: ID={review.id}, UserID={review.userId || review.clientId}, 
-                  UserName="{review.userName || review.clientName || 'N/A'}", 
-                  Rating={review.rating}, Comment="{review.comment}"
-                </small>
               </div>
             );
           })}

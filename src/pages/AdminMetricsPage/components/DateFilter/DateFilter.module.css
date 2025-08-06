@@ -1,0 +1,177 @@
+.dateFilter {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.filterRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.leftSection {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.dateInputs {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputGroup label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+  min-width: 150px;
+  cursor: pointer;
+}
+
+.dateInput:focus {
+  outline: none;
+  border-color: #8c52ff;
+}
+
+.filterActions {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.applyButton {
+  background-color: #8c52ff;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+}
+
+.applyButton:hover:not(:disabled) {
+  background-color: #7a47e6;
+}
+
+.applyButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.clearButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 44px;
+}
+
+.clearButton:hover {
+  background-color: #5a6268;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #f5c6cb;
+  font-size: 0.85rem;
+  text-align: center;
+  width: 100%;
+}
+
+.exportActions {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.exportButton {
+  background-color: #8c52ff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 44px;
+  font-size: 0.9rem;
+}
+
+.exportButton:hover {
+  background-color: #7a47e6;
+}
+
+.exportButton:first-child {
+  background-color: #8c52ff;
+}
+
+.exportButton:first-child:hover {
+  background-color: #7a47e6;
+}
+
+@media (max-width: 768px) {
+  .filterRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .leftSection {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .dateInputs {
+    justify-content: center;
+  }
+  
+  .filterActions {
+    justify-content: center;
+    align-self: center;
+  }
+  
+  .exportActions {
+    justify-content: center;
+    align-self: center;
+  }
+}

@@ -22,6 +22,8 @@ import { AdminReservationDetails } from './pages/AdminReservationDetails';
 import AdminCommentModerationPage from './pages/AdminCommentModerationPage';
 import AdminMetricsPage from './pages/AdminMetricsPage';
 import AddReview from './pages/AddReview'
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import ResetPasswordCodePage from './pages/ResetPasswordCodePage';
 
 // Componentes temporários para páginas não implementadas
 //function AdminMetrics() { return <h1>Métricas (a ser construída)</h1>; }
@@ -32,6 +34,8 @@ export default function AppRoutes(){
             <Routes>    
                 {/* Rota pública standalone (sem layout principal) */}
                 <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordCodePage />} />
 
                 {/* Rotas que usam o Layout principal do cliente */}
                 <Route path='/' element={<Layout/>}>
@@ -56,7 +60,7 @@ export default function AppRoutes(){
                     <Route path="/admin/pacotes/editar/:id" element={<AdminEditPackage />} />
                     <Route path="/admin/reservas" element={<AdminReservation/>} />
                     <Route path="/admin/reservas/visualizar/:id" element={<AdminReservationDetails/>} />
-                    <Route path="/admin/comentarios" element={<AdminCommentModerationPage />} />
+                    <Route path="/admin/avaliacoes" element={<AdminCommentModerationPage />} />
                     <Route path="/admin/metricas" element={<AdminMetricsPage />} />
                 </Route>
             </Routes>

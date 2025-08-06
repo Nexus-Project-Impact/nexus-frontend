@@ -112,6 +112,12 @@
   color: #333;
 }
 
+/* Estilo específico para o mapa na página de detalhes */
+.locationMap {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .bookingBox {
   border: 1px solid #ddd;
   border-radius: 15px;
@@ -181,221 +187,93 @@
   color: #777;
 }
 
-/* ===== RESPONSIVIDADE ===== */
-
-/* Tablet - 768px e abaixo */
-@media screen and (max-width: 768px) {
+/* Responsividade */
+@media (max-width: 768px) {
   .container {
     width: 95%;
-    margin: 15px auto;
-    padding: 0 10px;
+    margin: 10px auto;
   }
-
+  
   .destinationTitle {
-    font-size: 1.8rem;
-    text-align: center;
+    font-size: 1.5rem;
     margin-bottom: 15px;
+    text-align: center;
   }
-
+  
   .detailsGrid {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 20px;
   }
-
+  
   .leftColumn {
     order: 1;
   }
-
+  
   .rightColumn {
     order: 2;
   }
-
+  
+  .locationMap {
+    margin-bottom: 15px;
+  }
+  
   .mainImage {
-    max-height: 300px;
-    object-fit: cover;
+    margin-bottom: 10px;
   }
-
-  .tagline {
-    font-size: 1.3rem;
-    text-align: center;
-  }
-
-  .currentPrice {
-    font-size: 2rem;
-  }
-
-  .descriptionBox {
-    padding: 15px;
-  }
-
-  .bookingBox {
-    padding: 15px;
-  }
-
+  
   .backButton {
-    width: 100%;
+    align-self: center;
     margin-top: 15px;
-    padding: 12px;
-    text-align: center;
   }
-
-  .backButtonDesktop {
-    display: block;
-  }
-
-  .backButtonMobile {
-    display: none;
-  }
-}
-
-/* Mobile - 480px e abaixo */
-@media screen and (max-width: 480px) {
-  .container {
-    width: 100%;
-    margin: 10px auto;
-    padding: 0 15px;
-  }
-
-  .destinationTitle {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    padding: 0 10px;
-  }
-
-  .detailsGrid {
-    gap: 20px;
-  }
-
-  .mainImage {
-    border-radius: 10px;
-    max-height: 250px;
-    margin-bottom: 10px;
-  }
-
+  
   .tagline {
     font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-
-  .cardDates {
-    font-size: 0.9rem;
-    padding: 8px;
-    margin: 10px 0;
-  }
-
-  .descriptionBox {
-    padding: 12px;
-    margin-bottom: 15px;
-    font-size: 0.85rem;
-  }
-
-  .descriptionBox h4 {
-    font-size: 1rem;
-    margin-bottom: 10px;
-  }
-
-  .bookingBox {
-    padding: 12px;
-  }
-
-  .price {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .currentPrice {
-    font-size: 1.8rem;
-  }
-
-  .buyButton {
-    padding: 12px;
-    font-size: 1rem;
-    margin: 8px 0;
-  }
-
-  .reviewButton {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-    margin: 8px 0;
-  }
-
-  .installments {
-    font-size: 0.75rem;
-  }
-
-  .backButton {
-    padding: 10px;
-    font-size: 0.9rem;
-    margin-top: 10px;
-  }
-
-  .backButtonDesktop {
-    display: none; /* Esconde o botão da esquerda em mobile */
-  }
-
-  .backButtonMobile {
-    display: block; /* Mostra o botão da direita em mobile */
-    width: 100%;
-    margin-top: 15px;
     text-align: center;
+  }
+  
+  .descriptionBox {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .bookingBox {
+    padding: 15px;
   }
 }
 
-/* Mobile pequeno - 360px e abaixo */
-@media screen and (max-width: 360px) {
+@media (max-width: 480px) {
   .container {
-    padding: 0 10px;
+    width: 98%;
+    margin: 5px auto;
   }
-
+  
   .destinationTitle {
     font-size: 1.3rem;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
-
-  .mainImage {
-    max-height: 200px;
-    border-radius: 8px;
+  
+  .detailsGrid {
+    gap: 15px;
   }
-
-  .tagline {
-    font-size: 1.1rem;
+  
+  .locationMap {
+    margin-bottom: 10px;
   }
-
-  .currentPrice {
-    font-size: 1.6rem;
-  }
-
+  
   .descriptionBox {
-    padding: 10px;
-    border-radius: 10px;
+    padding: 12px;
   }
-
+  
   .bookingBox {
-    padding: 10px;
-    border-radius: 10px;
+    padding: 12px;
   }
-
+  
+  .currentPrice {
+    font-size: 1.5rem;
+  }
+  
   .buyButton {
-    font-size: 0.95rem;
-    padding: 10px;
-  }
-
-  .reviewButton {
-    font-size: 0.85rem;
-    padding: 8px 16px;
-  }
-
-  .backButtonDesktop {
-    display: none;
-  }
-
-  .backButtonMobile {
-    display: block;
-    width: 100%;
-    margin-top: 12px;
-    padding: 10px;
+    padding: 12px 20px;
     font-size: 0.9rem;
-    text-align: center;
   }
 }

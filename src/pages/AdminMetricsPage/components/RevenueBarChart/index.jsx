@@ -4,14 +4,29 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export function RevenueBarChart({ revenueData }) {
-  const options = { responsive: true, plugins: { legend: { display: false } } };
+export function RevenueBarChart({ salesDestinationData }) {
+  const options = { 
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { 
+      legend: { display: false },
+      title: {
+        display: false
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+      }
+    }
+  };
+  
   const data = {
-    labels: revenueData.map(d => d.destination),
+    labels: salesDestinationData.map(d => d.destination),
     datasets: [{
-      label: 'Receita (R$)',
-      data: revenueData.map(d => d.revenue),
-      backgroundColor: '#ff9900',
+      label: 'Quantidade',
+      data: salesDestinationData.map(d => d.quantity),
+      backgroundColor: '#4472C4',
     }],
   };
   return <Bar options={options} data={data} />;

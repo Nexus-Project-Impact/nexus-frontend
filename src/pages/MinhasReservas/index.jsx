@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useUserReservations } from '../../hooks/useReservations';
 import { notificationService } from '../../services/notificationService';
+import { ImageWithFallback } from '../../components/ImageWithFallback';
 import styles from './MinhasReservas.module.css';
 
 export function MinhasReservas() {
@@ -104,7 +105,6 @@ export function MinhasReservas() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Minhas Reservas</h1>
-      
 
       {reservations.length === 0 ? (
         <div className={styles.emptyState}>
@@ -120,10 +120,11 @@ export function MinhasReservas() {
             return (
               <div key={reservation.id} className={styles.reservationCard}>
                 <div className={styles.cardHeader}>
-                  <img 
+                  <ImageWithFallback 
                     src={reservation.packageImage} 
                     alt={reservation.packageName}
                     className={styles.packageImage}
+                    fallbackSrc="/src/assets/nexus-logo.png"
                   />
                   <div className={styles.packageInfo}>
                     <h3 className={styles.packageName}>{reservation.packageName}</h3>

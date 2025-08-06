@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import reservationService from '../services/reservationService';
 import packageService from '../services/packageService';
+import reviewService from '../services/reviewService';
+import { getUserFromToken } from '../services/authService';
+import { getPackageImageUrl } from '../services/imageService';
+
 
 // Hook para gerenciar reservas do usuário
 export const useUserReservations = () => {
@@ -50,26 +54,33 @@ export const useUserReservations = () => {
       // Processar os dados para garantir que tenham a estrutura esperada
       const processedReservations = await Promise.all(data.map(async (reservation) => {
           
-          // Tentar buscar dados do pacote para pegar as datas corretas
+          // Tentar buscar dados do pacote para pegar as datas corretas e a imagem
           const packageData = await packageService.getPackageById(reservation.travelPackageId);
+          
           const finalDepartureDate = packageData?.departureDate || reservation.departureDate || reservation.dataIda;
           const finalReturnDate = packageData?.returnDate || reservation.returnDate || reservation.dataVolta;
           
           const formattedDates = formatDates(finalDepartureDate, finalReturnDate);
           
+          // Usar o serviço de imagem para construir a URL correta
+          const packageImage = getPackageImageUrl(packageData) || getPackageImageUrl(reservation);
+          
           return {
             id: reservation.id,
             packageId: reservation.travelPackageId,
             packageName: reservation.travelPackageDestination,
-            packageImage: reservation.travelPackageImageUrl,
+            packageImage: packageImage,
             dates: formattedDates,
             departureDate: finalDepartureDate,
             returnDate: finalReturnDate,
-            destination: reservation.travelPackageDestination
+            destination: reservation.travelPackageDestination,
+            hasReview: false // Será verificado depois
           };
         
       }));
 
+      // Verificar se cada pacote foi avaliado pelo usuário
+      await checkReviewStatus(processedReservations);
       
       setReservations(processedReservations);
     } catch (err) {
@@ -85,6 +96,78 @@ export const useUserReservations = () => {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Verificar status de avaliação para cada reserva (se o PACOTE já foi avaliado pelo usuário)
+  const checkReviewStatus = async (reservations) => {
+    try {
+      // Tentar obter userId do Redux primeiro
+      let userId = user?.id;
+      
+      // Se não tem userId no Redux, tentar extrair do token
+      if (!userId) {
+        const rawToken = localStorage.getItem('token');
+        
+        if (rawToken) {
+          try {
+            const payload = JSON.parse(atob(rawToken.split('.')[1]));
+            const tokenData = getUserFromToken();
+            
+            if (tokenData?.id) {
+              userId = tokenData.id;
+            } else {
+              // Tentar outras possibilidades - INCLUINDO nameid que é o userId
+              const possibleUserIds = [
+                payload.nameid, // 👈 ESTE É O USERID!
+                payload.sub,
+                payload.userId,
+                payload.id,
+                payload.user_id,
+                payload.user?.id
+              ].filter(Boolean);
+              
+              if (possibleUserIds.length > 0) {
+                userId = possibleUserIds[0];
+              } else {
+                return; // Não pode verificar sem userId
+              }
+            }
+          } catch (tokenError) {
+            console.error('Erro ao decodificar token:', tokenError);
+            return;
+          }
+        } else {
+          return;
+        }
+      }
+      
+      // Buscar todas as reviews
+      const allReviews = await reviewService.getAll();
+      
+      // Para cada reserva, verificar se o PACOTE já foi avaliado pelo usuário
+      reservations.forEach(reservation => {
+        // Procurar por uma review do usuário para este pacote específico
+        const userReviewForPackage = allReviews.find(review => {
+          if (!review) return false;
+          
+          // packageId pode vir como packageId ou travelPackageId
+          const reviewPackageId = review.packageId || review.travelPackageId || review.package_id;
+          const reviewUserId = review.userId;
+          
+          // Converter para string para comparação mais segura
+          const packageMatch = String(reviewPackageId) === String(reservation.packageId);
+          const userMatch = String(reviewUserId) === String(userId);
+          
+          return packageMatch && userMatch;
+        });
+        
+        reservation.hasReview = !!userReviewForPackage;
+      });
+      
+    } catch (error) {
+      console.error('Erro ao verificar avaliações:', error);
+      // Em caso de erro, deixa todas como não avaliadas
     }
   };
 
