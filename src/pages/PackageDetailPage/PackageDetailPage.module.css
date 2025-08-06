@@ -88,6 +88,12 @@
   color: #333;
 }
 
+/* Estilo específico para o mapa na página de detalhes */
+.locationMap {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .bookingBox {
   border: 1px solid #ddd;
   border-radius: 15px;
@@ -155,4 +161,95 @@
 .installments {
   font-size: 0.8rem;
   color: #777;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    margin: 10px auto;
+  }
+  
+  .destinationTitle {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .leftColumn {
+    order: 1;
+  }
+  
+  .rightColumn {
+    order: 2;
+  }
+  
+  .locationMap {
+    margin-bottom: 15px;
+  }
+  
+  .mainImage {
+    margin-bottom: 10px;
+  }
+  
+  .backButton {
+    align-self: center;
+    margin-top: 15px;
+  }
+  
+  .tagline {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  .descriptionBox {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .bookingBox {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 98%;
+    margin: 5px auto;
+  }
+  
+  .destinationTitle {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  
+  .detailsGrid {
+    gap: 15px;
+  }
+  
+  .locationMap {
+    margin-bottom: 10px;
+  }
+  
+  .descriptionBox {
+    padding: 12px;
+  }
+  
+  .bookingBox {
+    padding: 12px;
+  }
+  
+  .currentPrice {
+    font-size: 1.5rem;
+  }
+  
+  .buyButton {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
 }

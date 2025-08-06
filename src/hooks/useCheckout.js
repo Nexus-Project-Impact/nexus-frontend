@@ -1,48 +1,58 @@
 import { useState, useMemo } from 'react';
-import { notificationService } from '../services/notificationService';
 
 export function useCheckout(packageData, travelers) {
-  const [paymentMethod, setPaymentMethod] = useState('credit');
-  const [isLoading, setIsLoading] = useState(false);
-  const [boletoData, setBoletoData] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('card'); // Cartão unificado como padrão
 
   const totalPrice = useMemo(() => {
-    if (!packageData || !travelers || !packageData.price) return 0;
+    if (!packageData || !travelers || travelers.length === 0) {
+      console.warn('useCheckout - Dados insuficientes:', { packageData: !!packageData, travelers: travelers?.length });
+      return 0;
+    }
     
-    // Verifica se price.current existe, senão usa price diretamente
-    const priceValue = packageData.price.current || packageData.price;
+    let priceValue = 0;
     
-    return priceValue * travelers.length;
+    // Tenta extrair o preço de diferentes estruturas possíveis
+    if (packageData.price) {
+      if (typeof packageData.price === 'number') {
+        priceValue = packageData.price;
+      } else if (packageData.price.current && typeof packageData.price.current === 'number') {
+        priceValue = packageData.price.current;
+      } else if (packageData.price.value && typeof packageData.price.value === 'number') {
+        priceValue = packageData.price.value;
+      } else if (typeof packageData.price === 'string') {
+        priceValue = parseFloat(packageData.price);
+      }
+    } else if (packageData.value && typeof packageData.value === 'number') {
+      // Este é o campo correto que vem da API!
+      priceValue = packageData.value;
+    } else if (packageData.valor && typeof packageData.valor === 'number') {
+      priceValue = packageData.valor;
+    } else if (packageData.preco && typeof packageData.preco === 'number') {
+      priceValue = packageData.preco;
+    }
+    
+    // Validação adicional
+    if (isNaN(priceValue) || priceValue <= 0) {
+      console.error('useCheckout - Preço inválido extraído:', { 
+        originalPrice: packageData.price,
+        originalValue: packageData.value,
+        originalValor: packageData.valor,
+        originalPreco: packageData.preco,
+        extractedPrice: priceValue,
+        packageData 
+      });
+      return 0;
+    }
+    
+    const total = priceValue * travelers.length;
+    console.log('useCheckout - Cálculo do total:', { priceValue, travelers: travelers.length, total });
+    
+    return total;
   }, [packageData, travelers]);
-  
-  // A função agora é apenas para os métodos que NÃO são Stripe
-  const handleFinalizePurchase = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (paymentMethod === 'debit') {
-      setTimeout(() => {
-        notificationService.booking.purchaseSuccess();
-        setIsLoading(false);
-        window.location.href = '/';
-      }, 1500);
-    }
-
-    if (paymentMethod === 'boleto') {
-      setTimeout(() => {
-        const fakeBarcode = '12345 67890 12345 67890 12345 67890 1 12345678901234';
-        setBoletoData({ barcode: fakeBarcode, dueDate: 'Vencimento em 3 dias úteis' });
-        setIsLoading(false);
-      }, 1500);
-    }
-  };
 
   return {
     totalPrice,
     paymentMethod,
-    setPaymentMethod,
-    isLoading,
-    handleFinalizePurchase,
-    boletoData
+    setPaymentMethod
   };
 }

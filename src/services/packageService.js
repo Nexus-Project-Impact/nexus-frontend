@@ -125,7 +125,7 @@ const packageService = {
         }
     },
     getByDepartureDate: async (initialDate, finalDate) => {
-        const response = await api.get(`/TravelPackage/GetByDepartureDate/${initialDate, finalDate}`);
+        const response = await api.get(`/TravelPackage/GetByDepartureDate/${initialDate}/${finalDate}`);
         return response.data;
     },
     getByDestination: async (destination) => {
@@ -133,7 +133,7 @@ const packageService = {
         return response.data;
     },
     getByValue: async (minValue, maxValue) => {
-        const response = await api.get(`/TravelPackage/GetByValue/${minValue, maxValue}`);
+        const response = await api.get(`/TravelPackage/GetByValue/${minValue}/${maxValue}`);
         return response.data;
     },
 
