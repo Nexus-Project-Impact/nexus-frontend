@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useUserReservations } from '../../hooks/useReservations';
 import { notificationService } from '../../services/notificationService';
 import { ImageWithFallback } from '../../components/ImageWithFallback';
-import { TestAPI } from '../../components/TestAPI';
 import styles from './MinhasReservas.module.css';
 
 export function MinhasReservas() {
@@ -106,10 +105,6 @@ export function MinhasReservas() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Minhas Reservas</h1>
-      
-      {/* Componente de teste temporário - descomente para debugar */}
-      {/* <TestAPI /> */}
-      
 
       {reservations.length === 0 ? (
         <div className={styles.emptyState}>

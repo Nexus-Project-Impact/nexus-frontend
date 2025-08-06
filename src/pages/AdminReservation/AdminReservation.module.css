@@ -132,6 +132,22 @@
   height: 40px;
 }
 
+.clearButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  height: 40px;
+  transition: background-color 0.2s;
+}
+
+.clearButton:hover {
+  background-color: #5a6268;
+}
+
 .statusBadge {
   padding: 4px 12px;
   border-radius: 20px;
@@ -234,4 +250,49 @@
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Estilos para lista de viajantes */
+.travelersContainer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.travelerItem {
+  background-color: white;
+  padding: 12px 15px;
+  border-radius: 6px;
+  border-left: 3px solid #FF9900;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.travelerInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.travelerName {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.travelerDoc {
+  color: #666;
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .travelerInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

@@ -68,47 +68,57 @@
   min-width: 140px;
 }
 
-.actionsContainer {
+.actions {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: stretch;
+  gap: 15px;
 }
 
-.moderateButton {
-  color: #FF9900;
-  background: none;
-  border: 1px solid #FF9900;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
+.actionLink {
+  color: #8c52ff;
+  text-decoration: none !important;
   font-weight: 500;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  text-align: center;
+  background: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  box-shadow: none !important;
+  transition: none !important;
 }
 
-.moderateButton:hover {
-  background-color: #FF9900;
-  color: white;
+.actionLink:hover {
+  opacity: 0.8;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+
+.actionLink:focus {
+  outline: none !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background: none !important;
+}
+
+.actionLink:active {
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background: none !important;
 }
 
 .deleteButton {
-  color: #dc3545;
-  background: none;
-  border: 1px solid #dc3545;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-.deleteButton:hover {
-  background-color: #dc3545;
-  color: white;
+  color: #dc3545 !important;
 }
 
 /* Responsividade */
@@ -133,14 +143,12 @@
     font-size: 12px;
   }
   
-  .actionsContainer {
-    gap: 6px;
+  .actions {
+    gap: 10px;
   }
   
-  .moderateButton,
-  .deleteButton {
-    padding: 4px 8px;
-    font-size: 0.75rem;
+  .actionLink {
+    font-size: 0.8rem;
   }
 }
 
@@ -166,9 +174,12 @@
     min-width: 100px;
   }
   
-  .moderateButton,
-  .deleteButton {
-    padding: 3px 6px;
+  .actions {
+    gap: 8px;
+    flex-direction: column;
+  }
+  
+  .actionLink {
     font-size: 0.7rem;
   }
 }

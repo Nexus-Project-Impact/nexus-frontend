@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { forgotPassword } from '../services/authService';
 
 export function useForgotPassword() {
   const [email, setEmail] = useState('');
@@ -6,20 +7,43 @@ export function useForgotPassword() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(null);
 
-  const handlePasswordReset = (event) => {
+  const handlePasswordReset = async (event) => {
     event.preventDefault();
+    console.log('Botão Recuperar Senha clicado!', { email });
     setIsLoading(true);
     setError(null);
     setIsSuccess(false);
 
-    // Simulação de chamada de API
-    console.log(`Simulando envio de link de recuperação para: ${email}`);
-    
-    setTimeout(() => {
-      // Simplesmente damos sucesso para qualquer e-mail no nosso protótipo
-      setIsSuccess(true);
+    if (!email?.trim()) {
+      console.log('Email vazio, mostrando erro');
+      setError('Email é obrigatório');
       setIsLoading(false);
-    }, 1500);
+      return false;
+    }
+
+    try {
+      console.log('Enviando email de recuperação para:', email.trim());
+      const response = await forgotPassword(email.trim());
+      
+      console.log('Resposta do forgotPassword:', response);
+
+      console.log('Email de recuperação enviado com sucesso');
+      setIsSuccess(true);
+      
+      return {
+        success: true,
+        message: response.message || 'Email de recuperação enviado',
+        email: email.trim()
+      };
+      
+    } catch (err) {
+      console.error('Erro no handlePasswordReset:', err);
+      setError('Erro ao solicitar recuperação de senha');
+      return false;
+      
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const resetState = () => {
@@ -28,5 +52,13 @@ export function useForgotPassword() {
     setError(null);
   };
 
-  return { email, setEmail, isLoading, isSuccess, error, handlePasswordReset, resetState };
+  return { 
+    email, 
+    setEmail, 
+    isLoading, 
+    isSuccess, 
+    error, 
+    handlePasswordReset, 
+    resetState
+  };
 }

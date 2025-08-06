@@ -44,12 +44,6 @@ export function PackageDetailPage() {
       return;
     }
     
-    // Debug: verificar packageId antes de navegar
-    console.log('DEBUG PackageDetailPage - handleReviewClick packageId:', packageId);
-    console.log('DEBUG PackageDetailPage - handleReviewClick pkg.id:', pkg?.id);
-    console.log('DEBUG PackageDetailPage - handleReviewClick pkg:', pkg);
-    console.log('DEBUG PackageDetailPage - URL que será criada:', `/avaliar/${packageId}`);
-    
     // Passar dados do pacote para a página de avaliação
     navigate(`/avaliar/${packageId}`, {
       state: {

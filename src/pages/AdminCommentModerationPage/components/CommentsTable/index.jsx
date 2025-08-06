@@ -57,23 +57,21 @@ export function CommentsTable({ comments, onDelete, onModerate }) {
                   'N/A'
               }
             </td>
-            <td className={styles.actionsColumn}>
-              <div className={styles.actionsContainer}>
-                <button 
-                  onClick={() => onModerate(review.id, review.comment || '')} 
-                  className={styles.moderateButton}
-                  title="Moderar comentário"
-                >
-                  Moderar
-                </button>
-                <button 
-                  onClick={() => onDelete(review.id)} 
-                  className={styles.deleteButton}
-                  title="Excluir avaliação"
-                >
-                  Excluir
-                </button>
-              </div>
+            <td className={styles.actions}>
+              <button 
+                onClick={() => onModerate(review.id, review.comment || '')} 
+                className={styles.actionLink}
+                title="Moderar comentário"
+              >
+                Moderar
+              </button>
+              <button 
+                onClick={() => onDelete(review.id)} 
+                className={`${styles.actionLink} ${styles.deleteButton}`}
+                title="Excluir avaliação"
+              >
+                Excluir
+              </button>
             </td>
           </tr>
         ))}

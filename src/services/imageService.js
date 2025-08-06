@@ -49,9 +49,6 @@ export const getPackageImageUrl = (data) => {
     data.fileName || // Caso a API retorne um fileName
     data.filePath;   // Caso a API retorne um filePath
 
-  console.log('getPackageImageUrl - imagePath encontrado:', imagePath);
-  console.log('getPackageImageUrl - data recebida:', data);
-
   return buildImageUrl(imagePath);
 };
 

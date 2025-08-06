@@ -11,12 +11,10 @@ export function StripeEmbeddedForm({ totalPrice }) {
 
   // Usando async/await para uma lógica mais clara
   const fetchClientSecret = useCallback(async () => {
-    console.log('fetchClientSecret - Iniciando com totalPrice:', totalPrice);
     setIsLoading(true);
     setError(null);
     
     if (!totalPrice || totalPrice <= 0) {
-      console.warn('fetchClientSecret - totalPrice inválido:', totalPrice);
       const errorMsg = 'Valor total inválido para pagamento';
       setIsLoading(false);
       setError(errorMsg);
@@ -24,7 +22,6 @@ export function StripeEmbeddedForm({ totalPrice }) {
     }
     
     try {
-      console.log('fetchClientSecret - Fazendo requisição para o backend...');
       
       // Primeiro, vamos tentar o endpoint de checkout session
       let response = await fetch("http://localhost:5235/api/payments/create-checkout-session", {
@@ -33,19 +30,13 @@ export function StripeEmbeddedForm({ totalPrice }) {
         body: JSON.stringify({ amount: totalPrice })
       });
 
-      console.log('fetchClientSecret - Status da resposta:', response.status);
-      console.log('fetchClientSecret - Response OK?', response.ok);
-
       // Se o endpoint não existir (404), tentamos o endpoint antigo como fallback
       if (response.status === 404) {
-        console.log('fetchClientSecret - Endpoint checkout-session não encontrado, tentando create-payment-intent...');
         response = await fetch("http://localhost:5235/api/payments/create-payment-intent", {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: totalPrice })
         });
-        
-        console.log('fetchClientSecret - Status do fallback:', response.status);
       }
 
       if (!response.ok) {
@@ -60,37 +51,26 @@ export function StripeEmbeddedForm({ totalPrice }) {
       }
 
       const data = await response.json();
-      console.log("fetchClientSecret - Resposta completa do backend:", data);
-      console.log("fetchClientSecret - Tipo da resposta:", typeof data);
 
       // Verifica se a propriedade existe (com 'c' minúsculo ou 'C' maiúsculo)
       const secret = data.clientSecret || data.ClientSecret;
-      console.log("fetchClientSecret - Client secret encontrado:", secret);
-      console.log("fetchClientSecret - Tipo do client secret:", typeof secret);
 
       if (!secret) {
-        console.error("fetchClientSecret - Client secret não encontrado na resposta");
         throw new Error("A resposta do backend não continha o clientSecret.");
       }
 
       // Identifica o tipo de client secret
       if (secret.startsWith('pi_')) {
-        console.warn("fetchClientSecret - Recebido Payment Intent, mas Embedded Checkout precisa de Checkout Session");
         throw new Error("⚠️ Backend configurado incorretamente!\n\nEmbedded Checkout requer Checkout Session (cs_), mas recebeu Payment Intent (pi_).\n\nSolução: Configure o backend para criar Checkout Sessions usando SessionService.Create() com UiMode = 'embedded'.");
-      } else if (secret.startsWith('cs_')) {
-        console.log("fetchClientSecret - Client secret correto para Embedded Checkout");
-      } else {
-        console.error("fetchClientSecret - Formato de client secret desconhecido:", secret);
+      } else if (!secret.startsWith('cs_')) {
         throw new Error(`Formato de client secret inválido: ${secret.substring(0, 10)}...\nDeve começar com 'cs_' para Embedded Checkout.`);
       }
 
-      console.log("fetchClientSecret - Retornando client secret válido:", secret);
       setIsLoading(false);
       return secret;
 
     } catch (error) {
       console.error("fetchClientSecret - Falha crítica:", error);
-      console.error("fetchClientSecret - Stack trace:", error.stack);
       setIsLoading(false);
       setError(error.message || 'Erro desconhecido no pagamento');
       throw error; // Re-throw the error instead of returning null
@@ -173,7 +153,6 @@ export function StripeEmbeddedForm({ totalPrice }) {
       >
         <EmbeddedCheckout 
           onLoad={() => {
-            console.log('EmbeddedCheckout carregado com sucesso');
             setIsLoading(false);
           }}
           onError={(error) => {

@@ -26,7 +26,6 @@ export function useAdminLogin() {
 
     try {
       const data = await login_admin(email.trim(), password);
-      console.log('Login admin realizado com sucesso:', data);
       
       if (data.token) {
         const user = getUserFromToken();
@@ -39,7 +38,7 @@ export function useAdminLogin() {
           if (isAdmin) {
             dispatch(setCredentials({ user, token: data.token }));
             notificationService.auth.loginSuccess(user.name);
-            navigate('/admin'); // Redirecionar para área admin
+            navigate('/admin/pacotes'); // Redirecionar para área admin de pacotes
           } else {
             setError('Usuário não possui permissões de administrador');
             notificationService.auth.loginError();
