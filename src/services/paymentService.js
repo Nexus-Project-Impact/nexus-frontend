@@ -8,16 +8,13 @@ const paymentService = {
       console.log('PaymentService - Criando pagamento cartão:', paymentData);
       
       const requestPayment = {
+        UserId: paymentData.userId,
         AmountPaid: paymentData.amountPaid,
         Receipt: paymentData.receipt || `Pagamento cartão - ${new Date().toISOString()}`,
         TravelPackageId: paymentData.travelPackageId,
         Traveler: paymentData.travelers.map(traveler => ({
           Name: traveler.name || traveler.Name || '',
-          Email: traveler.email || traveler.Email || '',
-          Phone: traveler.phone || traveler.Phone || '',
-          Document: traveler.document || traveler.Document || '',
-          DateOfBirth: traveler.dateOfBirth || traveler.DateOfBirth || '',
-          Gender: traveler.gender || traveler.Gender || ''
+          Rg: (traveler.rg || traveler.Rg || '').replace(/\D/g, '') // Remove máscara, envia apenas números
         }))
       };
 
@@ -37,16 +34,13 @@ const paymentService = {
       console.log('PaymentService - Criando pagamento PIX:', paymentData);
       
       const requestPayment = {
+        UserId: paymentData.userId,
         AmountPaid: paymentData.amountPaid,
         Receipt: paymentData.receipt || `Pagamento PIX - ${new Date().toISOString()}`,
         TravelPackageId: paymentData.travelPackageId,
         Traveler: paymentData.travelers.map(traveler => ({
           Name: traveler.name || traveler.Name || '',
-          Email: traveler.email || traveler.Email || '',
-          Phone: traveler.phone || traveler.Phone || '',
-          Document: traveler.document || traveler.Document || '',
-          DateOfBirth: traveler.dateOfBirth || traveler.DateOfBirth || '',
-          Gender: traveler.gender || traveler.Gender || ''
+          Rg: (traveler.rg || traveler.Rg || '').replace(/\D/g, '') // Remove máscara, envia apenas números
         }))
       };
 
@@ -66,16 +60,13 @@ const paymentService = {
       console.log('PaymentService - Criando boleto:', paymentData);
       
       const requestPayment = {
+        UserId: paymentData.userId,
         AmountPaid: paymentData.amountPaid,
         Receipt: paymentData.receipt || `Pagamento Boleto - ${new Date().toISOString()}`,
         TravelPackageId: paymentData.travelPackageId,
         Traveler: paymentData.travelers.map(traveler => ({
           Name: traveler.name || traveler.Name || '',
-          Email: traveler.email || traveler.Email || '',
-          Phone: traveler.phone || traveler.Phone || '',
-          Document: traveler.document || traveler.Document || '',
-          DateOfBirth: traveler.dateOfBirth || traveler.DateOfBirth || '',
-          Gender: traveler.gender || traveler.Gender || ''
+          Rg: (traveler.rg || traveler.Rg || '').replace(/\D/g, '') // Remove máscara, envia apenas números
         }))
       };
 
