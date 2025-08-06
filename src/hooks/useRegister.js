@@ -328,6 +328,18 @@ export function useRegister() {
     return isAuthenticated();
   };
 
+  // FUNÇÃO PARA RESETAR O ESTADO DO FORMULÁRIO
+  const resetForm = () => {
+    setName('');
+    setEmail('');
+    setPassword('');
+    setPhone('');
+    setCpf('');
+    setError('');
+    setSuccess(false);
+    setFieldErrors({});
+  };
+
   return {
     // Estados
     name, setName,
@@ -343,6 +355,7 @@ export function useRegister() {
     // Funções
     handleRegister,
     handleForgotPassword,
-    checkAuthStatus
+    checkAuthStatus,
+    resetForm
   };
 }

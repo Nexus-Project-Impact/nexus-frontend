@@ -1,7 +1,7 @@
 // DENTRO DE: src/pages/AdminAddPackagePage/hooks/useAddPackage.js
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { convertBRDateToISO, parseCurrencyInput } from '../utils/formatters';
+import { convertBRDateToISO } from '../utils/formatters';
 import packageService from '../services/packageService';
 
 export function usePackage() {
@@ -37,9 +37,6 @@ export function usePackage() {
       const departureISO = convertBRDateToISO(packageData.departureDate);
       const returnISO = convertBRDateToISO(packageData.returnDate);
       
-      // Converter valor formatado para número decimal
-      const valueDecimal = parseCurrencyInput(packageData.value);
-      
       // Criar FormData para enviar a imagem
       const formData = new FormData();
       formData.append('Title', packageData.title);
@@ -48,7 +45,7 @@ export function usePackage() {
       formData.append('Duration', parseInt(packageData.duration));
       formData.append('DepartureDate', departureISO);
       formData.append('ReturnDate', returnISO);
-      formData.append('Value', valueDecimal);
+      formData.append('Value', parseFloat(packageData.value));
       
       if (packageData.image) {
         formData.append('Image', packageData.image);
@@ -56,7 +53,6 @@ export function usePackage() {
 
       console.log("Enviando novo pacote:", packageData);
       console.log("Datas convertidas - Partida:", departureISO, "Retorno:", returnISO);
-      console.log("Valor convertido:", valueDecimal);
       
       await packageService.createPackage(formData);
       alert("Pacote criado com sucesso!");

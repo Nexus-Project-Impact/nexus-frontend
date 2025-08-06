@@ -2,15 +2,19 @@
 
 export const formatPhone = (value) => {
   const numbers = value.replace(/\D/g, '');
-  if (numbers.length <= 10) {
-    return numbers.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+  // Limita a 11 dígitos (máximo para celular)
+  const limitedNumbers = numbers.slice(0, 11);
+  if (limitedNumbers.length <= 10) {
+    return limitedNumbers.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
   }
-  return numbers.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+  return limitedNumbers.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
 };
 
 export const formatCpf = (value) => {
   const numbers = value.replace(/\D/g, '');
-  return numbers.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+  // Limita a 11 dígitos
+  const limitedNumbers = numbers.slice(0, 11);
+  return limitedNumbers.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
 };
 
 export const validateCpf = (cpf) => {

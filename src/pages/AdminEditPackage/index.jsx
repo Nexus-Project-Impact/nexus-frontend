@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { usePackageEdit } from '../../hooks/usePackageEdit';
-import { formatDate, validateDate, formatCurrencyInput } from '../../utils/formatters';
+import { formatDate, validateDate } from '../../utils/formatters';
 import styles from './AdminEditPackage.module.css';
 import { Link } from 'react-router-dom';
 
@@ -14,16 +14,6 @@ export function AdminEditPackage() {
     handleChange({
       target: {
         name: field,
-        value: formatted
-      }
-    });
-  };
-
-  const handleCurrencyChange = (e) => {
-    const formatted = formatCurrencyInput(e.target.value);
-    handleChange({
-      target: {
-        name: 'value',
         value: formatted
       }
     });
@@ -138,14 +128,16 @@ export function AdminEditPackage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="value">Preço (R$)</label>
+            <label htmlFor="value">Preço</label>
             <input 
               id="value" 
               name="value" 
-              type="text" 
-              placeholder="ex: 3.590,00"
+              type="number" 
+              step="0.01"
+              placeholder="ex: 3590.00"
               value={packageData.value} 
-              onChange={handleCurrencyChange} 
+              onChange={handleChange} 
+              min="0"
               required 
             />
           </div>
