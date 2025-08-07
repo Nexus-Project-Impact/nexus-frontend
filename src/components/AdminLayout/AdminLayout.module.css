@@ -30,6 +30,9 @@
 .navMobile {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 0 30px;
 }
 
 @media screen and (max-width: 900px) {
@@ -113,6 +116,28 @@
     color: #fff;
     box-shadow: 0 2px 16px 0 rgba(80,0,120,0.13);
   }
+  .mobileOnly {
+    display: block;
+    margin-top: 20px;
+  }
+  .mobileLogoutButton {
+    display: block;
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 1.13rem;
+    border-radius: 10px;
+    background: white;
+    color: #6a0dad;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 1px 8px 0 rgba(80,0,120,0.07);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .mobileLogoutButton:hover {
+    background: #f0f0f0;
+    box-shadow: 0 2px 16px 0 rgba(80,0,120,0.13);
+  }
 }
 .layout {
   display: flex;
@@ -136,7 +161,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  width: auto;
   position: relative;
   min-height: 64px;
   padding-left: 24px;
@@ -147,14 +172,13 @@
   .headerTop {
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
+    width: auto;
     min-height: 48px;
     padding-left: 10px;
     padding-right: 6px;
   }
   .logo {
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
     display: block;
   }
   .hamburgerButton {
@@ -164,10 +188,21 @@
     transform: translateY(-50%);
     margin: 0 10px 0 0;
   }
+  .headerActions {
+    display: none;
+  }
+  .navMobile {
+    margin: 0;
+  }
 }
 
 .logo {
   height: 40px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
 }
 
 .logoutButton {
@@ -195,8 +230,10 @@
 
 .mainContent {
   flex-grow: 1;
-  padding: 30px 5vw;
+  padding: 15px 5vw;
   box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .footer {
@@ -207,6 +244,7 @@
   color: #888;
   width: 100%;
   box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .navList {
@@ -216,6 +254,14 @@
   gap: 25px;
   margin: 0;
   padding: 0;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+.mobileLogoutButton {
+  display: none;
 }
 
 @media screen and (max-width: 900px) {

@@ -1,6 +1,7 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ResetPasswordForm } from './components/ResetPasswordForm';
+import { isAuthenticated } from '../../services/authService';
 import styles from './ResetPassword.module.css';
 
 const resetPasswordPageStyles = {
@@ -13,8 +14,21 @@ const resetPasswordPageStyles = {
 };
 
 function ResetPasswordPage() {
-  // Pegar o token da URL
+  const navigate = useNavigate();
+  
   const { token } = useParams();
+
+  useEffect(() => {
+   
+    if (isAuthenticated()) {
+      navigate('/', { replace: true });
+    }
+  }, [navigate]);
+
+
+  if (isAuthenticated()) {
+    return null;
+  }
 
   return (
     <div style={resetPasswordPageStyles}>

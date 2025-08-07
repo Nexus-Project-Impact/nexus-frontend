@@ -1,6 +1,5 @@
 .header {
   width: 100%;
-  max-width: 100vw;
   padding: 15px 0;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -140,7 +139,7 @@
     position: fixed;
     top: 70px; /* Altura do header */
     left: 0;
-    width: 100vw;
+    width: 100%;
     max-width: 100%;
     height: calc(100vh - 70px);
     background-color: rgba(255, 255, 255, 0.3); /* Mais transparente */
