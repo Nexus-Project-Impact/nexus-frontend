@@ -127,7 +127,7 @@
 
   .contentSection {
     width: 100%;
-    margin: 70px auto 50px auto;
+    margin: 120px auto 50px auto;
     padding: 0; /* Remove padding extra */
   }
 
@@ -187,7 +187,8 @@
 
   .contentSection {
     width: 100%;
-    margin: 120px auto 20px auto;
+    margin: 170px auto 20px auto;
+    margin-top: 200px;
     padding: 0; /* Remove padding extra */
   }
 
@@ -206,27 +207,5 @@
 
   .showMoreContainer {
     margin-top: 25px;
-  }
-}
-
-/* Mobile médio - entre 400px e 480px */
-@media screen and (min-width: 400px) and (max-width: 480px) {
-  .heroSection {
-    height: 180px;
-    margin-bottom: 0px;
-    padding-top: 40px;
-  }
-
-  .heroTitle {
-    font-size: 2.2rem;
-    margin-bottom: 12px;
-  }
-
-  .searchBarWrapper {
-    margin: 35px auto 50px auto;
-  }
-
-  .contentSection {
-    margin: 110px auto 20px auto;
   }
 }
