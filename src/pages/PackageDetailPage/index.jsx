@@ -140,9 +140,10 @@ export function PackageDetailPage() {
           <h3 className={styles.tagline}>{destination}</h3>
 
           {departureDate && returnDate && (
-            <p className={styles.cardDates}>
+            <div className={styles.cardDates}>
+              <strong>Data da Viagem:</strong>{' '}
               {new Date(departureDate).toLocaleDateString('pt-BR')} - {new Date(returnDate).toLocaleDateString('pt-BR')}
-            </p>
+            </div>
           )}
           
           <div className={styles.descriptionBox}>

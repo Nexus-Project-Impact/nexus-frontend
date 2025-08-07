@@ -5,8 +5,6 @@ const paymentService = {
   // Pagamento com cartão (usando endpoint pay-card que retorna secret para Stripe)
   createCardPayment: async (paymentData) => {
     try {
-      console.log('PaymentService - Criando pagamento cartão:', paymentData);
-      
       const requestPayment = {
         UserId: paymentData.userId,
         AmountPaid: paymentData.amountPaid,
@@ -18,7 +16,6 @@ const paymentService = {
         }))
       };
 
-      console.log('🔵 Request completo para cartão:', requestPayment);
       
       const response = await api.post('/Payment/pay-card', requestPayment);
       return response.data; // Deve retornar o secret ID para o Stripe
@@ -31,7 +28,6 @@ const paymentService = {
   // Pagamento com PIX
   createPixPayment: async (paymentData) => {
     try {
-      console.log('PaymentService - Criando pagamento PIX:', paymentData);
       
       const requestPayment = {
         UserId: paymentData.userId,
@@ -44,7 +40,6 @@ const paymentService = {
         }))
       };
 
-      console.log('🟡 Request completo para PIX:', requestPayment);
 
       const response = await api.post('/Payment/pay-pix', requestPayment);
       return response.data;
