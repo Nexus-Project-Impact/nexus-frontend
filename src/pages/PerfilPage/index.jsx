@@ -20,6 +20,7 @@ export default function PerfilPage() {
   };
 
   return (
+  <div className={styles.profileContainer}>
     <div className={styles.profileBox}>
       <img src={profileIcon} alt="Perfil" className={styles.profileIcon} />
       <h2 className={styles.userName}>{user.name || 'Nome de Usuário'}</h2>
@@ -28,5 +29,6 @@ export default function PerfilPage() {
         <button className={styles.menuButton} onClick={handleLogout}>Sair</button>
       </div>
     </div>
+  </div>
   );
 }

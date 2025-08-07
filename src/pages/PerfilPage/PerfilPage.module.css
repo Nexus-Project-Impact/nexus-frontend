@@ -75,14 +75,21 @@ strong {
   background: #6d1b7b;
 }
 
+.profileContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:20px;
+}
+
 .profileBox {
   background: #fff;
-  margin: 60px auto 0 auto;
+  margin-top: 60px;
   border-radius: 22px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.10);
   max-width: 520px;
   width: 100%;
-  padding: 56px 40px 40px 40px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
