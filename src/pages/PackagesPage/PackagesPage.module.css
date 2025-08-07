@@ -1,16 +1,17 @@
 /* Container principal da página de pacotes */
 .packageContainer {
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
   overflow-x: hidden;
   background: #f7f7f7;
+  padding: 0 15px; /* Adiciona padding lateral padrão */
 }
 
 .heroSection {
-  width: 100vw; /* Garante largura total da viewport */
-  height: 400px;
+  width: calc(100vw - 30px); /* Compensa o padding lateral */
+  height: 200px;
   background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
@@ -21,23 +22,24 @@
   align-items: center;
   color: white;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  padding-top: 160px;
-  padding-bottom: 80px;
+  padding-top: 60px;
+  padding-bottom: 40px;
   position: relative;
-  margin-left: calc(-50vw + 50%); /* Expande para fora do container pai */
-  margin-right: calc(-50vw + 50%);
+  margin-left: -15px; /* Compensa o padding do container */
+  margin-right: -15px; /* Compensa o padding do container */
 }
 
 .heroTitle {
-  font-size: 5rem;
-  margin-bottom: 40px;
+  font-size: 3rem;
+  margin-bottom: 20px;
   margin-top: 0;
 }
 
 .contentSection {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 60px auto 40px auto;
+  padding: 0; /* Remove padding extra */
 }
 
 .sectionTitle {
@@ -45,6 +47,13 @@
   font-size: 2rem;
   margin-bottom: 40px;
   color: #333;
+}
+
+.searchBarWrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto 40px auto;
+  position: static;
 }
 
 .showMoreContainer {
@@ -63,14 +72,27 @@
   cursor: pointer;
 }
 
+.filterIndicator {
+  background-color: #e7f3ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  color: #0056b3;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.filterIndicator p {
+  margin: 0;
+  font-weight: 500;
+}
+
 .searchBarWrapper {
   width: 85%;
   max-width: 900px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -30px; /* Fica mais abaixo, mas ainda destacado */
-  z-index: 10;
+  margin: 20px auto 40px auto;
+  position: static;
 }
 
 /* ===== RESPONSIVIDADE ===== */
@@ -78,34 +100,35 @@
 /* Tablet - 768px e abaixo */
 @media screen and (max-width: 768px) {
   .packageContainer {
-    width: 100vw;
-    max-width: 100vw;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
+    padding: 0 12px; /* Padding lateral para tablet */
   }
   .heroSection {
-    width: 100vw;
-    height: 250px;
-    margin-bottom: 50px;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    padding-top: 80px;
+    width: calc(100vw - 24px); /* Compensa o padding lateral */
+    height: 150px;
+    margin-bottom: 0px;
+    margin-left: -12px; /* Compensa o padding do container */
+    margin-right: -12px; /* Compensa o padding do container */
+    padding-top: 50px;
   }
 
   .heroTitle {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
   }
 
   .searchBarWrapper {
-    width: 90%;
-    bottom: -50px;
+    width: 100%;
+    margin: 25px auto 40px auto;
   }
 
   .contentSection {
-    width: 95%;
-    margin: 30px auto;
-    padding: 0 15px;
+    width: 100%;
+    margin: 70px auto 50px auto;
+    padding: 0; /* Remove padding extra */
   }
 
   .sectionTitle {
@@ -126,10 +149,11 @@
 /* Mobile - 480px e abaixo */
 @media screen and (max-width: 480px) {
   .packageContainer {
-    width: 100vw;
-    max-width: 100vw;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
+    padding: 0 10px; /* Padding lateral para mobile */
   }
 
   .cardContainerSpace {
@@ -141,30 +165,30 @@
   }
 
   .heroSection {
-    width: 100vw;
-    height: 200px;
-    margin-bottom: 45px;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
+    width: calc(100vw - 20px); /* Compensa o padding lateral */
+    height: 160px;
+    margin-bottom: 0px;
+    margin-left: -10px; /* Compensa o padding do container */
+    margin-right: -10px; /* Compensa o padding do container */
     background-position: center;
-    padding-top: 60px;
+    padding-top: 30px;
   }
 
   .heroTitle {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+    font-size: 2rem;
+    margin-bottom: 10px;
     text-align: center;
   }
 
   .searchBarWrapper {
-    width: 95%;
-    bottom: -45px;
+    width: 100%;
+    margin: 30px auto 60px auto;
   }
 
   .contentSection {
     width: 100%;
-    margin: 20px auto;
-    padding: 0 10px;
+    margin: 120px auto 20px auto;
+    padding: 0; /* Remove padding extra */
   }
 
   .sectionTitle {
@@ -185,44 +209,24 @@
   }
 }
 
-/* Mobile pequeno - 360px e abaixo */
-@media screen and (max-width: 360px) {
-  .packageContainer {
-    width: 100vw;
-    max-width: 100vw;
-    box-sizing: border-box;
-    overflow-x: hidden;
-  }
+/* Mobile médio - entre 400px e 480px */
+@media screen and (min-width: 400px) and (max-width: 480px) {
   .heroSection {
-    width: 100vw;
     height: 180px;
-    margin-bottom: 40px;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    padding-top: 50px;
+    margin-bottom: 0px;
+    padding-top: 40px;
   }
 
   .heroTitle {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 2.2rem;
+    margin-bottom: 12px;
   }
 
   .searchBarWrapper {
-    width: 98%;
-    bottom: -40px;
+    margin: 35px auto 50px auto;
   }
 
   .contentSection {
-    padding: 0 5px;
-  }
-
-  .sectionTitle {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-  }
-
-  .showMoreButton {
-    padding: 8px 20px;
-    font-size: 0.85rem;
+    margin: 110px auto 20px auto;
   }
 }

@@ -73,22 +73,48 @@
   cursor: pointer;
 }
 
+.clearButton {
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  color: white;
+  padding: 0 15px;
+  border-radius: 10px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.clearButton:hover {
+  background-color: #5a6268;
+  border-color: #5a6268;
+}
+
 /* ===== RESPONSIVIDADE ===== */
 
 /* Tablet - 768px e abaixo */
 @media screen and (max-width: 768px) {
   .searchBarContainer {
     padding: 12px;
+    margin: 0 12px; /* Adiciona margin lateral para alinhar com o container principal */
+    max-width: calc(100% - 24px); /* Ajusta largura para compensar as margins */
+    box-sizing: border-box;
   }
 
   .searchBar {
     flex-wrap: wrap;
     gap: 8px;
+    width: 100%;
   }
 
   .inputWrapper {
     min-width: 200px;
     flex: 1;
+    box-sizing: border-box;
   }
 
   .inputField, .selectField {
@@ -101,74 +127,112 @@
     padding: 0 15px;
     min-width: 80px;
   }
+
+  .clearButton {
+    height: 42px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+  }
 }
 
 /* Mobile - 480px e abaixo */
 @media screen and (max-width: 480px) {
 
   .searchBarContainer {
-    padding: 10px;
-    border-radius: 12px;
-    margin-top: 120px;
+    padding: 8px;
+    border-radius: 10px;
+    position: static !important;
+    z-index: auto !important;
+    margin: 0 10px; /* Adiciona margin lateral para alinhar com o container principal */
+    max-width: calc(100% - 20px); /* Ajusta largura para compensar as margins */
+    box-sizing: border-box;
   }
 
   .searchBar {
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
   }
 
   .inputWrapper {
-    width: 94%;
+    width: 100%;
     min-width: unset;
+    box-sizing: border-box;
   }
 
   .inputField, .selectField {
-    padding: 12px 8px;
-    font-size: 0.9rem;
+    padding: 8px 6px;
+    font-size: 0.85rem;
   }
 
   .datePicker {
-    padding: 12px 8px !important;
-    font-size: 0.9rem !important;
+    padding: 8px 6px !important;
+    font-size: 0.85rem !important;
   }
 
   .searchButton {
     width: 100%;
-    height: 45px;
+    height: 38px;
     padding: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
   }
 
+  .clearButton {
+    width: 100%;
+    height: 38px;
+    padding: 0;
+    font-size: 0.8rem;
+    margin-top: 3px;
+  }
+
   .icon {
-    margin-right: 6px;
+    margin-right: 4px;
   }
 }
 
 /* Mobile pequeno - 360px e abaixo */
 @media screen and (max-width: 360px) {
   .searchBarContainer {
-    padding: 8px;
-    border-radius: 10px;
+    padding: 6px;
+    border-radius: 8px;
+    margin: 0 8px; /* Adiciona margin lateral para alinhar com o container principal */
+    max-width: calc(100% - 16px); /* Ajusta largura para compensar as margins */
+    box-sizing: border-box;
+  }
+
+  .searchBar {
+    width: 100%;
+  }
+
+  .inputWrapper {
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .inputField, .selectField {
-    padding: 10px 6px;
-    font-size: 0.85rem;
+    padding: 6px 4px;
+    font-size: 0.8rem;
   }
 
   .datePicker {
-    padding: 10px 6px !important;
-    font-size: 0.85rem !important;
+    padding: 6px 4px !important;
+    font-size: 0.8rem !important;
   }
 
   .searchButton {
-    height: 42px;
-    font-size: 0.9rem;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .clearButton {
+    height: 35px;
+    font-size: 0.75rem;
+    padding: 0 8px;
   }
 
   .dateWrapper {
-    padding-left: 10px;
+    padding-left: 8px;
   }
 }
 

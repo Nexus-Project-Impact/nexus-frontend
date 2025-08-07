@@ -6,6 +6,44 @@
   padding-right: 10px;
 }
 
+/* Quando houver apenas um pacote, centraliza e limita a largura */
+.grid:has(> *:only-child) {
+  justify-items: center;
+}
+
+.grid > *:only-child {
+  max-width: 400px; /* ajuste conforme necessário */
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .grid > *:only-child {
+    max-width: 350px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 632px) {
+  .grid > *:only-child {
+    max-width: 320px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid > *:only-child {
+    max-width: 280px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .grid > *:only-child {
+    max-width: 250px;
+    width: 100%;
+  }
+}
+
 /* ===== RESPONSIVIDADE ===== */
 
 /* Tablet - 768px e abaixo */
