@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import packageService from '../../services/packageService';
 import { ReservationModal } from '../../components/ReservationModal';
@@ -9,11 +9,17 @@ import { LocationMap } from '../../components/LocationMap';
 import { notificationService } from '../../services/notificationService';
 import { useReview } from '../../hooks/useReview';
 import styles from './PackageDetailPage.module.css';
+import { style } from 'framer-motion/client';
 
 export function PackageDetailPage() {
   const { packageId } = useParams(); // Pega o ID da URL
   const navigate = useNavigate(); // Hook para navegação
+  const location = useLocation(); // Hook para acessar location.state
   const { token, user } = useSelector((state) => state.auth); // 3. Pega o token do Redux
+
+  // Verificar se veio das reservas
+  const isFromReservations = location.state?.fromReservations || false;
+  const shouldHideCheckout = location.state?.hideCheckout || false;
 
   const [pkg, setPkg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,6 +98,12 @@ export function PackageDetailPage() {
   }, [token, user, packageId, pkg, isLoading, checkCanReview]); // Dependências completas
 
   const handleBuyClick = () => {
+    // Se veio das reservas, não permite nova compra
+    if (shouldHideCheckout) {
+      notificationService.booking.createError('Você já possui uma reserva para este pacote.');
+      return;
+    }
+
     if (!token) {
       // Mostra notificação antes de redirecionar para o login
       notificationService.booking.purchaseLoginRequired();
@@ -130,9 +142,12 @@ export function PackageDetailPage() {
           <img src={imageUrl} alt="Imagem principal do destino" className={styles.mainImage} />
           
           {/* Mapa da Localização */}
-          <LocationMap destination={destination} className={styles.locationMap} />
-          
-          <button onClick={() => navigate(-1)} className={styles.backButton}>Voltar</button>
+          <div className={styles.containerLocationMap}>
+            <LocationMap destination={destination} className={styles.locationMap} />
+          </div>  
+            <div className={styles.containerBackButton}>
+              <button onClick={() => navigate(-1)} className={styles.backButton}>Voltar</button>
+            </div>
         </div>
 
         {/* Coluna da Direita */}
@@ -151,50 +166,68 @@ export function PackageDetailPage() {
             <p>{description}</p>
           </div>
 
-          <div className={styles.bookingBox}>
-            <p>Voo + Hospedagem</p>
-            <div  className={styles.price}>
+          {/* Só mostra o bookingBox se não veio das reservas */}
+          {!shouldHideCheckout && (
+            <div className={styles.bookingBox}>
+              <p>Voo + Hospedagem</p>
+              <div  className={styles.price}>
 
-            <p>Preço por pessoa </p>
-            <span className={styles.currentPrice}> R${price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+              <p>Preço por pessoa </p>
+              <span className={styles.currentPrice}> R${price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
 
+              </div>
+              
+              <button onClick={handleBuyClick} className={styles.buyButton}>Compre Agora</button>
+              
+              <span className={styles.installments}>Em até {price.installments || 12}x no cartão</span>
             </div>
-            <button onClick={handleBuyClick} className={styles.buyButton}>Compre Agora</button>
-            
-            {/* Botão para avaliar pacote - só aparece se usuário puder avaliar */}
-            {token && canReview && (
-              <button 
-                onClick={handleReviewClick} 
-                className={styles.reviewButton}
-              >
-                ⭐ Avaliar Pacote
-              </button>
-            )}
-            
-            <span className={styles.installments}>Em até {price.installments || 12}x no cartão</span>
+          )}
+          
+          {/* Mostra mensagem informativa se veio das reservas */}
+          {isFromReservations && (
+            <div className={styles.reservationNotice}>
+              <p>📋 Você está visualizando um pacote das suas reservas</p>
+            </div>
+          )}
+          
+          {/* Botão para avaliar pacote - só aparece se usuário puder avaliar */}
+          {token && canReview && (
+            <button 
+              onClick={handleReviewClick} 
+              className={styles.reviewButton}
+            >
+              ⭐ Avaliar Pacote
+            </button>
+          )}
+          
+          {/* Seção de Reviews - No desktop fica aqui, no mobile será reposicionada via CSS */}
+          <div className={styles.reviewsSection}>
+            <Reviews packageId={packageId} />
           </div>
           
           {/* Botão Voltar - visível apenas em mobile */}
           <button onClick={() => navigate(-1)} className={`${styles.backButton} ${styles.backButtonMobile}`}>Voltar</button>
         </div>
       </div>
-      
-      {/* Seção de Reviews - Logo após o grid principal */}
-      <Reviews packageId={packageId} />
     </div>
     
-   <ReservationModal
-        isOpen={isReservationModalOpen}
-        onClose={() => setIsReservationModalOpen(false)}
-        onSaveAndProceed={handleProceedToCheckout} // 4. Passe a nova função
-      />
+   {/* Só renderiza os modais se não veio das reservas */}
+   {!shouldHideCheckout && (
+     <>
+       <ReservationModal
+         isOpen={isReservationModalOpen}
+         onClose={() => setIsReservationModalOpen(false)}
+         onSaveAndProceed={handleProceedToCheckout} // 4. Passe a nova função
+       />
 
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        packageData={pkg} // 5. Passe os dados necessários
-        travelers={reservationData}
-      />
+       <CheckoutModal
+         isOpen={isCheckoutOpen}
+         onClose={() => setIsCheckoutOpen(false)}
+         packageData={pkg} // 5. Passe os dados necessários
+         travelers={reservationData}
+       />
+     </>
+   )}
     </>
   );
 }
