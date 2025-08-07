@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaLock, FaEnvelope, FaKey, FaEye, FaEyeSlash, FaCheckCircle } from 'react-icons/fa';
 import { resetPasswordWithCode } from '../../../services/authService';
 import styles from '../ResetPasswordCode.module.css';
 import nexusLogo from '../../../assets/nexus-logo.png';
@@ -14,6 +15,8 @@ export function ResetPasswordCodeForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,6 +86,7 @@ export function ResetPasswordCodeForm() {
       <div className={styles.container}>
         <img src={nexusLogo} alt="Nexus Logo" className={styles.logo} />
         <div className={styles.successMessage}>
+          <FaCheckCircle size={48} style={{ color: '#2ed573', marginBottom: '15px' }} />
           <h2>Senha redefinida com sucesso!</h2>
           <p>Você será redirecionado para a página de login...</p>
         </div>
@@ -99,60 +103,90 @@ export function ResetPasswordCodeForm() {
         <p>Digite o código de 6 dígitos enviado para seu email e sua nova senha:</p>
         
         <div className={styles.inputGroup}>
-          <input
-            type="email"
-            placeholder="Seu email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={isLoading}
-          />
+          <div className={styles.inputWrapper}>
+            <FaEnvelope className={styles.inputIcon} />
+            <input
+              type="email"
+              placeholder="Seu email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
         </div>
         
         <div className={styles.inputGroup}>
-          <input
-            type="text"
-            placeholder="Código de 6 dígitos"
-            value={code}
-            onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-            required
-            maxLength={6}
-            disabled={isLoading}
-            style={{ 
-              textAlign: 'center', 
-              fontSize: '1.5em', 
-              letterSpacing: '0.5em',
-              fontWeight: 'bold'
-            }}
-          />
+          <div className={styles.inputWrapper}>
+            <FaKey className={styles.inputIcon} />
+            <input
+              type="text"
+              placeholder="Código de 6 dígitos"
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              required
+              maxLength={6}
+              disabled={isLoading}
+              className={styles.codeInput}
+            />
+          </div>
         </div>
         
         <div className={styles.inputGroup}>
-          <input
-            type="password"
-            placeholder="Nova senha"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-            minLength={6}
-            disabled={isLoading}
-          />
+          <div className={styles.inputWrapper}>
+            <FaLock className={styles.inputIcon} />
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Nova senha"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              minLength={6}
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className={styles.eyeButton}
+              onClick={() => setShowPassword(!showPassword)}
+              disabled={isLoading}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
         </div>
         
         <div className={styles.inputGroup}>
-          <input
-            type="password"
-            placeholder="Confirmar nova senha"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            minLength={6}
-            disabled={isLoading}
-          />
+          <div className={styles.inputWrapper}>
+            <FaLock className={styles.inputIcon} />
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirmar nova senha"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
+              disabled={isLoading}
+            />
+            <button
+              type="button"
+              className={styles.eyeButton}
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              disabled={isLoading}
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
         </div>
         
         <button type="submit" className={styles.submitButton} disabled={isLoading}>
-          {isLoading ? 'Redefinindo...' : 'Redefinir Senha'}
+          {isLoading ? (
+            <span className={styles.loadingContent}>
+              <span className={styles.spinner}></span>
+              Redefinindo...
+            </span>
+          ) : (
+            'Redefinir Senha'
+          )}
         </button>
         
         {error && <p className={styles.errorText}>{error}</p>}
