@@ -31,6 +31,7 @@ export function AdminLayout() {
             </span>
           </button>
         </div>
+        
         <nav className={menuOpen ? `${styles.navMobile} ${styles.open}` : styles.navMobile}>
           <ul className={styles.navList} onClick={() => setMenuOpen(false)}>
             <li>
@@ -51,10 +52,10 @@ export function AdminLayout() {
             </li>
             <li>
               <NavLink 
-                to="/admin/comentarios"
+                to="/admin/avaliacoes"
                 className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
               >
-                Comentários
+                Avaliações
               </NavLink>
             </li>
             <li>
@@ -62,14 +63,18 @@ export function AdminLayout() {
                 to="/admin/metricas"
                 className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
               >
-                Metricas
+                Métricas
               </NavLink>
             </li>
-            <li>
-              <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+            <li className={styles.mobileOnly}>
+              <button onClick={handleLogout} className={styles.mobileLogoutButton}>Logout</button>
             </li>
           </ul>
         </nav>
+
+        <div className={styles.headerActions}>
+          <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+        </div>
       </header>
       <main className={styles.mainContent}>
         <Outlet />
