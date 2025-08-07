@@ -94,8 +94,9 @@
 
 .profileLink {
   display: flex;
+  margin-bottom: 5px;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   text-decoration: none;
   color: #333;
   font-weight: 500;
@@ -109,6 +110,7 @@
   font-size: 1.5rem;
   color: #333;
   cursor: pointer;
+  width: 60px;
   padding: 8px;
   border-radius: 4px;
   transition: background-color 0.3s ease;
@@ -154,6 +156,7 @@
 
   .navOpen {
     transform: translateX(0); /* Mostra o menu quando aberto */
+    border: 2px solid #FF9900; /* Borda laranja quando menu está aberto */
   }
 
   .navList {
@@ -161,9 +164,10 @@
     justify-content: flex-start;
     align-items: center;
     height: auto; /* Altura automática para se ajustar ao conteúdo */
-    gap: 30px;
+    gap: 15px;
     padding: 60px 20px; /* Reduz o padding horizontal */
     margin: 0;
+    border: #FF9900 1px solid;
     background-color: rgba(248, 249, 250, 0.7); /* Fundo semi-transparente para a lista */
     border-radius: 12px; /* Bordas arredondadas */
     backdrop-filter: blur(5px);

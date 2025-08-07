@@ -44,30 +44,43 @@ export function Header({ onRegisterClick }) {
         {/* Menu de navegação */}
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           <ul className={styles.navList}>
-            <li>
-              <NavLink 
-                to="/pacotes"
-                className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
-                onClick={closeMenu}
-              >
-                Pacotes
-              </NavLink>
-            </li>
-
             {/* AQUI ESTÁ A LÓGICA CONDICIONAL */}
             {token ? (
               // Se EXISTE token, mostra só o link de perfil
               <>
                 <li className={styles.profileMenu}>
                   <NavLink to="/perfil" className={styles.profileLink} onClick={closeMenu}>
-                    <FaUserCircle size={24} />
+                    {/* <FaUserCircle size={24} /> */}
                     <span>Perfil</span>
+                  </NavLink>
+                </li>
+                <li className={styles.profileMenu}>
+                  <NavLink 
+                    to="/pacotes"
+                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.profileLink}
+                    onClick={closeMenu}
+                  >
+                    <span>Pacotes</span>
+                  </NavLink>
+                </li>
+                <li className={styles.profileMenu}>
+                  <NavLink to="/reservas" className={styles.profileLink} onClick={closeMenu}>
+                    <span>Minhas Reservas</span>
                   </NavLink>
                 </li>
               </>
             ) : (
               // Se NÃO EXISTE token, mostra a visão de "visitante"
               <>
+                <li className={styles.profileMenu}>
+                  <NavLink 
+                    to="/pacotes"
+                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.profileLink}
+                    onClick={closeMenu}
+                  >
+                    <span>Pacotes</span>
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink
                     to="/login"

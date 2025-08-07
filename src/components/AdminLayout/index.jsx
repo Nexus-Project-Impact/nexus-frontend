@@ -51,10 +51,10 @@ export function AdminLayout() {
             </li>
             <li>
               <NavLink 
-                to="/admin/comentarios"
+                to="/admin/avaliacoes"
                 className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
               >
-                Comentários
+                Avaliações
               </NavLink>
             </li>
             <li>

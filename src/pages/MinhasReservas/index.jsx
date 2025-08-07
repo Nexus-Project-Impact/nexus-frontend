@@ -28,7 +28,19 @@ export function MinhasReservas() {
     // Não precisa forçar reload aqui, o hook já carrega automaticamente
   }, [token, navigate]);
 
-  const handleReviewClick = async (reservationId, packageId, reservation) => {
+  const handleReservationClick = (packageId) => {
+    navigate(`/pacotes/${packageId}`, {
+      state: {
+        fromReservations: true,
+        hideCheckout: true
+      }
+    });
+  };
+
+  const handleReviewClick = async (event, reservationId, packageId, reservation) => {
+    // Prevenir que o clique no botão propague para o card
+    event.stopPropagation();
+    
     try {
       // Verificar se pode avaliar esta reserva específica
       const canReview = await canReviewReservation(reservationId);
@@ -118,7 +130,12 @@ export function MinhasReservas() {
         <div className={styles.reservationsList}>
           {reservations.map((reservation) => {
             return (
-              <div key={reservation.id} className={styles.reservationCard}>
+              <div 
+                key={reservation.id} 
+                className={styles.reservationCard}
+                onClick={() => handleReservationClick(reservation.packageId)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className={styles.cardHeader}>
                   <ImageWithFallback 
                     src={reservation.packageImage} 
@@ -135,7 +152,7 @@ export function MinhasReservas() {
                     {!reservation.hasReview ? (
                       <button 
                         className={styles.reviewButton}
-                        onClick={() => handleReviewClick(reservation.id, reservation.packageId, reservation)}
+                        onClick={(e) => handleReviewClick(e, reservation.id, reservation.packageId, reservation)}
                       >
                         Avaliar Pacote
                       </button>

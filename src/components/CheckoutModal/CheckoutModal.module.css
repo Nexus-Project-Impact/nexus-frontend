@@ -1,7 +1,8 @@
 .modalOverlay {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
   background-color: rgba(0, 0, 0, 0.6);
   display: flex; justify-content: center; align-items: center; z-index: 3000;
+  overflow-y: auto;
 }
 
 .modalContent {
@@ -872,4 +873,353 @@
 .successActions {
   margin: 0 24px 24px 24px;
   text-align: center;
+}
+
+/* Responsividade para Mobile */
+@media screen and (max-width: 768px) {
+  .modalOverlay {
+    padding: 20px;
+    align-items: flex-start;
+    box-sizing: border-box;
+  }
+
+  .modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #8c52ff;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .modalContent h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.4rem;
+    padding-right: 30px;
+  }
+
+  .scrollableContent {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  /* Ajustes para opções de pagamento */
+  .paymentOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .radioLabel {
+    flex: none;
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+
+  /* Ajustes para o grid do formulário */
+  .formGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+
+  .formGrid input,
+  .formGrid select {
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Resumo do pacote em mobile */
+  .summary {
+    grid-column: unset;
+    grid-row: unset;
+    text-align: center;
+    padding: 15px;
+    border-left: none;
+    border-top: 1px solid #eee;
+    margin-left: 0;
+    margin-top: 20px;
+    border-radius: 8px;
+    background: #f8f9fa;
+  }
+
+  .buyButton {
+    grid-column: unset;
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    margin-top: 15px;
+  }
+
+  /* Ajustes para formulários de pagamento */
+  .paymentForm {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .inputGroup {
+    margin-bottom: 16px;
+  }
+
+  .inputGroup input,
+  .inputGroup select {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    min-height: 50px;
+    box-sizing: border-box;
+  }
+
+  .inputRow {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* Formulário do cartão */
+  .cardForm {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .cardForm h4 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .cardElement {
+    padding: 14px;
+    min-height: 50px;
+    font-size: 1rem;
+  }
+
+  /* Botões de ação */
+  .submitButton {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
+
+  .primaryButton {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 1.1rem;
+  }
+
+  .copyButton {
+    min-width: 80px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+
+  /* Seções PIX e Boleto */
+  .pixFormSection,
+  .boletoFormSection {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .pixFormSection h4,
+  .boletoFormSection h4 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  /* QR Code */
+  .qrCodeContainer {
+    padding: 20px;
+  }
+
+  .qrCode {
+    max-width: 180px;
+  }
+
+  /* Código PIX */
+  .codeWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pixCodeInput {
+    width: 100%;
+    padding: 14px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .copyButton {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  /* Instruções */
+  .instructionsCard {
+    margin: 0 0 20px 0;
+    padding: 16px;
+  }
+
+  .instructionStep {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .stepNumber {
+    margin-bottom: 5px;
+  }
+
+  /* Resumo de pagamento */
+  .paymentSummary {
+    margin: 0 0 20px 0;
+    padding: 16px;
+  }
+
+  .summaryItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    text-align: left;
+  }
+
+  /* Seções de sucesso */
+  .successHeader {
+    margin-bottom: 20px;
+    padding: 16px;
+  }
+
+  .successHeader h3 {
+    font-size: 1.4rem;
+  }
+
+  .successActions {
+    margin: 0 0 20px 0;
+  }
+
+  .qrCodeSection {
+    margin: 0 0 20px 0;
+  }
+
+  .pixCodeSection {
+    margin: 0 0 20px 0;
+  }
+
+  /* Ajustes para barcode do boleto */
+  .barcodeWrapper {
+    flex-direction: column;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .barcodeInput {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  /* Mensagens de erro */
+  .errorMessage {
+    padding: 12px;
+    font-size: 0.9rem;
+    margin: 10px 0;
+  }
+
+  .cardErrorMessage,
+  .cardSuccessMessage {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modalOverlay {
+    padding: 15px;
+  }
+
+  .modalContent {
+    padding: 15px;
+    border-radius: 12px;
+    max-height: 95vh;
+  }
+
+  .modalContent h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .closeButton {
+    font-size: 1.6rem;
+    top: 8px;
+    right: 12px;
+  }
+
+  .paymentForm,
+  .cardForm,
+  .pixFormSection,
+  .boletoFormSection {
+    padding: 12px;
+  }
+
+  .inputGroup input,
+  .inputGroup select {
+    padding: 12px;
+    font-size: 0.9rem;
+    min-height: 45px;
+  }
+
+  .submitButton,
+  .primaryButton {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  .qrCode {
+    max-width: 150px;
+  }
+
+  .pixCodeInput {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  .copyButton {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
 }
