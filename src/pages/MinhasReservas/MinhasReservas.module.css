@@ -93,11 +93,29 @@
   overflow: hidden;
   transition: all 0.3s ease;
   border: 1px solid #f0f0f0;
+  cursor: pointer;
+  position: relative;
 }
 
 .reservationCard:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-color: #8c52ff;
+}
+
+.reservationCard:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(140, 82, 255, 0.05) 0%, rgba(255, 153, 0, 0.05) 100%);
+  pointer-events: none;
+}
+
+.reservationCard:hover .packageName {
+  color: #8c52ff;
 }
 
 .cardHeader {
@@ -124,6 +142,7 @@
   font-weight: 700;
   color: #2c3e50;
   margin: 0 0 8px 0;
+  transition: color 0.3s ease;
 }
 
 .packageDates {

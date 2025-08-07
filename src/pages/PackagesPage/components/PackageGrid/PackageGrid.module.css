@@ -57,7 +57,7 @@
 }
 
 /* Mobile - 480px e abaixo */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 450px) {
   .grid {
     grid-template-columns: 1fr;
     gap: 20px;

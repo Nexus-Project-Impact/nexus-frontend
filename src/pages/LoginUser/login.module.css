@@ -145,7 +145,7 @@
   margin-top: 15px;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 430px) {
   .loginContainer {
   position: fixed;
   box-shadow: none;
