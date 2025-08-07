@@ -224,6 +224,33 @@ h2 {
     padding: 1.5rem;
     max-width: none;
   }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border: none;
+    font-size: 1.8rem;
+    color: #a020f0;
+    cursor: pointer;
+    z-index: 10;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .closeButton:hover {
+    color: #6c1eb1;
+    transform: scale(1.1);
+  }
   
   .infoSection {
     flex-direction: column;
@@ -259,10 +286,24 @@ h2 {
   
   h2 {
     font-size: 1.5rem;
+    padding-right: 40px;
   }
 }
 
 @media (max-width: 480px) {
+  .closeButton {
+    top: -25px;
+    right: -3px;
+    font-size: 1.6rem;
+    width: 32px;
+    height: 32px;
+  }
+
+  .h2 {
+    font-size: 1.3rem;
+    padding-right: 35px;
+  }
+  
   .ratingGroup {
     gap: 0.4rem;
   }
