@@ -9,6 +9,7 @@ export function PackagesPage() {
   const [filteredPackages, setFilteredPackages] = useState([]); // Pacotes a serem exibidos
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hasActiveFilters, setHasActiveFilters] = useState(false);
 
   useEffect(() => {
     const loadPackages = async () => {
@@ -40,8 +41,10 @@ export function PackagesPage() {
   const handleSearch = (filters) => {
     setIsLoading(true);
     let results = [...allPackages];
+    let hasFilters = false;
 
     if (filters.destination !== "") {
+      hasFilters = true;
       results = results.filter((pkg) =>
         pkg.destination
           .toLowerCase()
@@ -50,6 +53,7 @@ export function PackagesPage() {
     }
 
     if (filters.dateRange[0] !== null) {
+      hasFilters = true;
       results = results.filter((pkg) => {
         const pkgDate = new Date(pkg.departureDate);
         return (
@@ -59,6 +63,7 @@ export function PackagesPage() {
     }
 
     if (filters.price !== "") {
+      hasFilters = true;
       const [minValue, maxValue] = filters.price.split("-").map(Number);
       results = results.filter((pkg) => {
         const pkgValue = pkg.value;
@@ -66,6 +71,7 @@ export function PackagesPage() {
       });
     }
 
+    setHasActiveFilters(hasFilters);
     setFilteredPackages(results);
     setIsLoading(false);
   };
@@ -83,6 +89,13 @@ export function PackagesPage() {
 
       <div className={styles.contentSection}>
         <h2 className={styles.sectionTitle}>Seu novo destino está aqui!</h2>
+
+        {/* Indicador de filtros ativos */}
+        {hasActiveFilters && (
+          <div className={styles.filterIndicator}>
+            <p>Mostrando {filteredPackages.length} de {allPackages.length} pacotes</p>
+          </div>
+        )}
 
         {isLoading && <p>Carregando...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
