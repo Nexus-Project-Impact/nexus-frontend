@@ -3,12 +3,16 @@
   max-width: 1200px;
   margin: 20px auto;
   font-family: system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .destinationTitle {
   font-size: 2rem;
-  color: #8c52ff;
+  color: var(--primary-color);
   margin-bottom: 20px;
+  transition: color 0.3s ease;
 }
 
 .detailsGrid {
@@ -44,7 +48,7 @@
   transition: border-color 0.3s;
 }
 .activeThumbnail {
-  border-color: #8c52ff;
+  border-color: var(--primary-color);
 }
 
 .containerBackButton {
@@ -57,16 +61,16 @@
   align-self: flex-start;
   margin-top: 20px;
   padding: 10px 30px;
-  border: 1px solid #ff9900;
-  color:#333;
-  background-color: #fff;
+  border: 1px solid var(--secondary-color);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .backButton:hover {
-  background-color: #ff9900;
+  background-color: var(--secondary-color);
   color: white;
 }
 
@@ -79,58 +83,46 @@
 }
 
 .tagline {
-  color: #ff9900;
+  color: var(--secondary-color);
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .cardDates {
-  background-color: #f2f2f2;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   padding: 12px;
   margin: 15px 0;
-  color: #333;
+  color: var(--text-primary);
   font-size: 1rem;
   text-align: center;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .cardDates strong {
-  color: #8c52ff;
+  color: var(--primary-color);
   font-weight: 600;
-}
-
-.dates {
-  background-color: #f2f2f2;
-  border-radius: 8px;
-  color:#ff9900;
-  padding: 10px;
-  text-align: center;
-  margin: 15px 0;
-}
-
-.cardDates {
-  background-color: #f2f2f2;
-  border-radius: 8px;
-  color: #ff9900;
-  padding: 10px;
-  text-align: center;
-  margin: 15px 0;
-  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .descriptionBox {
-  background-color: #f2f2f2;
+  background-color: var(--bg-secondary);
   border-radius: 15px;
   padding: 20px;
   margin-bottom: 20px;
-  color: #555;
+  color: var(--text-secondary);
   font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 .descriptionBox h4 {
   text-align: center;
   margin-top: 0;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 /* Estilo específico para o mapa na página de detalhes */
@@ -140,11 +132,13 @@
 }
 
 .bookingBox {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 15px;
-  color:#333;
+  color: var(--text-primary);
   padding: 20px;
   text-align: center;
+  background-color: var(--bg-primary);
+  transition: all 0.3s ease;
 }
 .price{
   display: flex;
@@ -155,14 +149,16 @@
 
 .originalPrice {
   text-decoration: line-through;
-  color: #999;
+  color: var(--text-tertiary);
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 .currentPrice {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #333;
-  gap: 20px
+  color: var(--text-primary);
+  gap: 20px;
+  transition: color 0.3s ease;
 }
 .buyButton {
   width: 100%;
@@ -170,11 +166,17 @@
   margin: 10px 0;
   border: none;
   border-radius: 10px;
-  background-color: #ff9900;
+  background-color: var(--secondary-color);
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buyButton:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
 }
 
 .reviewButton {
@@ -183,7 +185,7 @@
   margin: 10px 0;
   border: none;
   border-radius: 8px;
-  background-color: #28a745;
+  background-color: var(--success-color);
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -287,7 +289,8 @@
     text-align: center;
     font-size: 1rem;
     margin-bottom: 20px;
-    color: #666;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
   }
   
   .descriptionBox {
