@@ -45,21 +45,6 @@ export function Header({ onRegisterClick }) {
         {/* Menu de navegação */}
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           <ul className={styles.navList}>
-            <li>
-              <NavLink 
-                to="/pacotes"
-                className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
-                onClick={closeMenu}
-              >
-                Pacotes
-              </NavLink>
-            </li>
-            
-            {/* Theme Toggle */}
-            <li className={styles.themeToggleItem}>
-              <ThemeToggle compact={true} showLabel={false} />
-            </li>
-
             {/* AQUI ESTÁ A LÓGICA CONDICIONAL */}
             {token ? (
               // Se EXISTE token, mostra só o link de perfil
@@ -77,11 +62,6 @@ export function Header({ onRegisterClick }) {
                     onClick={closeMenu}
                   >
                     <span>Pacotes</span>
-                  </NavLink>
-                </li>
-                <li className={styles.profileMenu}>
-                  <NavLink to="/reservas" className={styles.profileLink} onClick={closeMenu}>
-                    <span>Minhas Reservas</span>
                   </NavLink>
                 </li>
               </>
@@ -119,6 +99,11 @@ export function Header({ onRegisterClick }) {
                 </li>
               </>
             )}
+            
+            {/* Theme Toggle - movido para o final da lista */}
+            <li className={styles.themeToggleItem}>
+              <ThemeToggle compact={true} header={true} showLabel={false} />
+            </li>
           </ul>
         </nav>
       </div>
