@@ -1,0 +1,273 @@
+.themeToggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.toggleButton {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: transparent;
+  border: 2px solid var(--border-color, #e0e0e0);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  overflow: hidden;
+}
+
+.toggleButton:hover {
+  border-color: var(--primary-color, #8c52ff);
+  transform: scale(1.05);
+}
+
+.toggleButton:focus {
+  outline: 2px solid var(--primary-color, #8c52ff);
+  outline-offset: 2px;
+}
+
+.toggleSlider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggleSlider.light {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  justify-content: flex-start;
+}
+
+.toggleSlider.dark {
+  background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+  justify-content: flex-end;
+}
+
+.toggleIcon {
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  margin: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light .toggleIcon {
+  transform: translateX(0);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.dark .toggleIcon {
+  transform: translateX(-28px);
+  background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+  color: #ffeaa7;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .themeToggle {
+    gap: 8px;
+  }
+  
+  .label {
+    font-size: 0.8rem;
+    display: none; /* Oculta o label em tablets */
+  }
+  
+  .toggleButton {
+    width: 50px;
+    height: 25px;
+  }
+  
+  .toggleIcon {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  
+  .dark .toggleIcon {
+    transform: translateX(-23px);
+  }
+}
+
+@media (max-width: 480px) {
+  .themeToggle {
+    gap: 0;
+    justify-content: center; /* Centraliza o botão em mobile */
+    width: 100%;
+  }
+  
+  .label {
+    display: none; /* Oculta completamente em mobile */
+  }
+  
+  .toggleButton {
+    width: 45px;
+    height: 22px;
+    border-width: 1.5px;
+    margin: 0; /* Remove margens automáticas */
+  }
+  
+  .toggleIcon {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+    margin: 1.5px;
+  }
+  
+  .dark .toggleIcon {
+    transform: translateX(-21px);
+  }
+}
+
+@media (max-width: 320px) {
+  .toggleButton {
+    width: 40px;
+    height: 20px;
+  }
+  
+  .toggleIcon {
+    width: 14px;
+    height: 14px;
+    font-size: 8px;
+    margin: 1px;
+  }
+  
+  .dark .toggleIcon {
+    transform: translateX(-18px);
+  }
+  
+  /* Versão header em telas muito pequenas */
+  .themeToggle.header .toggleButton {
+    width: 38px;
+    height: 19px;
+  }
+  
+  .themeToggle.header .toggleIcon {
+    width: 13px;
+    height: 13px;
+    font-size: 7px;
+  }
+  
+  .themeToggle.header .dark .toggleIcon {
+    transform: translateX(-17px);
+  }
+}
+
+/* Melhoria para dispositivos touch */
+@media (hover: none) and (pointer: coarse) {
+  .toggleButton {
+    min-height: 44px; /* Tamanho mínimo recomendado para touch */
+    width: 65px;
+  }
+  
+  .toggleButton:hover {
+    transform: none; /* Remove hover effects em touch devices */
+  }
+  
+  .toggleButton:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+  
+  .themeToggle.compact .toggleButton {
+    min-height: 38px;
+    width: 55px;
+  }
+  
+  .themeToggle.header .toggleButton {
+    min-height: 40px;
+    width: 60px;
+  }
+}
+
+/* Versão compacta */
+.themeToggle.compact {
+  gap: 6px;
+}
+
+.themeToggle.compact .toggleButton {
+  width: 45px;
+  height: 22px;
+}
+
+.themeToggle.compact .toggleIcon {
+  width: 16px;
+  height: 16px;
+  font-size: 9px;
+}
+
+.themeToggle.compact .dark .toggleIcon {
+  transform: translateX(-21px);
+}
+
+/* Versão especial para header */
+.themeToggle.header {
+  gap: 0;
+  position: relative;
+}
+
+.themeToggle.header .toggleButton {
+  width: 50px;
+  height: 26px;
+  border: 1.5px solid var(--border-color);
+}
+
+.themeToggle.header .toggleIcon {
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.themeToggle.header .dark .toggleIcon {
+  transform: translateX(-22px);
+}
+
+/* Combinação compact + header para mobile */
+.themeToggle.compact.header .toggleButton {
+  width: 42px;
+  height: 21px;
+}
+
+.themeToggle.compact.header .toggleIcon {
+  width: 15px;
+  height: 15px;
+  font-size: 8px;
+}
+
+.themeToggle.compact.header .dark .toggleIcon {
+  transform: translateX(-19px);
+}
+
+/* Animações de entrada */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.themeToggle {
+  animation: slideIn 0.3s ease-out;
+}

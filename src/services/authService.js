@@ -79,7 +79,7 @@ export async function forgotPassword(email) {
 export async function resetPasswordLoggedUser(currentPassword, newPassword) {
   try {
     const response = await api.post('/Auth/change-password', {
-      currentPassword: currentPassword,
+      oldPassword: currentPassword,
       newPassword: newPassword
     });
     console.log('Senha alterada com sucesso:', response.data);

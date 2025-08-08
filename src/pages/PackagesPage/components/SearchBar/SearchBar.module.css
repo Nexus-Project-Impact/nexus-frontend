@@ -1,8 +1,9 @@
 .searchBarContainer {
-  background-color: #ff9900; /* Laranja do contêiner */
+  background-color: var(--secondary-color); /* Laranja do contêiner */
   padding: 15px;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .searchBar {
@@ -12,23 +13,25 @@
 }
 
 .inputWrapper {
-  background-color: white;
+  background-color: var(--bg-primary);
   border-radius: 10px;
-  border: 1px solid #c57d00; /* Borda roxa sutil */
+  border: 1px solid var(--border-color); 
   display: flex;
   align-items: center;
   padding: 0 10px;
   flex: 1;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .inputField, .selectField {
   width: 100%;
   border: none;
   outline: none;
-  color: #6b6b6b;
+  color: var(--text-primary);
   padding: 12px 5px;
   font-size: 1rem;
   background-color: transparent;
+  transition: color 0.3s ease;
 }
 
 .selectField {
@@ -61,8 +64,8 @@
 }
 
 .searchButton {
-  background-color: #8c52ff; /* Roxo do botão */
-  border: 1px solid #c57d00;
+  background-color: var(--primary-color); /* Roxo do botão */
+  border: 1px solid var(--border-color);
   color: white;
   padding: 0 10px;
   border-radius: 10px;
@@ -71,6 +74,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .clearButton {

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice'; // Importe a ação de logout
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa'; // Ícones de perfil e menu
 import { notificationService } from '../../services/notificationService';
+import ThemeToggle from '../ThemeToggle';
 import styles from './Header.module.css';
 import nexusLogo from '../../assets/nexus-logo.png';
 
@@ -44,6 +45,21 @@ export function Header({ onRegisterClick }) {
         {/* Menu de navegação */}
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           <ul className={styles.navList}>
+            <li>
+              <NavLink 
+                to="/pacotes"
+                className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
+                onClick={closeMenu}
+              >
+                Pacotes
+              </NavLink>
+            </li>
+            
+            {/* Theme Toggle */}
+            <li className={styles.themeToggleItem}>
+              <ThemeToggle compact={true} showLabel={false} />
+            </li>
+
             {/* AQUI ESTÁ A LÓGICA CONDICIONAL */}
             {token ? (
               // Se EXISTE token, mostra só o link de perfil

@@ -1,10 +1,10 @@
 /* Card principal do pacote */
 .card {
-  background-color: #fff;
+  background-color: var(--bg-primary);
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
@@ -12,7 +12,7 @@
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 20px var(--shadow-color);
 }
 
 .cardImage {
@@ -26,15 +26,17 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .cardTitle {
   margin-top: 0;
   margin-bottom: 6px;
   font-size: 1.25rem;
-  color: #333;
+  color: var(--text-primary);
   font-weight: bold;
+  transition: color 0.3s ease;
 }
 
 .cardDates {
@@ -57,7 +59,8 @@
 .cardInfo {
   margin-top: 12px;
   margin-bottom: 12px;
-  color: #333;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .cardButton {
@@ -66,7 +69,7 @@
   width: 100%;
   border: none;
   border-radius: 10px;
-  background-color: #ff9900;
+  background-color: var(--secondary-color);
   color: white;
   font-weight: bold;
   cursor: pointer;
