@@ -200,15 +200,13 @@ export function PackageDetailPage() {
             </button>
           )}
           
-          {/* Seção de Reviews - No desktop fica aqui, no mobile será reposicionada via CSS */}
-          <div className={styles.reviewsSection}>
-            <Reviews packageId={packageId} />
-          </div>
-          
           {/* Botão Voltar - visível apenas em mobile */}
           <button onClick={() => navigate(-1)} className={`${styles.backButton} ${styles.backButtonMobile}`}>Voltar</button>
         </div>
       </div>
+      
+      {/* Seção de Reviews - Agora aparece na parte inferior da página */}
+      <Reviews packageId={packageId} />
     </div>
     
    {/* Só renderiza os modais se não veio das reservas */}
