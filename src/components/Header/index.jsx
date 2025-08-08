@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice'; // Importe a ação de logout
@@ -13,6 +13,7 @@ export function Header({ onRegisterClick }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const handleLogout = () => {
     notificationService.auth.logoutSuccess();
@@ -29,6 +30,28 @@ export function Header({ onRegisterClick }) {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  const toggleProfile = () => {
+    setIsProfileOpen(!isProfileOpen);
+  };
+
+  const closeProfile = () => {
+    setIsProfileOpen(false);
+  };
+
+  // Fechar dropdown quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isProfileOpen && !event.target.closest(`.${styles.profileDropdown}`)) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProfileOpen]);
 
   return (
     <header className={styles.header}>
@@ -47,22 +70,49 @@ export function Header({ onRegisterClick }) {
           <ul className={styles.navList}>
             {/* AQUI ESTÁ A LÓGICA CONDICIONAL */}
             {token ? (
-              // Se EXISTE token, mostra só o link de perfil
+              // Se EXISTE token, mostra o link de pacotes e dropdown de perfil
               <>
-                <li className={styles.profileMenu}>
-                  <NavLink to="/perfil" className={styles.profileLink} onClick={closeMenu}>
-                    {/* <FaUserCircle size={24} /> */}
-                    <span>Perfil</span>
-                  </NavLink>
-                </li>
                 <li className={styles.profileMenu}>
                   <NavLink 
                     to="/pacotes"
-                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.profileLink}
+                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
                     onClick={closeMenu}
                   >
                     <span>Pacotes</span>
                   </NavLink>
+                </li>
+                <li className={styles.profileDropdown}>
+                  <button 
+                    className={styles.profileButton}
+                    onClick={toggleProfile}
+                  >
+                    <FaUserCircle size={24} />
+                    <span>Perfil</span>
+                  </button>
+                  {isProfileOpen && (
+                    <div className={styles.dropdownMenu}>
+                      <NavLink 
+                        to="/perfil" 
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          closeProfile();
+                          closeMenu();
+                        }}
+                      >
+                        Meu Perfil
+                      </NavLink>
+                      <button 
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          handleLogout();
+                          closeProfile();
+                          closeMenu();
+                        }}
+                      >
+                        Sair
+                      </button>
+                    </div>
+                  )}
                 </li>
               </>
             ) : (
@@ -71,7 +121,7 @@ export function Header({ onRegisterClick }) {
                 <li className={styles.profileMenu}>
                   <NavLink 
                     to="/pacotes"
-                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.profileLink}
+                    className={({ isActive }) => isActive ? `${styles.navLink} ${styles.activeLink}` : styles.navLink}
                     onClick={closeMenu}
                   >
                     <span>Pacotes</span>

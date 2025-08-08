@@ -102,6 +102,63 @@
   font-weight: 500;
 }
 
+/* Dropdown de perfil */
+.profileDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profileButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profileButton:hover {
+  background-color: var(--bg-secondary, #f5f5f5);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-primary, white);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 1001;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.dropdownItem:hover {
+  background-color: var(--bg-secondary, #f5f5f5);
+}
+
 /* Botão do menu hambúrguer */
 .hamburgerButton {
   display: none; /* Oculto por padrão (desktop) */
@@ -222,6 +279,52 @@
     background-color: #8c52ff;
     color: white;
     transform: scale(1.05);
+  }
+
+  /* Dropdown mobile */
+  .profileDropdown {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profileButton {
+    justify-content: flex-start;
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  .profileButton:hover {
+    background-color: #8c52ff;
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .dropdownMenu {
+    position: static;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+  }
+
+  .dropdownItem {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 6px;
+    margin: 4px 8px;
+    background-color: white;
+  }
+
+  .dropdownItem:hover {
+    background-color: #8c52ff;
+    color: white;
   }
 }
 
