@@ -6,21 +6,38 @@
 }
 
 .modalContent {
-  background: white; padding: 30px 40px; border-radius: 20px;
-  width: 90%; max-width: 800px; position: relative;
-  /* ✅ CSS PARA BARRA DE ROLAGEM */
+  background: var(--bg-primary); 
+  padding: 30px 40px; 
+  border-radius: 20px;
+  width: 90%; 
+  max-width: 800px; 
+  position: relative;
   display: flex;
   flex-direction: column;
   max-height: 90vh;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .closeButton {
-  position: absolute; top: 15px; right: 20px; background: none; border: none;
-  font-size: 2.5rem; color: #8c52ff; cursor: pointer;
+  position: absolute; 
+  top: 15px; 
+  right: 20px; 
+  background: none; 
+  border: none;
+  font-size: 2.5rem; 
+  color: var(--primary-color); 
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .modalContent h2 {
-  text-align: left; margin-top: 0; margin-bottom: 20px; color: #333;
+  text-align: left; 
+  margin-top: 0; 
+  margin-bottom: 20px; 
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 /* ✅ DIV DE CONTEÚDO ROLÁVEL */
@@ -35,9 +52,10 @@
 .paymentOptions {
   display: flex;
   gap: 15px;
-  color: #888;
+  color: var(--text-secondary);
   margin-bottom: 20px;
   margin-bottom: 30px;
+  transition: color 0.3s ease;
 }
 
 .radioLabel {
@@ -45,9 +63,12 @@
   display: flex;
   align-items: center;
   padding: 12px 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
 }
 
 .radioLabel input {
@@ -65,7 +86,13 @@
 .fullWidth { grid-column: 1 / -1; }
 
 .formGrid input, .formGrid select {
-  padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem;
+  padding: 12px; 
+  border: 1px solid var(--border-color); 
+  border-radius: 10px; 
+  font-size: 1rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
 }
 
 /* ✅ ESTILOS PARA O RESUMO DO PACOTE */
@@ -74,26 +101,32 @@
   grid-row: 4 / span 2;
   text-align: right;
   padding: 15px;
-  border-left: 1px solid #eee;
+  border-left: 1px solid var(--border-color);
   margin-left: 15px;
+  background-color: var(--bg-secondary);
+  border-radius: 10px;
+  transition: all 0.3s ease;
 }
 
 .summary h4 {
   margin: 0 0 5px 0;
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .summary p {
   margin: 4px 0;
-  color: #666;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .totalPrice {
   font-size: 2rem;
   font-weight: bold;
-  color: #333;
+  color: var(--text-primary);
   margin-top: 10px !important;
+  transition: color 0.3s ease;
 }
 
 .buyButton {

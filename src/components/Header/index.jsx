@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice'; // Importe a ação de logout
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa'; // Ícones de perfil e menu
 import { notificationService } from '../../services/notificationService';
+import ThemeToggle from '../ThemeToggle';
 import styles from './Header.module.css';
 import nexusLogo from '../../assets/nexus-logo.png';
 
@@ -63,11 +64,6 @@ export function Header({ onRegisterClick }) {
                     <span>Pacotes</span>
                   </NavLink>
                 </li>
-                <li className={styles.profileMenu}>
-                  <NavLink to="/reservas" className={styles.profileLink} onClick={closeMenu}>
-                    <span>Minhas Reservas</span>
-                  </NavLink>
-                </li>
               </>
             ) : (
               // Se NÃO EXISTE token, mostra a visão de "visitante"
@@ -103,6 +99,11 @@ export function Header({ onRegisterClick }) {
                 </li>
               </>
             )}
+            
+            {/* Theme Toggle - movido para o final da lista */}
+            <li className={styles.themeToggleItem}>
+              <ThemeToggle compact={true} header={true} showLabel={false} />
+            </li>
           </ul>
         </nav>
       </div>

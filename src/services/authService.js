@@ -2,7 +2,7 @@ import { api } from './api';
 import axios from 'axios';
 
 const anonymousApi = axios.create({
-  baseURL: 'https://localhost:7164/',
+  baseURL: 'http://localhost:5235/',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -79,7 +79,7 @@ export async function forgotPassword(email) {
 export async function resetPasswordLoggedUser(currentPassword, newPassword) {
   try {
     const response = await api.post('/Auth/change-password', {
-      currentPassword: currentPassword,
+      oldPassword: currentPassword,
       newPassword: newPassword
     });
     console.log('Senha alterada com sucesso:', response.data);

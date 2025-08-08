@@ -24,6 +24,8 @@ import AdminMetricsPage from './pages/AdminMetricsPage';
 import AddReview from './pages/AddReview'
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import ResetPasswordCodePage from './pages/ResetPasswordCodePage';
+import MyAccount from './pages/MyAccount/index.jsx';
+import ChangePasswordPage from './pages/ChangePasswordPage';
 
 // Componentes temporários para páginas não implementadas
 //function AdminMetrics() { return <h1>Métricas (a ser construída)</h1>; }
@@ -50,6 +52,8 @@ export default function AppRoutes(){
                         <Route path="reservas" element={<MinhasReservas />} />
                         <Route path="avaliar/:packageId" element={<AddReview />} />
                         <Route path="perfil" element={<PerfilPage />} />
+                        <Route path="minhaConta" element={<MyAccount />} />
+                        <Route path="trocar-senha" element={<ChangePasswordPage />} />
                     </Route>
                 </Route>
 

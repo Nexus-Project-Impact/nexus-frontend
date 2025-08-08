@@ -1,8 +1,16 @@
 .searchBarContainer {
-  background-color: #ff9900; /* Laranja do contêiner */
+  background-color: var(--secondary-color); /* Laranja do contêiner */
   padding: 15px;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Melhoria para o modo escuro */
+[data-theme="dark"] .searchBarContainer {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 179, 71, 0.3);
 }
 
 .searchBar {
@@ -12,23 +20,57 @@
 }
 
 .inputWrapper {
-  background-color: white;
+  background-color: var(--bg-primary);
   border-radius: 10px;
-  border: 1px solid #c57d00; /* Borda roxa sutil */
+  border: 1px solid var(--border-color); 
   display: flex;
   align-items: center;
   padding: 0 10px;
   flex: 1;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(140, 82, 255, 0.2);
+}
+
+/* Melhoria para o modo escuro */
+[data-theme="dark"] .inputWrapper {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .inputWrapper:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(157, 107, 255, 0.3);
 }
 
 .inputField, .selectField {
   width: 100%;
   border: none;
   outline: none;
-  color: #6b6b6b;
+  color: var(--text-primary);
   padding: 12px 5px;
   font-size: 1rem;
   background-color: transparent;
+  transition: color 0.3s ease;
+}
+
+.inputField::placeholder, .selectField::placeholder {
+  color: var(--text-tertiary);
+  transition: color 0.3s ease;
+}
+
+/* Padronização para modo escuro */
+[data-theme="dark"] .inputField,
+[data-theme="dark"] .selectField {
+  color: var(--text-primary); /* Branco consistente */
+}
+
+[data-theme="dark"] .inputField::placeholder,
+[data-theme="dark"] .selectField::placeholder {
+  color: var(--text-secondary); /* Cinza secundário consistente */
 }
 
 .selectField {
@@ -39,30 +81,97 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 1em;
+  cursor: pointer;
+}
+
+/* Estilização do placeholder do select quando valor vazio */
+.selectField[value=""] {
+  color: var(--text-tertiary); /* Cor de placeholder quando nenhuma opção está selecionada */
+}
+
+/* Estilização específica para o select no modo escuro */
+[data-theme="dark"] .selectField {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+[data-theme="dark"] .selectField[value=""] {
+  color: var(--text-secondary); /* Cor de placeholder no modo escuro */
+}
+
+/* Estilização das opções do select */
+.selectField option {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  padding: 8px;
+  border: none;
+  font-size: 1rem;
+}
+
+/* Estilização específica para a opção placeholder */
+.selectField option[value=""] {
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+/* Padronização completa para modo escuro - garantindo consistência */
+[data-theme="dark"] .selectField option {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .selectField option[value=""] {
+  color: var(--text-secondary);
+  font-style: italic;
 }
 
 .dateWrapper {
   padding-left: 15px;
 }
 
+.priceWrapper {
+  padding-left: 15px;
+}
+
 .icon {
-  color: #888;
+  color: var(--text-tertiary);
   margin-right: 8px;
+  transition: color 0.3s ease;
+}
+
+/* Padronização do ícone para modo escuro */
+[data-theme="dark"] .icon {
+  color: var(--text-secondary); /* Mesma cor dos placeholders */
 }
 
 .datePicker {
   width: 100%;
   border: none !important;
   outline: none !important;
-  color: #777777;
+  color: var(--text-primary) !important;
   padding: 12px 5px !important;
   font-size: 1rem !important;
   background-color: transparent !important;
+  transition: color 0.3s ease !important;
+  cursor: pointer;
+}
+
+.datePicker::placeholder {
+  color: var(--text-tertiary) !important;
+  transition: color 0.3s ease !important;
+}
+
+/* Padronização do DatePicker para modo escuro */
+[data-theme="dark"] .datePicker {
+  color: var(--text-primary) !important; /* Branco consistente */
+}
+
+[data-theme="dark"] .datePicker::placeholder {
+  color: var(--text-secondary) !important; /* Cinza secundário consistente */
 }
 
 .searchButton {
-  background-color: #8c52ff; /* Roxo do botão */
-  border: 1px solid #c57d00;
+  background-color: var(--primary-color); /* Roxo do botão */
+  border: 1px solid var(--border-color);
   color: white;
   padding: 0 10px;
   border-radius: 10px;
@@ -71,11 +180,28 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.searchButton:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+/* Melhoria para o modo escuro */
+[data-theme="dark"] .searchButton {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(157, 107, 255, 0.3);
+}
+
+[data-theme="dark"] .searchButton:hover {
+  background-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.4);
 }
 
 .clearButton {
-  background-color: #6c757d;
-  border: 1px solid #6c757d;
+  background-color: var(--text-tertiary);
+  border: 1px solid var(--text-tertiary);
   color: white;
   padding: 0 15px;
   border-radius: 10px;
@@ -86,12 +212,26 @@
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .clearButton:hover {
-  background-color: #5a6268;
-  border-color: #5a6268;
+  background-color: var(--text-secondary);
+  border-color: var(--text-secondary);
+  transform: translateY(-1px);
+}
+
+/* Melhoria para o modo escuro */
+[data-theme="dark"] .clearButton {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .clearButton:hover {
+  background-color: var(--text-tertiary);
+  border-color: var(--text-tertiary);
+  color: white;
 }
 
 /* ===== RESPONSIVIDADE ===== */
