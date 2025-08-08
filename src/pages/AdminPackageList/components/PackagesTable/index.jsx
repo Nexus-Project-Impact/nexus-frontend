@@ -39,7 +39,7 @@ export function PackagesTable({ packages, onDelete, deletingId }) {
               <td className={styles.descriptionCell} title={pkg.description || pkg.details || 'N/A'}>
                 {pkg.description || pkg.details || 'N/A'}
               </td>
-              <td>
+              <td className={styles.priceCell}>
                 R$ {pkg.price || pkg.pricePackage || pkg.value ?
                   (pkg.price || pkg.pricePackage || pkg.value).toLocaleString('pt-BR', {
                     minimumFractionDigits: 2,

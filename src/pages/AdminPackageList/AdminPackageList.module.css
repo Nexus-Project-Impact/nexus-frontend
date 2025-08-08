@@ -36,6 +36,11 @@
     padding: 12px 20px;
     font-size: 1rem;
   }
+  .addButtonContainer {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-top: 15px;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -58,6 +63,11 @@
   .addButton {
     padding: 10px 10px;
     font-size: 0.95rem;
+  }
+  .addButtonContainer {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding-top: 12px;
   }
 }
 
@@ -88,7 +98,6 @@
   margin-top: 40px;
   margin-bottom: 40px;
   padding-top: 20px;
-  padding-bottom: 20px;
   border-top: 1px solid #f0f0f0;
 }
 

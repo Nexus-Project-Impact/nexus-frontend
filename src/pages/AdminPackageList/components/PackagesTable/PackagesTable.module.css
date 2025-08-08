@@ -157,10 +157,8 @@
 }
 
 .priceCell {
-  font-weight: 600;
   color: #FF9900;
   white-space: nowrap;
-  min-width: 120px;
 }
 
 .titleCell {
