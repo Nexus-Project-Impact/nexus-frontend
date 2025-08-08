@@ -1,0 +1,286 @@
+/* Container principal da página */
+.pageWrapper {
+  min-height: 100vh;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Título da página */
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+/* Card principal com os dados */
+.profileCard {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Grid dos campos de dados */
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+/* Cada campo individual */
+.fieldItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.fieldValue {
+  padding: 15px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.fieldValue:hover {
+  background: var(--bg-tertiary);
+  transform: translateY(-1px);
+}
+
+/* Campo especial para senha */
+.passwordField {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.passwordField:hover {
+  background: var(--bg-tertiary);
+  transform: translateY(-1px);
+}
+
+.passwordText {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  transition: color 0.3s ease;
+}
+
+.resetPasswordButton {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #6a0dad 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(140, 82, 255, 0.2);
+  align-self: flex-start;
+  min-width: auto;
+}
+
+.resetPasswordButton:hover {
+  background: linear-gradient(135deg, #7142d4 0%, #5a0b9a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(140, 82, 255, 0.3);
+}
+
+/* Seção de ações */
+.actionSection {
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.editButton {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, #e68800 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.editButton:hover {
+  background: linear-gradient(135deg, #e68800 0%, #cc7700 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 153, 0, 0.4);
+}
+
+.backButton {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background: var(--bg-secondary);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* Ícones para os campos */
+.fieldIcon {
+  display: inline-block;
+  margin-right: 8px;
+  color: #8c52ff;
+  font-size: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 700px;
+    margin: 20px;
+    padding: 28px;
+  }
+  
+  .fieldsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 20px 15px;
+    padding: 24px 20px;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+  }
+  
+  .fieldsGrid {
+    gap: 16px;
+  }
+  
+  .fieldValue,
+  .passwordField {
+    padding: 12px;
+    font-size: 1rem;
+  }
+  
+  .editButton {
+    padding: 14px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 10px;
+    padding: 20px 16px;
+  }
+  
+  .title {
+    font-size: 1.6rem;
+  }
+  
+  .profileCard {
+    padding: 20px;
+  }
+  
+  .resetPasswordButton {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .passwordField {
+    padding: 12px;
+    gap: 10px;
+  }
+}
+
+/* Animações suaves */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profileCard {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Estado de loading (opcional) */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+/* Destaque para informações importantes */
+.highlightField .fieldValue {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b3 100%);
+  border-color: #ff9900;
+  color: #cc7700;
+}
+
+/* Estilo especial para o campo CPF */
+.cpfField .fieldValue {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
