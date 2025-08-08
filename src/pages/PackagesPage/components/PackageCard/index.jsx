@@ -17,14 +17,18 @@ const formatarData = (data) => {
     <div className={styles.card}>
       <img src={imageUrl} alt={`Viagem para ${title}`} className={styles.cardImage} />
       <div className={styles.cardContent}>
-        <h3 className={styles.cardTitle}>{title}</h3>
-        <p className={styles.cardDates}>
-          {`${formatarData(departureDate)} - ${formatarData(returnDate)}`}
-        </p>
-        <p className={styles.cardInfo}>Voo + Hospedagem</p>
-        <Link to={`/pacotes/${id}`} className={styles.cardButtonLink}>
-        <button className={styles.cardButton}>Saiba Mais</button>
-        </Link>
+        <div className={styles.cardTextContent}>
+          <h3 className={styles.cardTitle}>{title}</h3>
+          <p className={styles.cardDates}>
+            {`${formatarData(departureDate)} - ${formatarData(returnDate)}`}
+          </p>
+          <p className={styles.cardInfo}>Voo + Hospedagem</p>
+        </div>
+        <div className={styles.cardButtonArea}>
+          <Link to={`/pacotes/${id}`} className={styles.cardButtonLink}>
+            <button className={styles.cardButton}>Saiba Mais</button>
+          </Link>
+        </div>
       </div>
     </div>
     </div>
