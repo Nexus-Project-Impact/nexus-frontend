@@ -7,7 +7,6 @@
   overflow-x: hidden;
   background: var(--bg-secondary);
   transition: background-color 0.3s ease;
-  background: #f7f7f7;
   padding: 0 15px; /* Adiciona padding lateral padrão */
 }
 
@@ -77,14 +76,15 @@
 }
 
 .filterIndicator {
-  background-color: #e7f3ff;
-  border: 1px solid #b3d9ff;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 10px 15px;
   margin-bottom: 20px;
-  color: #0056b3;
+  color: var(--primary-color);
   font-size: 0.9rem;
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 .filterIndicator p {

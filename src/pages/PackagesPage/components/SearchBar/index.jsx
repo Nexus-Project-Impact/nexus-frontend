@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { FaSearch, FaCalendarAlt } from 'react-icons/fa'; // Usando ícones
+import { FaSearch, FaCalendarAlt, FaDollarSign } from 'react-icons/fa'; // Adicionado FaDollarSign
 
 import 'react-datepicker/dist/react-datepicker.css'; // Estilos da biblioteca de data
 import styles from './SearchBar.module.css';
@@ -49,7 +49,8 @@ export function SearchBar({ onSearch }) {
             minDate={new Date()}
           />
         </div>
-        <div className={styles.inputWrapper}>
+        <div className={`${styles.inputWrapper} ${styles.priceWrapper}`}>
+          <FaDollarSign className={styles.icon} />
           <select 
             value={price} 
             onChange={(e) => setPrice(e.target.value)}
