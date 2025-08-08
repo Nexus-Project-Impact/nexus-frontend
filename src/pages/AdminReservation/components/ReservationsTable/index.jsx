@@ -38,6 +38,8 @@ export function ReservationsTable({ reservations, onViewReservation }) {
     if (!status) return styles.statusBadge;
     
     switch (status.toLowerCase()) {
+      case 'aprovado':
+        return `${styles.statusBadge} ${styles.statusAprovado}`;
       case 'pago':
         return `${styles.statusBadge} ${styles.statusPago}`;
       case 'pendente':
