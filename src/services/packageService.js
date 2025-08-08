@@ -1,166 +1,143 @@
-// Mock (dados de mentira) para nossos pacotes
-const mockPackages = [
-  { id: 1, 
-    name: 'Fernando de Noronha',
-    titlePackage: 'Mergulhe nas Águas Turquesa de Fernando de Noronha', 
-    image: 'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg', 
-    galleryPackage: [
-      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
-      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
-      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
-      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
-      'https://blog.assets.thediscoverer.com/2023/12/TD-Fernando-de-Noronha.jpg',
-    ],
-    detailsPackage: {
-    flight: { from: 'Aeroporto de Congonhas', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
-    hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
-  },
-    dates: '11 ago. 2025 à 16 ago. 2025',
-    pricePackage: 4686 },
-  { 
-    id: 2, 
-    name: 'Jericoacoara', 
-    titlePackage: 'Descubra as Maravilhas de Jericoacoara',
-    image: 'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
-    galleryPackage: [
-      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
-      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
-      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
-      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
-      'https://media-cdn.tripadvisor.com/media/photo-c/1280x250/14/10/2e/d9/jericoacoara.jpg',
-    ], 
-    detailsPackage: {
-      flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Jericoacoara', company: 'Gol', departureTime: '08:00', returnTime: '18:30' },
-      hotel: { name: 'Pousada do Norte', address: 'Rua Principal, 456 - CEP: 11111-111' }
-    },
-    dates: '09 ago. 2025 à 16 ago. 2025', 
-    pricePackage: 3648 
-  },
-  { id: 3, 
-    name: 'Porto de Galinhas', 
-    titlePackage: 'Explore as Belezas de Porto de Galinhas',
-    image: 'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg', 
-    galleryPackage: [
-      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
-      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
-      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
-      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
-      'https://ipiranganews.inf.br/wp-content/uploads/VIAGEM3-30-11-21.jpg',
-    ], 
-    detailsPackage: {
-    flight: { from: 'Aeroporto de Congonhas', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
-    hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
-  },
-    dates: '11 ago. 2025 à 16 ago. 2025', 
-    pricePackage: 5186 },
-  { id: 4, 
-    name: 'Cancún', 
-    titlePackage: 'Descubra as Maravilhas de Cancún',
-    image: 'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg', 
-    galleryPackage: [
-      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
-      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
-      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
-      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
-      'https://www.cataloniahotels.com/en/blog/wp-content/uploads/2021/05/best-beaches-near-cancun.jpg',
-    ],
-    detailsPackage: {
-    flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
-    hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
-  },
-    dates: '11 ago. 2025 à 16 ago. 2025',
-    pricePackage: 4686 },
-  { id: 5, 
-    name: 'Punta Cana', 
-    titlePackage: 'Descubra as Maravilhas de Punta Cana',
-    image: 'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg', 
-    galleryPackage: [
-      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
-      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
-      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
-      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
-      'https://blog.ostrovok.ru/wp-content/uploads/2021/11/22-1.jpg',
-    ],
-    detailsPackage: {
-      flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
-      hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
-    },
-    dates: '09 ago. 2025 à 16 ago. 2025',
-    pricePackage: 3648 },
-  { id: 6, 
-    name: 'Orlando',
-    titlePackage: 'Descubra as Maravilhas de Orlando',
-    image: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
-    galleryPackage: [
-      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
-      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
-      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
-      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
-      'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1r9iWm.img?w=4064&h=2903&m=4&q=30',
-    ],
-    detailsPackage: {
-      flight: { from: 'Aeroporto de Guarulhos', to: 'Aeroporto de Fernando de Noronha', company: 'Azul', departureTime: '07:35', returnTime: '07:35' },
-      hotel: { name: 'Paraíso do Boldró Flat', address: 'Rua Padre Gurgel, 172 - CEP: 00000-000' }
-    },
-    dates: '11 ago. 2025 à 16 ago. 2025',
-    pricePackage: 4686 },
-  {
-    id: 7, 
-    name: 'Sorocaba',
-    titlePackage: 'A oitava maravilha do mundo',
-    image: 'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
-    galleryPackage: [
-      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
-      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
-      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
-      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
-      'https://farm4.staticflickr.com/3864/15175563330_b8d566ff06_b.jpg',
-    ],
-    detailsPackage: {
-      flight: { from: 'Aeroporto de Viracopos', to: 'Aeroporto de Sorocaba', company: 'Voepass', departureTime: '10:00', returnTime: '11:00' },
-      hotel: { name: 'Hotel Ipanema', address: 'Av. Ipanema, 123 - CEP: 22222-222' }
-    },
-    dates: '11 ago. 2025 à 16 ago. 2025',
-    pricePackage: 4686
-  },
-];
 
-// Função que simula a busca dos pacotes
-export const getPackages = (filters = {}) => {
-  return new Promise((resolve) => {
-    let filteredPackages = [...mockPackages];
+import api from './api';
 
-    // Filtro por destino
-    if (filters.destination) {
-      filteredPackages = filteredPackages.filter(pkg =>
-        pkg.name.toLowerCase().includes(filters.destination.toLowerCase())
-      );
-    }
 
-    setTimeout(() => {
-      resolve(filteredPackages);
-    }, 300);
-  });
-};
-
-export const getPackageById = (id) => {
-  return new Promise((resolve, reject) => {
-    // O '==' é intencional aqui para não comparar tipos (string vs number)
-    const pkg = mockPackages.find((p) => p.id == id);
+const packageService = {
     
-    setTimeout(() => {
-      if (pkg) {
-        // Adicionando mais detalhes para a página de detalhes
-        resolve({
-          ...pkg,
-          title: pkg.titlePackage,
-          gallery: pkg.galleryPackage,
-          description: pkg.detailsPackage,
-          price: { original: 5186, current: pkg.pricePackage, installments: 12 }
-        });
-      } else {
-        reject(new Error('Pacote não encontrado.'));
-      }
-    }, 500);
-  });
+    getPackages: async () => {
+        const response = await api.get('/TravelPackage/GetAllPackages');
+        return response.data;
+    },
+
+    getPackagesActive: async () => {
+        const response = await api.get('/TravelPackage/GetAllActive');
+        return response.data;
+    },
+
+    getPackageById: async (id) => {
+        const response = await api.get(`/TravelPackage/GetById/${id}`);
+        return response.data;
+    } ,
+
+    createPackage: async (travelPackage) =>{
+        // Se for FormData (com imagem), usar headers multipart
+        const config = travelPackage instanceof FormData ? {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        } : {};
+        
+        const response = await api.post('/TravelPackage/Create', travelPackage, config);
+        return response.data;
+    },
+
+    updatePackage: async (id, travelPackage) =>{
+        try {
+            console.log('=== DEBUG UPDATE PACKAGE ===');
+            console.log('ID:', id);
+            console.log('Data type:', travelPackage instanceof FormData ? 'FormData' : 'Object');
+            console.log('Data:', travelPackage);
+            
+            // Endpoint correto: PUT /TravelPackage/Update/{id}
+            let response;
+            
+            if (travelPackage instanceof FormData) {
+                // Se é FormData (com nova imagem), enviar como multipart
+                console.log('Enviando como FormData (multipart/form-data)');
+                response = await api.put(`/TravelPackage/Update/${id}`, travelPackage, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+            } else {
+                // Se é objeto JSON (sem nova imagem), tentar diferentes abordagens
+                console.log('Enviando como JSON');
+                
+                try {
+                    // Primeira tentativa: JSON puro
+                    response = await api.put(`/TravelPackage/Update/${id}`, travelPackage, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                } catch (jsonError) {
+                    console.log('JSON falhou com status:', jsonError.response?.status);
+                    
+                    if (jsonError.response?.status === 415) {
+                        // Se JSON falhou com 415, tentar converter para FormData
+                        console.log('Convertendo JSON para FormData devido ao erro 415');
+                        const formData = new FormData();
+                        
+                        // Adicionar cada campo ao FormData com a primeira letra maiúscula (padrão C#)
+                        Object.keys(travelPackage).forEach(key => {
+                            const value = travelPackage[key];
+                            if (value !== null && value !== undefined) {
+                                const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+                                formData.append(capitalizedKey, value);
+                            }
+                        });
+                        
+                        // Tentar novamente com FormData
+                        response = await api.put(`/TravelPackage/Update/${id}`, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                    } else {
+                        throw jsonError;
+                    }
+                }
+            }
+            
+            console.log('Update successful:', response.status);
+            return response.data;
+        } catch (error) {
+            console.error('=== ERRO NO UPDATE ===');
+            console.error('Error:', error);
+            console.error('Status:', error.response?.status);
+            console.error('Status Text:', error.response?.statusText);
+            console.error('Response Data:', error.response?.data);
+            console.error('Request Config:', error.config);
+            throw error;
+        }
+    },
+    
+    deletePackage: async (id) => {
+        try {
+            console.log(`Excluindo pacote com ID: ${id}`);
+            
+            // Garantir que o ID é um número
+            const numericId = parseInt(id);
+            if (isNaN(numericId)) {
+                throw new Error(`ID inválido: ${id}`);
+            }
+            
+            // Usar o endpoint correto: DELETE /TravelPackage/Delete/{id}
+            const response = await api.delete(`/TravelPackage/Delete/${numericId}`);
+            
+            console.log('Pacote excluído com sucesso:', response.status);
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao excluir pacote:', error);
+            console.error('Status:', error.response?.status);
+            console.error('Data:', error.response?.data);
+            throw error;
+        }
+    },
+    getByDepartureDate: async (initialDate, finalDate) => {
+        const response = await api.get(`/TravelPackage/GetByDepartureDate/${initialDate}/${finalDate}`);
+        return response.data;
+    },
+    getByDestination: async (destination) => {
+        const response = await api.get(`/TravelPackage/GetByDestination/${destination}`);
+        return response.data;
+    },
+    getByValue: async (minValue, maxValue) => {
+        const response = await api.get(`/TravelPackage/GetByValue/${minValue}/${maxValue}`);
+        return response.data;
+    },
+
 };
+
+
+export default packageService;

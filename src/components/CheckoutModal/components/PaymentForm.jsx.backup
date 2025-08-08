@@ -1,0 +1,445 @@
+import React, { useState } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import paymentService from '../../../services/paymentService';
+import { notificationService } from '../../../services/notificationService';
+import styles from '../CheckoutModal.module.css';
+              <p><strong>Método:</strong> Cartão de {cardData.cardType === 'credit' ? 'Crédito' : 'Débito'}</p>
+              <p><strong>Final do cartão:</strong> **** {cardData.cardNumber.slice(-4)}</p>
+              <p><strong>Status:</strong> Pagamento confirmado</p>
+              {paymentResult.id && (
+                <p><strong>ID da transação:</strong> {paymentResult.id}</p>
+              )}
+            </div>
+
+            <div className={styles.successActions}>
+              <p style={{ color: '#28a745', fontWeight: 'bold' }}>
+                🎉 Sua reserva foi confirmada!
+              </p>
+              <button 
+                onClick={onClose}
+                className={styles.closeButton}
+                style={{ 
+                  marginTop: '15px',
+                  padding: '10px 20px',
+                  background: '#28a745',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer'
+                }}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        )}ices/notificationService';
+import styles from '../CheckoutModal.module.css';
+
+// Inicializar Stripe (substitua pela sua chave pública)
+const stripePromise = loadStripe('pk_test_51QkZHaHKQV1k5AQxRKXGhN7qLYNlOQ1TBu9QdLM3bGKP6vOQGHWzrMPPWz8cPMmMww2qOdQWZJ0q6K3oqOc7dqN000gdKwfCYC');
+
+export function PaymentForm({ paymentMethod, totalPrice, packageData, travelers, onClose }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentResult, setPaymentResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [cardData, setCardData] = useState({
+    cardNumber: '',
+    cardName: '',
+    expiryDate: '',
+    cvv: '',
+    cardType: 'credit' // credit ou debit
+  });
+
+  const handleCardInputChange = (e) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+
+    // Formatação específica para cada campo
+    if (name === 'cardNumber') {
+      // Remove espaços e limita a 16 dígitos
+      const numbers = value.replace(/\s/g, '').replace(/\D/g, '');
+      // Adiciona espaços a cada 4 dígitos
+      formattedValue = numbers.replace(/(\d{4})(?=\d)/g, '$1 ');
+    } else if (name === 'expiryDate') {
+      // Formato MM/AA
+      const numbers = value.replace(/\D/g, '');
+      if (numbers.length >= 2) {
+        formattedValue = numbers.substring(0, 2) + '/' + numbers.substring(2, 4);
+      } else {
+        formattedValue = numbers;
+      }
+    } else if (name === 'cvv') {
+      // Apenas números
+      formattedValue = value.replace(/\D/g, '');
+    }
+
+    setCardData(prev => ({
+      ...prev,
+      [name]: formattedValue
+    }));
+  };
+
+  const validateCardForm = () => {
+    if (!cardData.cardNumber.trim()) {
+      setError('Número do cartão é obrigatório');
+      return false;
+    }
+    if (!cardData.cardName.trim()) {
+      setError('Nome do titular é obrigatório');
+      return false;
+    }
+    if (!cardData.expiryDate.trim()) {
+      setError('Data de validade é obrigatória');
+      return false;
+    }
+    if (!cardData.cvv.trim()) {
+      setError('CVV é obrigatório');
+      return false;
+    }
+    return true;
+  };
+
+  // Função para processar pagamento com Stripe.js
+  const processStripePayment = async (clientSecret) => {
+    try {
+      const stripe = await stripePromise;
+      
+      if (!stripe) {
+        throw new Error('Stripe não foi carregado');
+      }
+
+      // Converter dados do cartão para o formato do Stripe
+      const [month, year] = cardData.expiryDate.split('/');
+      const cardNumber = cardData.cardNumber.replace(/\s/g, ''); // Remove espaços
+
+      console.log('🔵 Processando pagamento com Stripe:', {
+        clientSecret: clientSecret.substring(0, 20) + '...',
+        cardData: {
+          number: cardNumber.substring(0, 4) + '****',
+          exp_month: month,
+          exp_year: `20${year}`,
+          cvc: '***'
+        }
+      });
+
+      // Confirmar pagamento com Stripe
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: {
+            number: cardNumber,
+            exp_month: parseInt(month),
+            exp_year: parseInt(`20${year}`),
+            cvc: cardData.cvv,
+          },
+          billing_details: {
+            name: cardData.cardName,
+          }
+        }
+      });
+
+      if (error) {
+        console.error('❌ Erro do Stripe:', error);
+        throw new Error(error.message || 'Erro ao processar pagamento com Stripe');
+      }
+
+      if (paymentIntent.status === 'succeeded') {
+        console.log('✅ Pagamento confirmado pelo Stripe:', paymentIntent);
+        return paymentIntent;
+      } else {
+        throw new Error(`Status do pagamento: ${paymentIntent.status}`);
+      }
+
+    } catch (error) {
+      console.error('❌ Erro no processamento Stripe:', error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    // Validação específica para cartão
+    if (paymentMethod === 'card' && !validateCardForm()) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const paymentData = {
+        amountPaid: totalPrice,
+        receipt: `Pagamento ${paymentMethod} - ${packageData.title || packageData.name} - ${new Date().toISOString()}`,
+        travelPackageId: packageData.id || packageData.packageId || 1, // ID do pacote
+        travelers: travelers || [] // Array de viajantes
+      };
+
+      console.log('💳 Dados do pagamento enviando:', paymentData);
+      console.log('🎫 Package Data:', packageData);
+      console.log('👥 Travelers:', travelers);
+
+      let result;
+      if (paymentMethod === 'card') {
+        // 1. Primeiro obter o clientSecret do backend
+        result = await paymentService.createCardPayment(paymentData);
+        console.log('🔵 ClientSecret recebido:', result);
+        
+        // 2. Processar pagamento com Stripe.js
+        if (result.clientSecret) {
+          await processStripePayment(result.clientSecret);
+        } else {
+          throw new Error('ClientSecret não foi retornado pelo servidor');
+        }
+        
+        notificationService.booking.purchaseSuccess();
+      } else if (paymentMethod === 'pix') {
+        result = await paymentService.createPixPayment(paymentData);
+        notificationService.booking.pixCreated();
+      } else if (paymentMethod === 'boleto') {
+        result = await paymentService.createBoletoPayment(paymentData);
+        notificationService.booking.boletoCreated();
+      }
+
+      setPaymentResult(result);
+    } catch (error) {
+      console.error('Erro no pagamento:', error);
+      setError(error.message || 'Erro ao processar pagamento');
+      notificationService.booking.purchaseError();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    notificationService.booking.copied();
+  };
+
+  // Se já temos resultado do pagamento, mostrar os dados
+  if (paymentResult) {
+    return (
+      <div className={styles.paymentResult}>
+        {paymentMethod === 'card' && (
+          <div className={styles.cardResult}>
+            <h3>✅ Pagamento Processado com Sucesso!</h3>
+            <p>Seu pagamento com cartão foi processado.</p>
+            
+            <div className={styles.paymentInfo}>
+              <p><strong>Valor:</strong> R$ {totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+              <p><strong>Método:</strong> Cartão de {cardData.cardType === 'credit' ? 'Crédito' : 'Débito'}</p>
+              <p><strong>Final do cartão:</strong> **** {cardData.cardNumber.slice(-4)}</p>
+              {paymentResult.transactionId && (
+                <p><strong>ID da Transação:</strong> {paymentResult.transactionId}</p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {paymentMethod === 'pix' && (
+          <div className={styles.pixResult}>
+            <h3>✅ PIX Gerado com Sucesso!</h3>
+            <p>Escaneie o QR Code ou copie o código PIX para fazer o pagamento:</p>
+            
+            {paymentResult.qrCodeImageUrl && (
+              <div className={styles.qrCodeContainer}>
+                <img 
+                  src={paymentResult.qrCodeImageUrl}
+                  alt="QR Code PIX"
+                  className={styles.qrCode}
+                />
+              </div>
+            )}
+            
+            <div className={styles.pixCodeContainer}>
+              <label>Código PIX:</label>
+              <div className={styles.codeWrapper}>
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={paymentResult.qrCode || ''}
+                  className={styles.pixCodeInput}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => copyToClipboard(paymentResult.qrCode)}
+                  className={styles.copyButton}
+                >
+                  Copiar
+                </button>
+              </div>
+            </div>
+            
+            <div className={styles.paymentInfo}>
+              <p><strong>Valor:</strong> R$ {(paymentResult.amount || totalPrice).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+              {paymentResult.payerName && (
+                <p><strong>Pagador:</strong> {paymentResult.payerName}</p>
+              )}
+              {paymentResult.transactionId && (
+                <p><strong>ID da Transação:</strong> {paymentResult.transactionId}</p>
+              )}
+              <p><strong>Status:</strong> Aguardando pagamento</p>
+            </div>
+          </div>
+        )}
+
+        {paymentMethod === 'boleto' && (
+          <div className={styles.boletoResult}>
+            <h3>✅ Boleto Gerado com Sucesso!</h3>
+            <p>Clique no botão abaixo para ser redirecionado para o boleto:</p>
+            
+            <div className={styles.paymentInfo}>
+              <p><strong>Valor:</strong> R$ {totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+              <p><strong>Status:</strong> Aguardando pagamento</p>
+            </div>
+
+            <div className={styles.boletoActions}>
+              {paymentResult.bankSlipUrl ? (
+                <a 
+                  href={paymentResult.bankSlipUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.boletoButton}
+                >
+                  📄 Abrir Boleto (Stripe)
+                </a>
+              ) : (
+                <p style={{ color: '#dc3545' }}>
+                  ⚠️ URL do boleto não foi retornada pelo servidor
+                </p>
+              )}
+            </div>
+
+            <div className={styles.boletoInfo}>
+              <p><strong>💡 Instruções:</strong></p>
+              <ul>
+                <li>Clique no botão acima para abrir o boleto</li>
+                <li>Você será redirecionado para a página do Stripe</li>
+                <li>Faça o download ou imprima o boleto</li>
+                <li>Pague até a data de vencimento</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        <button onClick={onClose} className={styles.buyButton}>
+          Concluir
+        </button>
+      </div>
+    );
+  }
+
+  // Formulário para confirmar o pagamento
+  return (
+    <div className={styles.paymentForm}>
+      <h3>
+        {paymentMethod === 'card' && 'Pagamento com Cartão'}
+        {paymentMethod === 'pix' && 'Pagamento via PIX'}
+        {paymentMethod === 'boleto' && 'Pagamento via Boleto'}
+      </h3>
+      
+      <form onSubmit={handleSubmit} className={styles.formGrid}>
+        {/* Campos específicos para cartão */}
+        {paymentMethod === 'card' && (
+          <>
+            <div className={styles.inputGroup}>
+              <label>Tipo do Cartão:</label>
+              <select
+                name="cardType"
+                value={cardData.cardType}
+                onChange={handleCardInputChange}
+                className={styles.fullWidth}
+                required
+              >
+                <option value="credit">Crédito</option>
+                <option value="debit">Débito</option>
+              </select>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label>Número do Cartão:</label>
+              <input
+                type="text"
+                name="cardNumber"
+                value={cardData.cardNumber}
+                onChange={handleCardInputChange}
+                placeholder="1234 5678 9012 3456"
+                className={styles.fullWidth}
+                maxLength="19"
+                required
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label>Nome do Titular:</label>
+              <input
+                type="text"
+                name="cardName"
+                value={cardData.cardName}
+                onChange={handleCardInputChange}
+                placeholder="Nome como está no cartão"
+                className={styles.fullWidth}
+                required
+              />
+            </div>
+
+            <div className={styles.inputRow}>
+              <div className={styles.inputGroup}>
+                <label>Validade (MM/AA):</label>
+                <input
+                  type="text"
+                  name="expiryDate"
+                  value={cardData.expiryDate}
+                  onChange={handleCardInputChange}
+                  placeholder="12/28"
+                  maxLength="5"
+                  required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>CVV:</label>
+                <input
+                  type="text"
+                  name="cvv"
+                  value={cardData.cvv}
+                  onChange={handleCardInputChange}
+                  placeholder="123"
+                  maxLength="4"
+                  required
+                />
+              </div>
+            </div>
+          </>
+        )}
+
+        <div className={styles.summary}>
+          <h4>{packageData.title || packageData.name}</h4>
+          <p>{travelers.length} viajante(s)</p>
+          <p className={styles.totalPrice}>
+            R$ {totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+          </p>
+          {paymentMethod === 'card' && <p>💳 Pagamento seguro</p>}
+          {paymentMethod === 'pix' && <p>💚 Pagamento instantâneo</p>}
+          {paymentMethod === 'boleto' && <p>📄 Vencimento em 3 dias úteis</p>}
+        </div>
+
+        {error && (
+          <div className={styles.errorMessage}>
+            ⚠️ {error}
+          </div>
+        )}
+
+        <button 
+          type="submit"
+          className={styles.buyButton} 
+          disabled={isLoading}
+        >
+          {isLoading ? 'Processando...' : (
+            paymentMethod === 'card' ? 'Finalizar Pagamento' :
+            paymentMethod === 'pix' ? 'Gerar PIX' : 'Gerar Boleto'
+          )}
+        </button>
+      </form>
+    </div>
+  );
+}

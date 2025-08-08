@@ -3,12 +3,16 @@
   max-width: 1200px;
   margin: 20px auto;
   font-family: system-ui, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .destinationTitle {
   font-size: 2rem;
-  color: #8c52ff;
+  color: var(--primary-color);
   margin-bottom: 20px;
+  transition: color 0.3s ease;
 }
 
 .detailsGrid {
@@ -44,66 +48,119 @@
   transition: border-color 0.3s;
 }
 .activeThumbnail {
-  border-color: #8c52ff;
+  border-color: var(--primary-color);
+}
+
+.containerBackButton {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 30px;
+  margin-bottom: 40px;
 }
 
 .backButton {
   align-self: flex-start;
-  margin-top: 20px;
+  margin-top: 0;
   padding: 10px 30px;
-  border: 1px solid #ff9900;
-  color:#333;
-  background-color: #fff;
+  border: 1px solid var(--secondary-color);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.backButtonDesktop {
+  display: block;
+}
+
+.backButtonMobile {
+  display: none;
 }
 
 .tagline {
-  color: #ff9900;
+  color: var(--secondary-color);
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
+  transition: color 0.3s ease;
 }
 
-.dates {
-  background-color: #f2f2f2;
+.cardDates {
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  color:#ff9900;
-  padding: 10px;
-  text-align: center;
+  padding: 12px;
   margin: 15px 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.cardDates strong {
+  color: var(--primary-color);
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .descriptionBox {
-  background-color: #f2f2f2;
+  background-color: var(--bg-secondary);
   border-radius: 15px;
   padding: 20px;
   margin-bottom: 20px;
-  color: #555;
+  color: var(--text-secondary);
   font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 .descriptionBox h4 {
   text-align: center;
   margin-top: 0;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+/* Estilo específico para o mapa na página de detalhes */
+.locationMap {
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .bookingBox {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 15px;
-  color:#333;
+  color: var(--text-primary);
   padding: 20px;
   text-align: center;
+  background-color: var(--bg-primary);
+  transition: all 0.3s ease;
 }
+.price{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
 .originalPrice {
   text-decoration: line-through;
-  color: #999;
+  color: var(--text-tertiary);
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 .currentPrice {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #333;
+  color: var(--text-primary);
+  gap: 20px;
+  transition: color 0.3s ease;
 }
 .buyButton {
   width: 100%;
@@ -111,13 +168,331 @@
   margin: 10px 0;
   border: none;
   border-radius: 10px;
-  background-color: #ff9900;
+  background-color: var(--secondary-color);
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buyButton:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.reviewButton {
+  width: 100%;
+  padding: 12px 24px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--success-color);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.reviewButton:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.reservationNotice {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  border: 1px solid #bbdefb;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.reservationNotice p {
+  margin: 0;
+  color: #1976d2;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.reviewButton:active {
+  transform: translateY(0);
 }
 .installments {
   font-size: 0.8rem;
   color: #777;
+}
+
+/* Seção de Reviews */
+.reviewsSection {
+  margin-top: 30px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    margin: 10px auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  
+  .destinationTitle {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0 10px;
+  }
+  
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .leftColumn {
+    order: 1;
+  }
+  
+  .rightColumn {
+    order: 2;
+  }
+  
+  .mainImage {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 12px;
+  }
+  
+  .locationMap {
+    margin-bottom: 20px;
+    height: 200px;
+  }
+  
+  .backButton {
+    align-self: center;
+    margin-top: 15px;
+  }
+  
+  .tagline {
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .cardDates {
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+  }
+  
+  .descriptionBox {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+  }
+  
+  .descriptionBox h4 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .descriptionBox p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .bookingBox {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+  }
+  
+  .bookingBox p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .price {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .price p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .currentPrice {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .buyButton {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  
+  .installments {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  .reservationNotice {
+    margin: 20px 0;
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+  }
+  
+  .reservationNotice p {
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  .reviewButton {
+    width: 100%;
+    padding: 16px 24px;
+    margin: 20px 0;
+    font-size: 1.1rem;
+    border-radius: 12px;
+  }
+  
+  /* Em mobile, move a seção de reviews para fora da coluna direita */
+  .reviewsSection {
+    order: 3;
+    margin-top: 30px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 98%;
+    margin: 5px auto;
+    padding: 0 8px;
+  }
+  
+  .destinationTitle {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding: 0 5px;
+  }
+  
+  .detailsGrid {
+    gap: 20px;
+  }
+  
+  .mainImage {
+    max-height: 200px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  
+  .locationMap {
+    height: 180px;
+    margin-bottom: 15px;
+  }
+  
+  .tagline {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  
+  .cardDates {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  .descriptionBox {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  
+  .descriptionBox h4 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  
+  .descriptionBox p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .bookingBox {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  
+  .bookingBox p {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+  
+  .price p {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .currentPrice {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  
+  .buyButton {
+    padding: 14px;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  
+  .installments {
+    font-size: 0.8rem;
+    margin-top: 8px;
+  }
+  
+  .reservationNotice {
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .reservationNotice p {
+    font-size: 0.9rem;
+  }
+  
+  .reviewButton {
+    padding: 14px 20px;
+    margin: 15px 0;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  
+  .backButtonMobile {
+    padding: 12px;
+    font-size: 0.9rem;
+    margin-top: 15px;
+  }
+  
+  .reviewsSection {
+    order: 3;
+    margin-top: 25px;
+    width: 100%;
+  }
 }

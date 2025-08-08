@@ -1,15 +1,17 @@
 import React from 'react';
-import { useCheckout } from './hooks/useCheckout';
+import { useCheckout } from '../../hooks/useCheckout';
+import { StripeEmbeddedForm } from './components/StripeEmbeddedForm';
+import { PaymentForm } from './components/PaymentForm';
 import styles from './CheckoutModal.module.css';
 
 export function CheckoutModal({ isOpen, onClose, packageData, travelers }) {
   const {
-    totalPrice, installmentOptions, paymentMethod, setPaymentMethod,
-    cardDetails, handleInputChange, installments, setInstallments,
-    isLoading, handleFinalizePurchase,
+    totalPrice,
+    paymentMethod,
+    setPaymentMethod
   } = useCheckout(packageData, travelers);
 
-  if (!isOpen || !packageData || !travelers) return null; // Verificação de segurança
+  if (!isOpen || !packageData || !travelers) return null;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -17,18 +19,15 @@ export function CheckoutModal({ isOpen, onClose, packageData, travelers }) {
         <button className={styles.closeButton} onClick={onClose}>×</button>
         <h2>Pagamento</h2>
 
-        {/* ✅ DIV PARA A BARRA DE ROLAGEM */}
         <div className={styles.scrollableContent}>
-
-          {/* ✅ OPÇÕES DE PAGAMENTO */}
           <div className={styles.paymentOptions}>
             <label className={styles.radioLabel}>
-              <input type="radio" name="paymentMethod" value="credit" checked={paymentMethod === 'credit'} onChange={(e) => setPaymentMethod(e.target.value)} />
-              <span>Cartão de Crédito</span>
+              <input type="radio" name="paymentMethod" value="card" checked={paymentMethod === 'card'} onChange={(e) => setPaymentMethod(e.target.value)} />
+              <span>Cartão de Crédito/Débito</span>
             </label>
             <label className={styles.radioLabel}>
-              <input type="radio" name="paymentMethod" value="debit" checked={paymentMethod === 'debit'} onChange={(e) => setPaymentMethod(e.target.value)} />
-              <span>Débito</span>
+              <input type="radio" name="paymentMethod" value="pix" checked={paymentMethod === 'pix'} onChange={(e) => setPaymentMethod(e.target.value)} />
+              <span>PIX</span>
             </label>
             <label className={styles.radioLabel}>
               <input type="radio" name="paymentMethod" value="boleto" checked={paymentMethod === 'boleto'} onChange={(e) => setPaymentMethod(e.target.value)} />
@@ -36,38 +35,40 @@ export function CheckoutModal({ isOpen, onClose, packageData, travelers }) {
             </label>
           </div>
 
-          {paymentMethod === 'credit' && (
-            <form className={styles.formGrid} onSubmit={handleFinalizePurchase}>
-              {/* Campos do Cartão */}
-              <input name="number" placeholder="Número do cartão" onChange={handleInputChange} className={styles.fullWidth} required />
-              <input name="validity" placeholder="Validade (MM/AA)" onChange={handleInputChange} required />
-              <input name="name" placeholder="Nome do Titular" onChange={handleInputChange} className={styles.fullWidth} required />
-              <input name="cpf" placeholder="CPF do Titular" onChange={handleInputChange} required />
-              <input name="cvv" placeholder="Código de Segurança" onChange={handleInputChange} required />
-              <select value={installments} onChange={(e) => setInstallments(e.target.value)}>
-                {installmentOptions.map(opt => (
-                  <option key={opt.times} value={opt.times}>
-                    {opt.times}x de R$ {opt.value.replace('.', ',')}
-                  </option>
-                ))}
-              </select>
-              
-              {/* ✅ DADOS SIMPLIFICADOS DO PACOTE E VIAJANTES */}
-              <div className={styles.summary}>
-                <h4>{packageData.name}</h4>
-                <p>{packageData.dates}</p>
-                <p>{travelers.length} viajante(s)</p>
-                <p className={styles.totalPrice}>R$ {totalPrice.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-              </div>
+          {/* --- Renderização Condicional do Conteúdo --- */}
 
-              <button type="submit" className={styles.buyButton} disabled={isLoading}>
-                {isLoading ? 'Processando...' : 'Finalizar Compra'}
-              </button>
-            </form>
+          {/* Cartão de Crédito/Débito */}
+          {paymentMethod === 'card' && (
+            <PaymentForm 
+              paymentMethod="card"
+              totalPrice={totalPrice}
+              packageData={packageData}
+              travelers={travelers}
+              onClose={onClose}
+            />
           )}
 
-          {paymentMethod === 'debit' && <div className={styles.placeholder}>Opção de Débito em desenvolvimento.</div>}
-          {paymentMethod === 'boleto' && <div className={styles.placeholder}>Opção de Boleto em desenvolvimento.</div>}
+          {/* PIX */}
+          {paymentMethod === 'pix' && (
+            <PaymentForm 
+              paymentMethod="pix"
+              totalPrice={totalPrice}
+              packageData={packageData}
+              travelers={travelers}
+              onClose={onClose}
+            />
+          )}
+
+          {/* Boleto */}
+          {paymentMethod === 'boleto' && (
+            <PaymentForm 
+              paymentMethod="boleto"
+              totalPrice={totalPrice}
+              packageData={packageData}
+              travelers={travelers}
+              onClose={onClose}
+            />
+          )}
         </div>
       </div>
     </div>

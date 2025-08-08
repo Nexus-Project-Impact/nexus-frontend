@@ -1,32 +1,61 @@
+/* Container principal da página de pacotes */
+.packageContainer {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background: var(--bg-secondary);
+  transition: background-color 0.3s ease;
+  padding: 0 15px; /* Adiciona padding lateral padrão */
+}
+
 .heroSection {
-  height: 300px;
+  width: calc(100vw - 30px); /* Compensa o padding lateral */
+  height: 200px;
   background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   color: white;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 40px;
+  position: relative;
+  margin-left: -15px; /* Compensa o padding do container */
+  margin-right: -15px; /* Compensa o padding do container */
 }
 
 .heroTitle {
-  font-size: 5rem;
-  margin-bottom: 30px;
+  font-size: 3rem;
+  margin-bottom: 20px;
+  margin-top: 0;
 }
 
 .contentSection {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 60px auto 40px auto;
+  padding: 0; /* Remove padding extra */
 }
 
 .sectionTitle {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 40px;
-  color: #333;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.searchBarWrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 20px auto 40px auto;
+  position: static;
 }
 
 .showMoreContainer {
@@ -38,15 +67,149 @@
   padding: 15px 40px;
   border: none;
   border-radius: 10px;
-  background-color: #8c52ff;
+  background-color: var(--primary-color);
   color: white;
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filterIndicator {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.filterIndicator p {
+  margin: 0;
+  font-weight: 500;
 }
 
 .searchBarWrapper {
-  width: 80%;
+  width: 85%;
   max-width: 900px;
-  margin-top: 120px;
+  margin: 20px auto 40px auto;
+  position: static;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet - 768px e abaixo */
+@media screen and (max-width: 768px) {
+  .packageContainer {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 0 12px; /* Padding lateral para tablet */
+  }
+  .heroSection {
+    width: calc(100vw - 24px); /* Compensa o padding lateral */
+    height: 150px;
+    margin-bottom: 0px;
+    margin-left: -12px; /* Compensa o padding do container */
+    margin-right: -12px; /* Compensa o padding do container */
+    padding-top: 50px;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+
+  .searchBarWrapper {
+    width: 100%;
+    margin: 25px auto 40px auto;
+  }
+
+  .contentSection {
+    width: 100%;
+    margin: 120px auto 50px auto;
+    padding: 0; /* Remove padding extra */
+  }
+
+  .sectionTitle {
+    font-size: 1.7rem;
+    margin-bottom: 30px;
+  }
+
+  .showMoreButton {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .showMoreContainer {
+    margin-top: 30px;
+  }
+}
+
+/* Mobile - 480px e abaixo */
+@media screen and (max-width: 480px) {
+  .packageContainer {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    padding: 0 10px; /* Padding lateral para mobile */
+  }
+
+  .cardContainerSpace {
+    width: 100%;
+    }
+
+  .cart {
+    margin-right: 10px;
+  }
+
+  .heroSection {
+    width: calc(100vw - 20px); /* Compensa o padding lateral */
+    height: 160px;
+    margin-bottom: 0px;
+    margin-left: -10px; /* Compensa o padding do container */
+    margin-right: -10px; /* Compensa o padding do container */
+    background-position: center;
+    padding-top: 30px;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .searchBarWrapper {
+    width: 100%;
+    margin: 30px auto 60px auto;
+  }
+
+  .contentSection {
+    width: 100%;
+    margin: 170px auto 20px auto;
+    margin-top: 200px;
+    padding: 0; /* Remove padding extra */
+  }
+
+  .sectionTitle {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+
+  .showMoreButton {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .showMoreContainer {
+    margin-top: 25px;
+  }
 }

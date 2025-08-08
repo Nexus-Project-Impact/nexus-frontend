@@ -1,9 +1,11 @@
 import React from 'react';
+import { ImageWithFallback } from '../../../components/ImageWithFallback';
 import styles from '../review.module.css'; // Crie um CSS module similar ao do login
 
 export function ReviewForm({
   destination,
   dateRange,
+  packageImage,
   rating,
   setRating,
   comment,
@@ -12,19 +14,40 @@ export function ReviewForm({
   error,
   onSubmit,
   onClose,
+  isFromReservation = false
 }) {
   return (
     <div className={styles.reviewContainer}>
-      <button className={styles.closeButton} onClick={onClose}>×</button>
-      <h2>Avalie a sua experiência</h2>
+      <div className={styles.header}>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
+        <h2>Avalie a sua experiência</h2>
+        {isFromReservation && (
+          <p className={styles.fromReservationNote}>
+            Você está avaliando esta viagem a partir das suas reservas
+          </p>
+        )}
+      </div>
+      
       <div className={styles.infoSection}>
-        <div>
-          <span>Destino: </span>
-          <strong>{destination}</strong>
-        </div>
-        <div>
-          <span>Data: </span>
-          <span>{dateRange}</span>
+        {packageImage && (
+          <div className={styles.packageImageContainer}>
+            <ImageWithFallback 
+              src={packageImage} 
+              alt={destination}
+              className={styles.packageImage}
+              fallbackSrc="/src/assets/nexus-logo.png"
+            />
+          </div>
+        )}
+        <div className={styles.packageDetails}>
+          <div className={styles.infoItem}>
+            <span>Destino: </span>
+            <strong>{destination}</strong>
+          </div>
+          <div className={styles.infoItem}>
+            <span>Data: </span>
+            <span>{dateRange}</span>
+          </div>
         </div>
       </div>
       <form className={styles.formSection} onSubmit={onSubmit}>

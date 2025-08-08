@@ -64,12 +64,111 @@
   background-color: #8c52ff; /* Roxo do botão */
   border: 1px solid #c57d00;
   color: white;
+  padding: 0 10px;
   border-radius: 10px;
-  width: 50px;
-  height: 50px;
+  height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 1.2rem;
 }
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet - 768px e abaixo */
+@media screen and (max-width: 768px) {
+  .searchBarContainer {
+    padding: 12px;
+  }
+
+  .searchBar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .inputWrapper {
+    min-width: 200px;
+    flex: 1;
+  }
+
+  .inputField, .selectField {
+    padding: 10px 5px;
+    font-size: 0.95rem;
+  }
+
+  .searchButton {
+    height: 42px;
+    padding: 0 15px;
+    min-width: 80px;
+  }
+}
+
+/* Mobile - 480px e abaixo */
+@media screen and (max-width: 480px) {
+
+  .searchBarContainer {
+    padding: 10px;
+    border-radius: 12px;
+    margin-top: 120px;
+  }
+
+  .searchBar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .inputWrapper {
+    width: 94%;
+    min-width: unset;
+  }
+
+  .inputField, .selectField {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+
+  .datePicker {
+    padding: 12px 8px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .searchButton {
+    width: 100%;
+    height: 45px;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .icon {
+    margin-right: 6px;
+  }
+}
+
+/* Mobile pequeno - 360px e abaixo */
+@media screen and (max-width: 360px) {
+  .searchBarContainer {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .inputField, .selectField {
+    padding: 10px 6px;
+    font-size: 0.85rem;
+  }
+
+  .datePicker {
+    padding: 10px 6px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .searchButton {
+    height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .dateWrapper {
+    padding-left: 10px;
+  }
+}
+

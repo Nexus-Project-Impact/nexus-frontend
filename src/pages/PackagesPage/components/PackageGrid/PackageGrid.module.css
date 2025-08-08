@@ -1,6 +1,76 @@
 .grid {
   display: grid;
-  /* Cria colunas responsivas: elas terão no mínimo 300px e no máximo 1fr (fração do espaço) */
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* Quando houver apenas um pacote, centraliza e limita a largura */
+.grid:has(> *:only-child) {
+  justify-items: center;
+}
+
+.grid > *:only-child {
+  max-width: 400px; /* ajuste conforme necessário */
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .grid > *:only-child {
+    max-width: 350px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 632px) {
+  .grid > *:only-child {
+    max-width: 320px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .grid > *:only-child {
+    max-width: 280px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .grid > *:only-child {
+    max-width: 250px;
+    width: 100%;
+  }
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Tablet - 768px e abaixo */
+@media screen and (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+/* Mobile - 480px e abaixo */
+@media screen and (max-width: 450px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+/* Mobile pequeno - 360px e abaixo */
+@media screen and (max-width: 360px) {
+  .grid {
+    gap: 15px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
 }

@@ -1,12 +1,15 @@
 .header {
   width: 100%;
   padding: 15px 0;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: var(--bg-primary);
+  box-shadow: 0 2px 4px var(--shadow-color);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
+  box-sizing: border-box;
+  overflow: visible; /* Alterado para permitir que o dropdown seja visível */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .container {
@@ -16,6 +19,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
+  padding: 0 15px;
 }
 
 .logo {
@@ -33,7 +38,7 @@
 
 .navLink {
   text-decoration: none;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 500;
   padding: 8px 0;
   position: relative;
@@ -89,9 +94,269 @@
 
 .profileLink {
   display: flex;
+  margin-bottom: 5px;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   text-decoration: none;
   color: #333;
   font-weight: 500;
+}
+
+/* Dropdown de perfil */
+.profileDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 1002; /* Garante que fique acima de outros elementos */
+}
+
+.profileButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto; /* Garante que seja clicável */
+}
+
+.profileButton:hover {
+  background-color: var(--bg-secondary, #f5f5f5);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-primary, white);
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 1002; /* Aumentado para ficar acima do header */
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.95rem;
+  pointer-events: auto; /* Garante que seja clicável */
+}
+
+.dropdownItem:hover {
+  background-color: var(--bg-secondary, #f5f5f5);
+}
+
+/* Botão do menu hambúrguer */
+.hamburgerButton {
+  display: none; /* Oculto por padrão (desktop) */
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+  width: 60px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.hamburgerButton:hover {
+  background-color: #f0f0f0;
+}
+
+/* Estilos responsivos para mobile */
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 10px 0;
+  }
+
+  .container {
+    width: 95%;
+    padding: 0 10px;
+  }
+
+  .hamburgerButton {
+    display: block; /* Mostra o botão hambúrguer em mobile */
+    z-index: 1001;
+  }
+
+  .nav {
+    position: fixed;
+    top: 70px; /* Altura do header */
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    height: calc(100vh - 70px);
+    background-color: rgba(255, 255, 255, 0.3); /* Mais transparente */
+    backdrop-filter: blur(5px);
+    transform: translateX(-100%); /* Escondido por padrão */
+    transition: transform 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Adiciona padding para o menu ficar maior que a lista */
+    box-sizing: border-box;
+    overflow: visible; /* Alterado para permitir que elementos sejam clicáveis */
+  }
+
+  .navOpen {
+    transform: translateX(0); /* Mostra o menu quando aberto */
+    border: 2px solid #FF9900; /* Borda laranja quando menu está aberto */
+  }
+
+  .navList {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start; /* Alinha todos os itens à esquerda */
+    height: auto; /* Altura automática para se ajustar ao conteúdo */
+    gap: 15px;
+    padding: 60px 20px 40px 20px; /* Adiciona mais padding inferior */
+    margin: 0;
+    border: #FF9900 1px solid;
+    background-color: rgba(248, 249, 250, 0.7); /* Fundo semi-transparente para a lista */
+    border-radius: 12px; /* Bordas arredondadas */
+    backdrop-filter: blur(5px);
+    max-width: 280px; /* Reduz a largura máxima */
+    width: 85%; /* Reduz a largura percentual */
+    box-sizing: border-box;
+  }
+
+  .navLink,
+  .registerButton {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    text-align: left; /* Alinha o texto à esquerda */
+    border-radius: 8px;
+    min-width: 180px;
+    max-width: 100%;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    width: 100%; /* Ocupa toda a largura disponível */
+    display: block; /* Garante que seja um bloco completo */
+  }
+
+  .navLink:hover,
+  .registerButton:hover {
+    background-color: #8c52ff;
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .profileMenu {
+    width: 100%;
+  }
+
+  .profileLink {
+    justify-content: flex-start; /* Alinha à esquerda */
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    min-width: 180px;
+    max-width: 100%;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    width: 100%; /* Ocupa toda a largura disponível */
+    display: block; /* Garante que seja um bloco completo */
+    text-align: left; /* Alinha o texto à esquerda */
+  }
+
+  .profileLink:hover {
+    background-color: #8c52ff;
+    color: white;
+    transform: scale(1.05);
+  }
+
+  /* Dropdown mobile */
+  .profileDropdown {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profileButton {
+    justify-content: flex-start;
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  .profileButton:hover {
+    background-color: #8c52ff;
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .dropdownMenu {
+    position: static;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+  }
+
+  .dropdownItem {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border-radius: 6px;
+    margin: 4px 8px;
+    background-color: white;
+  }
+
+  .dropdownItem:hover {
+    background-color: #8c52ff;
+    color: white;
+  }
+}
+
+/* Theme Toggle Item */
+.themeToggleItem {
+  display: flex;
+  align-items: center;
+  order: -1; /* Move o theme toggle para antes dos outros itens no desktop */
+}
+
+@media (max-width: 768px) {
+  .themeToggleItem {
+    margin: 15px 0 5px 0;
+    justify-content: flex-start; /* Alinha à esquerda em tablet */
+    order: 999; /* Move para o final da lista no mobile */
+    width: 100%;
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .themeToggleItem {
+    margin: 15px 0 10px 0; /* Reduzido de 20px para 15px para ficar igual ao gap padrão */
+    padding: 0;
+    justify-content: center; /* Centraliza o botão */
+    order: 999; /* Garante que fica por último */
+    width: 100%;
+    align-self: center; /* Centraliza o item */
+    /* Remove a borda superior para manter o espaçamento uniforme */
+    padding-top: 0;
+  }
 }

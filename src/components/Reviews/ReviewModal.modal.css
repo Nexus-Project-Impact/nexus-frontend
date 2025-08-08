@@ -1,0 +1,284 @@
+.reviewsContainer {
+  padding: 32px;
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.reviewsHeader h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.averageRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratingNumber {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--secondary-color);
+  transition: color 0.3s ease;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.starFilled {
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.starEmpty {
+  color: var(--text-tertiary);
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.reviewCount {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.addReviewButton {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 32px;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+}
+
+.addReviewButton:hover {
+  background: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.addReviewForm {
+  background: var(--bg-secondary);
+  padding: 32px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 4px 12px rgba(140, 82, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.addReviewForm h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.formDescription {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 24px;
+  padding: 12px;
+  background: rgba(140, 82, 255, 0.1);
+  border-radius: 6px;
+  border-left: 4px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.ratingInput, .commentInput {
+  margin-bottom: 24px;
+}
+
+.ratingInput label, .commentInput label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.ratingInput select {
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 200px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.ratingInput select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.commentInput textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.commentInput textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.commentInput textarea::placeholder {
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.submitButton {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+  display: block;
+}
+
+.submitButton:hover {
+  background: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  background: var(--text-tertiary);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reviewsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.reviewItem {
+  padding: 24px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  transition: all 0.3s ease;
+}
+
+.reviewItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.userName {
+  font-weight: bold;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.reviewDate {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ratingText {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.reviewComment {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .reviewsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .averageRating {
+    align-self: flex-start;
+  }
+
+  .reviewsContainer {
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .reviewsList {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .addReviewForm {
+    padding: 20px;
+  }
+
+  .addReviewButton {
+    max-width: none;
+  }
+
+  .submitButton {
+    max-width: none;
+  }
+}

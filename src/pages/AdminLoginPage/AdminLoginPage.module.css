@@ -1,0 +1,94 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Para alinhar o footer no final */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Para o elemento curvado não vazar */
+}
+
+/* O elemento curvado roxo */
+.pageContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45vh; /* 45% da altura da tela */
+  background-color: #6a0dad; /* Roxo */
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
+  z-index: 0;
+}
+
+.loginCard {
+  background-color: white;
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 1; /* Fica na frente do fundo roxo */
+}
+
+.logo {
+  max-width: 250px;
+  margin-bottom: 30px;
+}
+
+.loginCard form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333;
+}
+
+.forgotPassword {
+  display: block;
+  text-align: right;
+  margin-top: -5px;
+  margin-bottom: 20px;
+  color: #ff9900;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.loginButton {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ff9900;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.errorText {
+  color: red;
+  margin-top: 15px;
+}
+
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  z-index: 1;
+}
+
+.footer img { height: 24px; }
+.footerLinks { display: flex; gap: 20px; }
+.footerLinks a, .footer span { color: #888; text-decoration: none; font-size: 0.9rem; }

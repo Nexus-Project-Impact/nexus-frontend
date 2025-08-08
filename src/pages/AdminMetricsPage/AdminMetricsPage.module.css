@@ -1,0 +1,506 @@
+.container {
+    width: 100%;
+    padding: 0 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+.title {
+    text-align: center;
+    color: #ff9900;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+.kpiGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .kpiGrid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpiGrid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+}
+
+.chartsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 1024px) {
+    .chartsGrid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Tablets em landscape - mantém dois gráficos lado a lado */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+    .chartsGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .chartContainer {
+        height: 350px;
+    }
+}
+
+/* Quebra mais cedo em telas pequenas */
+@media (max-width: 900px) {
+    .chartsGrid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+}
+
+/* Força uma coluna em qualquer dispositivo menor que 700px */
+@media (max-width: 700px) {
+    .chartsGrid,
+    .bottomGrid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+    
+    .chartContainer,
+    .lineChartContainer {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+.chartContainer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .chartContainer {
+        height: 350px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chartContainer {
+        height: 300px;
+        padding: 10px;
+    }
+}
+
+.chartContainer h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.chartContainer > div {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Força responsividade dos gráficos internos */
+.chartContainer > div > * {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.lineChartContainer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .lineChartContainer {
+        height: 280px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .lineChartContainer {
+        height: 250px;
+        padding: 10px;
+    }
+}
+
+.lineChartContainer h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.lineChartContainer > div {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Força responsividade dos gráficos internos */
+.lineChartContainer > div > * {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+.bottomGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 1024px) {
+    .bottomGrid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Tablets em landscape - mantém layout de duas colunas */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+    .bottomGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+}
+
+/* Quebra mais cedo em telas pequenas */
+@media (max-width: 900px) {
+    .bottomGrid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+}
+
+.actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .actions {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .actions {
+        gap: 10px;
+    }
+    
+    .actions button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+.actions button {
+    background-color: #8c52ff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.summarySection {
+    margin-bottom: 40px;
+}
+
+.summaryCard {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .summaryCard {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .summaryCard {
+        padding: 15px;
+    }
+}
+
+.summaryCard h4 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.summaryCard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.summaryCard li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    color: #666;
+}
+
+.summaryCard li:last-child {
+    border-bottom: none;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.errorBanner {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 12px 16px;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+/* Estilos globais para botões de exportação */
+:global(.exportButton) {
+  background-color: #8c52ff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 44px;
+  font-size: 0.9rem;
+  min-width: 120px;
+}
+
+/* Responsividade para botões */
+@media (max-width: 768px) {
+  :global(.exportButton) {
+    width: 100%;
+    max-width: 200px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :global(.exportButton) {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    height: 40px;
+  }
+}
+
+:global(.exportButton:hover) {
+  background-color: #7a47e6;
+}
+
+:global(.exportButton:first-child) {
+  background-color: #8c52ff;
+}
+
+:global(.exportButton:first-child:hover) {
+  background-color: #7a47e6;
+}
+
+/* Responsividade adicional para dispositivos muito pequenos */
+@media (max-width: 360px) {
+  .chartContainer h3,
+  .lineChartContainer h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .summaryCard h4 {
+    font-size: 1rem;
+  }
+  
+  .summaryCard li {
+    font-size: 0.9rem;
+    padding: 6px 0;
+  }
+  
+  .errorBanner {
+    font-size: 0.8rem;
+    padding: 10px 12px;
+  }
+}
+
+/* Força responsividade de elementos SVG e Canvas em gráficos */
+.chartContainer svg,
+.chartContainer canvas,
+.lineChartContainer svg,
+.lineChartContainer canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Força responsividade de elementos div internos dos gráficos */
+.chartContainer div[style*="width"],
+.chartContainer div[style*="height"],
+.lineChartContainer div[style*="width"],
+.lineChartContainer div[style*="height"] {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Previne overflow horizontal em qualquer elemento */
+.container * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Regras específicas para bibliotecas de gráficos comuns */
+.chartContainer .recharts-wrapper,
+.lineChartContainer .recharts-wrapper,
+.chartContainer .recharts-surface,
+.lineChartContainer .recharts-surface {
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Regras específicas para Chart.js */
+.chartContainer canvas,
+.lineChartContainer canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Container para Chart.js */
+.chartContainer > div,
+.lineChartContainer > div {
+    position: relative;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Regra de segurança final - previne qualquer overflow */
+@media (max-width: 600px) {
+    .chartsGrid,
+    .bottomGrid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    
+    .chartContainer,
+    .lineChartContainer,
+    .summaryCard {
+        margin: 0 !important;
+        padding: 15px !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    
+    .container {
+        padding: 0 10px !important;
+        overflow-x: hidden !important;
+    }
+}

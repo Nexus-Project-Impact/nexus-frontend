@@ -1,45 +1,61 @@
+// aqui estamos agrupando toda lógica de login em um só lugar
+// ele controle o que acontece quando o usuário tenta fazer login
+
+// imports e dependencias 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux'; 
-import { setCredentials } from '../store/authSlice'; 
+import { login } from '../services/authService';
+import { saveToken } from '../utils/jwt'; // função para salvar o token
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/authSlice'; // guarda os dados do usuário e o token no Redux
+import { notificationService } from '../services/notificationService';
+import api from '../services/api'; // Ajuste o caminho conforme necessário
 
+// estados das consts
 export function useLogin() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch(); // aqui é para enviar os dados para o redux
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // aqui é para mudar de página
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    const MOCK_USER = { email: 'test@nexus.com', password: '123456' };
-
-    setTimeout(() => {
-      if (email === MOCK_USER.email && password === MOCK_USER.password) {
-        const fakeUser = { id: 1, name: 'Usuário Teste' };
-        const fakeToken = 'token-secreto-mockado-para-frontend';
+  const handleLogin = async (e) => {
+    e.preventDefault(); // impede o refresh da página
+    setIsLoading(true); 
+    setError(''); // limpa os erros anteriores
+    try {
+      // chamada à API
+      const data = await login(email, password);
+      console.log('Dados recebidos no login:', data); // Debug
+      
+      if (data.token) {
+        saveToken(data.token); // Salva o token JWT
         
-        // Salva no localStorage para persistência
-        localStorage.setItem('@app-token', fakeToken);
-        localStorage.setItem('@app-user', JSON.stringify(fakeUser));
+        // Criar objeto do usuário com os dados disponíveis
+        // Tenta diferentes estruturas de resposta do backend
+        const user = {
+          id: data.user?.id || data.userId || data.id || null,
+          name: data.user?.name || data.userName || data.name || data.user?.userName || email.split('@')[0],
+          email: data.user?.email || data.userEmail || data.email || email,
+          role: data.user?.role || data.userRole || data.role || 'user'
+        };
         
-
-        // Isso vai atualizar o estado global e fazer o Header reagir.
-        dispatch(setCredentials({ user: fakeUser, token: fakeToken }));
+        console.log('Objeto usuário criado:', user); // Debug
         
-        // Redireciona para a página de pacotes
-        navigate('/pacotes');
-
+        dispatch(setCredentials({ user, token: data.token })); // envia dados completos do usuário
+        notificationService.auth.loginSuccess(user.name); // usa o nome real do usuário
+        navigate('/pacotes'); // Redireciona para a página de pacotes
       } else {
-        setError('E-mail ou senha inválidos.');
+        setError('Usuário ou senha inválidos');
+        notificationService.auth.loginError();
       }
-      setIsLoading(false);
-    }, 1000);
+    } catch (err) {
+      setError('Usuário ou senha inválidos');
+      notificationService.auth.loginError();
+    }
+    setIsLoading(false); // parar o carregamento
   };
 
-  return { email, setEmail, password, setPassword, error, isLoading, handleLogin };
+  return { email, setEmail, password, setPassword, isLoading, error, handleLogin };
 }

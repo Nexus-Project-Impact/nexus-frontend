@@ -1,10 +1,19 @@
 /* Container principal do card de login */
+.bodyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .loginContainer {
   display: flex;
   width: 800px; /* Largura total do card */
   min-height: 500px;
   background-color: #fff;
   border-radius: 20px;
+  justify-content: center;
+  
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* Garante que os filhos respeitem o border-radius */
 }
@@ -13,6 +22,17 @@
 .imageSection {
   flex: 1;
   position: relative;
+}
+
+.imageSectionResponsive {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
 }
 
 .beachImage {
@@ -81,6 +101,7 @@
 }
 
 .forgotPassword {
+  background: none; border: none; padding: 0;
   align-self: flex-end;
   margin-bottom: 25px;
   color: #8c52ff;
@@ -122,4 +143,165 @@
   color: #ff3b3b;
   text-align: center;
   margin-top: 15px;
+}
+
+@media screen and (max-width: 430px) {
+  .loginContainer {
+  position: fixed;
+  box-shadow: none;
+  max-width: 340px;
+  }
+  
+  .imageSection {
+    display: none;
+  }
+
+  .imageSectionResponsive {
+    display: block; /* Mostra apenas em smartphones */
+    position: fixed;
+    top: 80px; /* Começa do topo absoluto */
+    left: 0;
+    max-height: 400px;
+    width: 100vw; /* Largura total da viewport */
+    height: 100vh; /* Altura total da viewport */
+    z-index: 0; /* Fica atrás de todos os elementos */
+    overflow: hidden;
+  }
+  
+  .formSection {
+    /* Formulário centralizado sobre a imagem */
+    position: fixed;
+    top: 50%; /* Centro vertical */
+    left: 50%; /* Centro horizontal */
+    transform: translate(-50%, -50%); /* Centraliza perfeitamente */
+    z-index: 2; /* Fica na frente da imagem */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 60px); /* Margem de 30px de cada lado */
+    max-width: 340px;
+    background-color: rgba(255, 255, 255, 0.95); /* Semi-transparente */
+    backdrop-filter: blur(10px); /* Efeito de blur */
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    padding: 25px 20px;
+  }
+  
+  .mainLogo {
+    width: 100px;
+    margin-bottom: 20px;
+    align-self: center;
+  }
+  
+  .inputGroup {
+    margin-bottom: 15px;
+  }
+  
+  .inputGroup input {
+    padding: 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  .forgotPassword {
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+  }
+  
+  .loginButton {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+  
+  .signupLink {
+    font-size: 0.9rem;
+    margin-top: 15px;
+  }
+  
+  .imageOverlay {
+    top: 10px;
+    left: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  
+  .overlayLogo {
+    width: 20px;
+  }
+
+  .footer {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 5 !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+    height: 60px !important; /* Altura definida para o footer */
+  }
+}
+
+/* Smartphones muito pequenos (360px e abaixo) */
+@media screen and (max-width: 360px) {
+  .loginContainer {
+    /* Container estático para evitar conflitos */
+    position: static !important;
+    width: 100vw;
+    min-height: calc(100vh - 80px);
+    display: block !important;
+    background-color: #f0f0f0;
+    overflow-x: hidden;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .imageSection {
+    /* Imagem como hero section */
+    position: sticky !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 40vh;
+    z-index: 1;
+    overflow: hidden;
+    margin: 0;
+  }
+  
+  .formSection {
+    /* Formulário posicionado de forma natural */
+    position: static !important;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 50px);
+    max-width: 320px;
+    margin: -10vh auto 120px auto; /* Overlap na imagem e espaço para footer */
+    background-color: rgba(255, 255, 255, 0.99);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    padding: 20px 15px;
+  }
+  
+  .mainLogo {
+    width: 90px;
+    align-self: center;
+  }
+  
+  .inputGroup input {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  
+  .loginButton {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
 }
