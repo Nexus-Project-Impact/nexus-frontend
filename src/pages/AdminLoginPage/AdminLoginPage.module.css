@@ -47,6 +47,8 @@
   border-radius: 10px;
   font-size: 1rem;
   box-sizing: border-box;
+  background-color: white;
+  color: #333;
 }
 
 .forgotPassword {
