@@ -2,7 +2,7 @@ import { api } from './api';
 import axios from 'axios';
 
 const anonymousApi = axios.create({
-  baseURL: 'https://localhost:7164/',
+  baseURL: 'http://localhost:5235/',
   headers: {
     'Content-Type': 'application/json'
   }
